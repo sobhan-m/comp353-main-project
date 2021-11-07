@@ -1,0 +1,11 @@
+# Relational Schema
+- Person(<ins>id</ins>, firstName, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID)
+- Registered(id, <ins>medicareCardNum</ins>, medicareIssueDate, medicareExpiryDate)
+- Unregistered(id, <ins>passportNum</ins>)
+- AgeGroup(<ins>groupID</ins>, groupDescription)
+- InfectionHistory(<ins>personID</ins>, <ins>infectionDate</ins>)
+- HealthWorker(<ins>workerID</ins>, id, employeeType)
+- PublicHealthFacilities(<ins>name</ins>, address, province, country, phoneNumber, webAddress, facilityType, capacity, managerID)
+- Assignments(<ins>workerID</ins>, <ins>facilityName</ins>, startDate, endDate)
+- ApprovedVaccinations(<ins>vaccinationName</ins>, dateOfApproval, vaccinationType, dateOfSuspension)
+- Vaccinations(<ins>id</ins>, healthWorkerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, location, province, country, doseNumber)
