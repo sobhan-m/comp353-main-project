@@ -225,7 +225,7 @@ country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
-category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED')
+category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
 capacity INT,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
@@ -257,7 +257,7 @@ DROP TABLE PublicHealthFacilities;
 CREATE TABLE InfectionTypes(
 	name VARCHAR(100),
 	PRIMARY KEY (name)
-)
+);
 
 INSERT INTO InfectionTypes(name) 
 VALUES ("Alpha"),
@@ -383,10 +383,18 @@ DELETE FROM Vaccinations;
 DROP TABLE Vaccinations;
 
 CREATE TABLE FacilitySchedule(
-	name VARCHAR(100),
-    days VARCHAR(100),
-    openingHour TIME,
-    closingHour TIME,
-    PRIMARY KEY (name)
+name VARCHAR(100),
+days VARCHAR(100),
+openingHour TIME,
+closingHour TIME,
+PRIMARY KEY (name)
 );
 
+
+
+
+SELECT * FROM FacilitySchedule;
+
+DELETE FROM FacilitySchedule;
+
+DROP TABLE FacilitySchedule;
