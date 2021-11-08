@@ -410,3 +410,31 @@ SELECT * FROM FacilitySchedule;
 DELETE FROM FacilitySchedule;
 
 DROP TABLE FacilitySchedule;
+
+CREATE TABLE WorkerSchedule(
+workerID INT,
+facilityName VARCHAR(100),
+days VARCHAR(1000),
+startingHour TIME,
+endingHour TIME,
+PRIMARY KEY (workerID, facilityName),
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
+);
+
+INSERT INTO WorkerSchedule(workerID, facilityName, days, startingHour, endingHour)
+VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(2, 'B', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(3, 'C', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(4, 'D', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(5, 'E', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(6, 'F', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(7, 'G', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(8, 'H', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(10, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
+
+SELECT * FROM WorkerSchedule;
+
+DELETE FROM WorkerSchedule;
+
+DROP TABLE WorkerSchedule;
