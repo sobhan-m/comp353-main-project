@@ -401,3 +401,26 @@ SELECT * FROM FacilitySchedule;
 DELETE FROM FacilitySchedule;
 
 DROP TABLE FacilitySchedule;
+
+
+/*
+====================================================================
+ Province
+====================================================================
+*/
+CREATE TABLE Province(
+name VARCHAR(100),
+ageGroup int, 
+FOREIGN KEY (ageGroup) REFERENCES GroupAge(groupID));
+
+INSERT INTO Province(name, ageGroup)
+VALUES('Quebec', NULL),
+('Ontario', NULL),
+('Nova Scotia', NULL),
+('Manitoba', NULL),
+('New Brunswick', NULL),
+('Prince Edward Island', NULL),
+('Saskatchewan', NULL),
+('Alberta', NULL),
+('Newfoundland and Labrador', NULL),
+('British Columbia', NULL);
