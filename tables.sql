@@ -173,13 +173,15 @@ DROP TABLE AgeGroup;
 CREATE TABLE InfectionHistory(
 personID INT,
 infectionDate DATE,
+type varchar(100),
 PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id)
+FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (type) REFERENCES InfectionTypes(name)
 );
 
-INSERT INTO InfectionHistory(personID, infectionDate)
-VALUES(6,'2020-10-10'),(16,'2020-09-09'),(19, '2020-08-08'),(8, '2020-07-07'),(9, '2020-06-06'),
-(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01'), (3, '2021-01-01'), (2, '2021-01-01'), (2, '2021-03-01'), (4, '2021-01-01'), (12, '2021-01-01');
+INSERT INTO InfectionHistory(personID, infectionDate, type)
+VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
+(5, '2020-05-05', "Beta"),(11, '2020-04-04', "Beta"),(13, '2020-03-03', "Alpha"),(1, '2020-02-02', "Alpha"),(3, '2020-01-01', "Delta"), (3, '2021-01-01', "MU"), (2, '2021-01-01', "Delta"), (2, '2021-03-01', "Delta"), (4, '2021-01-01', "Delta"), (12, '2021-01-01', "Delta");
 
 SELECT * FROM InfectionHistory;
 
@@ -193,18 +195,18 @@ DROP TABLE InfectionHistory;
 */
 
 CREATE TABLE HealthWorker(
-workerID INT AUTO_INCREMENT,
-id INT,
+pID INT,
+ssn INT,
 employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee"),
-PRIMARY KEY (workerID),
-FOREIGN KEY (id) REFERENCES Person(id)
+PRIMARY KEY (pID),
+FOREIGN KEY (pID) REFERENCES Person(id)
 );
 
-INSERT INTO HealthWorker(id, employeeType)
-VALUES(1,'Manager'),(2, 'Nurse'), (3, 'Security'), (4, 'Secretary'),(5, 'Regular Employee'),
-(6, 'Nurse'), (7, 'Security'),(8, 'Regular Employee'),(9, 'Nurse'),(10, 'Security'),(21, 'Regular Employee'), 
-(22, 'Manager'),(23, 'Manager'),(24, 'Manager'),(25, 'Manager'),(26, 'Manager'),(27, 'Manager'),(28, 'Manager'),
-(29, 'Manager'),(30, 'Manager');
+INSERT INTO HealthWorker(id, ssn, employeeType)
+VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
+(6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
+(22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
+(29, 120, 'Manager'),(30, 121, 'Manager');
 
 SELECT * FROM HealthWorker;
 
@@ -212,7 +214,7 @@ DROP TABLE HealthWorker;
 
 /*
 ====================================================================
- Health Worker
+ PublicHealthFacilities
 ====================================================================
 */
 
@@ -224,27 +226,52 @@ country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
+category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
 capacity INT,
 managerID INT,
-FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
+FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
+FOREIGN KEY (province) REFERENCES Province(name),
 PRIMARY KEY (name)
 );
 
-INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, capacity, managerID)
-VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 5000, 1),
-('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 500, 11),
-('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 50, 12),
-('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 6000, 13),
-('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 600, 14),
-('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 60, 15),
-('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 7000, 16),
-('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 700, 17),
-('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 70, 18),
-('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 8000, 19);
+INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
+VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
+('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 11),
+('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 12),
+('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 13),
+('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 14),
+('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 15),
+('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 16),
+('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 17),
+('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 18),
+('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 19);
 
 SELECT * FROM PublicHealthFacilities;
 
 DROP TABLE PublicHealthFacilities;
+
+/*
+====================================================================
+ InfectionTypes
+====================================================================
+*/
+
+CREATE TABLE InfectionTypes(
+	name VARCHAR(100),
+	PRIMARY KEY (name)
+);
+
+INSERT INTO InfectionTypes(name) 
+VALUES ("Alpha"),
+("Beta"),
+("Gamma"),
+("Delta"),
+("Mu");
+
+SELECT * FROM InfectionTypes;
+
+DROP TABLE IF EXISTS InfectionTypes;
+
 /*
 ====================================================================
  Assignments
@@ -252,16 +279,19 @@ DROP TABLE PublicHealthFacilities;
 */
 
 CREATE TABLE Assignments(
-workerID INT,
+pID INT,
 facilityName VARCHAR(100),
 startDate DATE,
 endDate DATE,
-PRIMARY KEY (workerID, facilityName),
-FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID),
+workerID INT AUTO_INCREMENT,
+hourlyWage FLOAT,
+UNIQUE (workerID, facilityName),
+PRIMARY KEY (pID, facilityName, startDate),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
 
-INSERT INTO Assignments(workerID, facilityName, startDate, endDate)
+INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
 VALUES(1, 'A', '2019-12-12', NULL),
 (2, 'B', '2020-01-01', '2020-06-01'),
 (3, 'C', '2020-05-13', '2020-10-13'),
@@ -317,36 +347,37 @@ INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationTyp
 
 CREATE TABLE Vaccinations(
 id INT,
-healthWorkerID INT,
+workerID INT,
 vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
-location VARCHAR(100),
+facilityName VARCHAR(100),
 province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
 FOREIGN KEY (id) REFERENCES Person(id),
-FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
-FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName),
+FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
+FOREIGN KEY (province) REFERENCES Province(name)
 );
 
-INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, province, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'QC', 'Canada', 1),
-(12, 6, 'AstraZeneca', '2020-08-12', 10, 'Beta1', NULL, 'United States', 1),
-(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', NULL, 'United States', 2),
-(22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', NULL, 'Iran', 1),
-(16, 9, 'M.', '2020-11-12', 12, 'Delta1', NULL, 'Iraq', 1),
-(16, 9, 'M.', '2020-12-12', 12, 'Delta1', NULL, 'Iraq', 2),
-(14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', NULL, 'Lebanon', 1),
-(19, 2, 'PB', '2020-11-12', 8, 'Quebec1', NULL, 'Syria', 1),
-(19, 2, 'PB', '2020-12-12', 8, 'Quebec1', NULL, 'Syria', 2),
-(7, 2, 'Moderna', '2020-12-12', 9, 'October1', NULL, 'Moroco', 1),
-(4, 2, 'AZ', '2020-11-12', 11, 'June1', NULL, 'Algeria', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'June1', NULL, 'Algeria', 2),
-(1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', NULL, 'Tunisia', 1),
-(2, 9, 'AstraZeneca', '2020-11-12', 14, 'July1', 'QC', 'Canada', 1),
-(2, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'BC', 'Canada', 2);
+INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'A', 'QC', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'B', NULL, 'United States', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'B', NULL, 'United States', 2),
+(22, 9, 'Pfizer', '2020-07-10', 7, 'C', NULL, 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'D', NULL, 'Iraq', 1),
+(16, 9, 'M.', '2020-12-12', 12, 'D', NULL, 'Iraq', 2),
+(14, 6, 'Janssen', '2020-12-12', 6, 'E', NULL, 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'F', NULL, 'Syria', 1),
+(19, 2, 'PB', '2020-12-12', 8, 'F', NULL, 'Syria', 2),
+(7, 2, 'Moderna', '2020-12-12', 9, 'F', NULL, 'Morocco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'G', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'G', NULL, 'Algeria', 2),
+(1, 9, 'AstraZeneca', '2020-12-12', 13, 'H', NULL, 'Tunisia', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'H', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'H', 'BC', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
 
@@ -355,10 +386,77 @@ DELETE FROM Vaccinations;
 DROP TABLE Vaccinations;
 
 CREATE TABLE FacilitySchedule(
-	name VARCHAR(100),
-    days VARCHAR(100),
-    openingHour TIME,
-    closingHour TIME,
-    PRIMARY KEY (name)
+name VARCHAR(100),
+days VARCHAR(1000),
+openingHour TIME,
+closingHour TIME,
+PRIMARY KEY (name)
 );
 
+INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
+VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("B","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("C","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("D","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("E","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("F","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("G","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("H","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
+
+SELECT * FROM FacilitySchedule;
+
+DELETE FROM FacilitySchedule;
+
+DROP TABLE FacilitySchedule;
+
+
+CREATE TABLE WorkerSchedule(
+workerID INT,
+facilityName VARCHAR(100),
+days VARCHAR(1000),
+startingHour TIME,
+endingHour TIME,
+PRIMARY KEY (workerID, facilityName),
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
+);
+
+INSERT INTO WorkerSchedule(workerID, facilityName, days, startingHour, endingHour)
+VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(2, 'B', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(3, 'C', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(4, 'D', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(5, 'E', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(6, 'F', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(7, 'G', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(8, 'H', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(10, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
+
+SELECT * FROM WorkerSchedule;
+
+DELETE FROM WorkerSchedule;
+
+DROP TABLE WorkerSchedule;
+/*
+====================================================================
+ Province
+====================================================================
+*/
+CREATE TABLE Province(
+name VARCHAR(100),
+ageGroup int, 
+FOREIGN KEY (ageGroup) REFERENCES GroupAge(groupID));
+
+INSERT INTO Province(name, ageGroup)
+VALUES('Quebec', NULL),
+('Ontario', NULL),
+('Nova Scotia', NULL),
+('Manitoba', NULL),
+('New Brunswick', NULL),
+('Prince Edward Island', NULL),
+('Saskatchewan', NULL),
+('Alberta', NULL),
+('Newfoundland and Labrador', NULL),
+('British Columbia', NULL);
