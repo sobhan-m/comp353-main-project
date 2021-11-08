@@ -228,7 +228,7 @@ facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED')
 capacity INT,
 managerID INT,
-FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
+FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (province) REFERENCES Province(name),
 PRIMARY KEY (name)
 );
