@@ -387,14 +387,23 @@ DROP TABLE Vaccinations;
 
 CREATE TABLE FacilitySchedule(
 name VARCHAR(100),
-days VARCHAR(100),
+days VARCHAR(1000),
 openingHour TIME,
 closingHour TIME,
 PRIMARY KEY (name)
 );
 
-
-
+INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
+VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("B","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("C","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("D","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("E","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("F","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("G","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("H","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
 
 SELECT * FROM FacilitySchedule;
 
