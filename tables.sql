@@ -381,3 +381,12 @@ SELECT * FROM Vaccinations;
 DELETE FROM Vaccinations;
 
 DROP TABLE Vaccinations;
+
+CREATE TABLE FacilitySchedule(
+	name VARCHAR(100),
+    days VARCHAR(100),
+    openingHour TIME,
+    closingHour TIME,
+    PRIMARY KEY (name)
+);
+
