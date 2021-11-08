@@ -225,7 +225,7 @@ country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
-category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED')
+category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
 capacity INT,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
