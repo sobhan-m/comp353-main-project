@@ -1,6 +1,6 @@
 CREATE DATABASE Project;
 USE Project;
-DROP CREATE DATABASE Project;
+DROP DATABASE Project;
 
 /*
 ====================================================================
