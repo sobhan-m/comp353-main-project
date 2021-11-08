@@ -438,7 +438,7 @@ SELECT * FROM WorkerSchedule;
 
 DELETE FROM WorkerSchedule;
 
-
+DROP TABLE WorkerSchedule;
 /*
 ====================================================================
  Province
