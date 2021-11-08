@@ -223,23 +223,25 @@ country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
+category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED')
 capacity INT,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
+FOREIGN KEY (province) REFERENCES Province(name),
 PRIMARY KEY (name)
 );
 
-INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, capacity, managerID)
-VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 5000, 1),
-('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 500, 11),
-('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 50, 12),
-('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 6000, 13),
-('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 600, 14),
-('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 60, 15),
-('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 7000, 16),
-('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 700, 17),
-('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 70, 18),
-('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 8000, 19);
+INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
+VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
+('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 11),
+('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 12),
+('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 13),
+('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 14),
+('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 15),
+('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 16),
+('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 17),
+('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 18),
+('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 19);
 
 SELECT * FROM PublicHealthFacilities;
 
@@ -250,17 +252,41 @@ DROP TABLE PublicHealthFacilities;
 ====================================================================
 */
 
+CREATE TABLE InfectionTypes(
+	name VARCHAR(100),
+	PRIMARY KEY (name)
+)
+
+INSERT INTO InfectionTypes(name) 
+VALUES ("Alpha"),
+("Beta"),
+("Gamma"),
+("Delta"),
+("Mu");
+
+
+DROP TABLE IF EXISTS PublicHealthFacilities;
+
+/*
+====================================================================
+ Assignments
+====================================================================
+*/
+
 CREATE TABLE Assignments(
-workerID INT,
+pID INT,
 facilityName VARCHAR(100),
 startDate DATE,
 endDate DATE,
-PRIMARY KEY (workerID, facilityName),
-FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID),
+workerID INT AUTO_INCREMENT,
+hourlyWage FLOAT,
+UNIQUE (workerID, facilityName),
+PRIMARY KEY (pID, facilityName, startDate),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
 
-INSERT INTO Assignments(workerID, facilityName, startDate, endDate)
+INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
 VALUES(1, 'A', '2019-12-12', NULL),
 (2, 'B', '2020-01-01', '2020-06-01'),
 (3, 'C', '2020-05-13', '2020-10-13'),
@@ -327,7 +353,8 @@ doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
 FOREIGN KEY (id) REFERENCES Person(id),
 FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
-FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
+FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
+FOREIGN KEY (province) REFERENCES Province(name)
 );
 
 INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, province, country, doseNumber)
