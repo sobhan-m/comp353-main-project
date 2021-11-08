@@ -173,13 +173,14 @@ DROP TABLE AgeGroup;
 CREATE TABLE InfectionHistory(
 personID INT,
 infectionDate DATE,
+type varchar(100),
 PRIMARY KEY (personID, infectionDate),
 FOREIGN KEY (personID) REFERENCES Person(id)
 );
 
-INSERT INTO InfectionHistory(personID, infectionDate)
-VALUES(6,'2020-10-10'),(16,'2020-09-09'),(19, '2020-08-08'),(8, '2020-07-07'),(9, '2020-06-06'),
-(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01'), (3, '2021-01-01'), (2, '2021-01-01'), (2, '2021-03-01'), (4, '2021-01-01'), (12, '2021-01-01');
+INSERT INTO InfectionHistory(personID, infectionDate, type)
+VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
+(5, '2020-05-05', "Beta"),(11, '2020-04-04', "Beta"),(13, '2020-03-03', "Alpha"),(1, '2020-02-02', "Alpha"),(3, '2020-01-01', "Delta"), (3, '2021-01-01', "MU"), (2, '2021-01-01', "Delta"), (2, '2021-03-01', "Delta"), (4, '2021-01-01', "Delta"), (12, '2021-01-01', "Delta");
 
 SELECT * FROM InfectionHistory;
 
