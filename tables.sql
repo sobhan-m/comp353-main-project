@@ -175,7 +175,8 @@ personID INT,
 infectionDate DATE,
 type varchar(100),
 PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id)
+FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (type) REFERENCES InfectionTypes(name)
 );
 
 INSERT INTO InfectionHistory(personID, infectionDate, type)
@@ -213,7 +214,7 @@ DROP TABLE HealthWorker;
 
 /*
 ====================================================================
- Health Worker
+ PublicHealthFacilities
 ====================================================================
 */
 
@@ -228,7 +229,7 @@ facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
 capacity INT,
 managerID INT,
-FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
+FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (province) REFERENCES Province(name),
 PRIMARY KEY (name)
 );
@@ -248,9 +249,10 @@ VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITA
 SELECT * FROM PublicHealthFacilities;
 
 DROP TABLE PublicHealthFacilities;
+
 /*
 ====================================================================
- Assignments
+ InfectionTypes
 ====================================================================
 */
 
@@ -266,8 +268,9 @@ VALUES ("Alpha"),
 ("Delta"),
 ("Mu");
 
+SELECT * FROM InfectionTypes;
 
-DROP TABLE IF EXISTS PublicHealthFacilities;
+DROP TABLE IF EXISTS InfectionTypes;
 
 /*
 ====================================================================
@@ -344,37 +347,37 @@ INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationTyp
 
 CREATE TABLE Vaccinations(
 id INT,
-healthWorkerID INT,
+workerID INT,
 vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
-location VARCHAR(100),
+facilityName VARCHAR(100),
 province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
 FOREIGN KEY (id) REFERENCES Person(id),
-FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName),
 FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
 FOREIGN KEY (province) REFERENCES Province(name)
 );
 
-INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, province, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'QC', 'Canada', 1),
-(12, 6, 'AstraZeneca', '2020-08-12', 10, 'Beta1', NULL, 'United States', 1),
-(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', NULL, 'United States', 2),
-(22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', NULL, 'Iran', 1),
-(16, 9, 'M.', '2020-11-12', 12, 'Delta1', NULL, 'Iraq', 1),
-(16, 9, 'M.', '2020-12-12', 12, 'Delta1', NULL, 'Iraq', 2),
-(14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', NULL, 'Lebanon', 1),
-(19, 2, 'PB', '2020-11-12', 8, 'Quebec1', NULL, 'Syria', 1),
-(19, 2, 'PB', '2020-12-12', 8, 'Quebec1', NULL, 'Syria', 2),
-(7, 2, 'Moderna', '2020-12-12', 9, 'October1', NULL, 'Moroco', 1),
-(4, 2, 'AZ', '2020-11-12', 11, 'June1', NULL, 'Algeria', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'June1', NULL, 'Algeria', 2),
-(1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', NULL, 'Tunisia', 1),
-(2, 9, 'AstraZeneca', '2020-11-12', 14, 'July1', 'QC', 'Canada', 1),
-(2, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'BC', 'Canada', 2);
+INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'A', 'QC', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'B', NULL, 'United States', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'B', NULL, 'United States', 2),
+(22, 9, 'Pfizer', '2020-07-10', 7, 'C', NULL, 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'D', NULL, 'Iraq', 1),
+(16, 9, 'M.', '2020-12-12', 12, 'D', NULL, 'Iraq', 2),
+(14, 6, 'Janssen', '2020-12-12', 6, 'E', NULL, 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'F', NULL, 'Syria', 1),
+(19, 2, 'PB', '2020-12-12', 8, 'F', NULL, 'Syria', 2),
+(7, 2, 'Moderna', '2020-12-12', 9, 'F', NULL, 'Morocco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'G', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'G', NULL, 'Algeria', 2),
+(1, 9, 'AstraZeneca', '2020-12-12', 13, 'H', NULL, 'Tunisia', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'H', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'H', 'BC', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
 
