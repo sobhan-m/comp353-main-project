@@ -194,18 +194,18 @@ DROP TABLE InfectionHistory;
 */
 
 CREATE TABLE HealthWorker(
-workerID INT AUTO_INCREMENT,
-id INT,
+pID INT,
+ssn INT,
 employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee"),
-PRIMARY KEY (workerID),
-FOREIGN KEY (id) REFERENCES Person(id)
+PRIMARY KEY (pID),
+FOREIGN KEY (pID) REFERENCES Person(id)
 );
 
-INSERT INTO HealthWorker(id, employeeType)
-VALUES(1,'Manager'),(2, 'Nurse'), (3, 'Security'), (4, 'Secretary'),(5, 'Regular Employee'),
-(6, 'Nurse'), (7, 'Security'),(8, 'Regular Employee'),(9, 'Nurse'),(10, 'Security'),(21, 'Regular Employee'), 
-(22, 'Manager'),(23, 'Manager'),(24, 'Manager'),(25, 'Manager'),(26, 'Manager'),(27, 'Manager'),(28, 'Manager'),
-(29, 'Manager'),(30, 'Manager');
+INSERT INTO HealthWorker(id, ssn, employeeType)
+VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
+(6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
+(22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
+(29, 120, 'Manager'),(30, 121, 'Manager');
 
 SELECT * FROM HealthWorker;
 
