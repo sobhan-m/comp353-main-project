@@ -257,7 +257,7 @@ DROP TABLE PublicHealthFacilities;
 CREATE TABLE InfectionTypes(
 	name VARCHAR(100),
 	PRIMARY KEY (name)
-)
+);
 
 INSERT INTO InfectionTypes(name) 
 VALUES ("Alpha"),
