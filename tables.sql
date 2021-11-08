@@ -175,7 +175,8 @@ personID INT,
 infectionDate DATE,
 type varchar(100),
 PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id)
+FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (type) REFERENCES InfectionTypes(name)
 );
 
 INSERT INTO InfectionHistory(personID, infectionDate, type)
