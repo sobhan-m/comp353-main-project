@@ -214,7 +214,7 @@ DROP TABLE HealthWorker;
 
 /*
 ====================================================================
- Health Worker
+ PublicHealthFacilities
 ====================================================================
 */
 
@@ -249,9 +249,10 @@ VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITA
 SELECT * FROM PublicHealthFacilities;
 
 DROP TABLE PublicHealthFacilities;
+
 /*
 ====================================================================
- Assignments
+ InfectionTypes
 ====================================================================
 */
 
@@ -267,8 +268,9 @@ VALUES ("Alpha"),
 ("Delta"),
 ("Mu");
 
+SELECT * FROM InfectionTypes;
 
-DROP TABLE IF EXISTS PublicHealthFacilities;
+DROP TABLE IF EXISTS InfectionTypes;
 
 /*
 ====================================================================
