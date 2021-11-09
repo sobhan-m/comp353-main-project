@@ -28,7 +28,19 @@
  Query 5
 ====================================================================
 */
+INSERT INTO InfectionTypes(name)
+VALUES("Charlie");
 
+DELETE FROM InfectionTypes
+WHERE name = "Alpha";
+
+UPDATE InfectionTypes
+SET name = "Quebec"
+WHERE name = "Mu";
+
+SELECT InfectionTypes.name AS "Infection type"
+FROM InfectionTypes
+WHERE name = "Beta";
 /*
 ====================================================================
  Query 6
