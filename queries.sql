@@ -28,8 +28,12 @@
  Query 5
 ====================================================================
 */
+SELECT * FROM InfectionTypes;
+
 INSERT INTO InfectionTypes(name)
-VALUES("Charlie");
+VALUES("Charlie") 
+ON DUPLICATE KEY UPDATE name = "Charlie";
+
 
 DELETE FROM InfectionTypes
 WHERE name = "Alpha";
@@ -38,7 +42,7 @@ UPDATE InfectionTypes
 SET name = "Quebec"
 WHERE name = "Mu";
 
-SELECT InfectionTypes.name AS "Infection type"
+SELECT *
 FROM InfectionTypes
 WHERE name = "Beta";
 /*
@@ -46,7 +50,19 @@ WHERE name = "Beta";
  Query 6
 ====================================================================
 */
+INSERT INTO AgeGroup(groupDescription)
+VALUES("0-4");
 
+DELETE FROM AgeGroup
+WHERE groupDescription = "80+";
+
+UPDATE AgeGroup
+SET groupDescription = "0-4"
+WHERE groupDescription = "80+";
+
+SELECT *
+FROM AgeGroup
+WHERE groupDescription = "80+";
 /*
 ====================================================================
  Query 7
