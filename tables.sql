@@ -2,6 +2,56 @@ CREATE DATABASE Project;
 USE Project;
 DROP DATABASE Project;
 
+
+/*
+====================================================================
+ ApprovedVaccinations
+====================================================================
+*/
+
+CREATE TABLE ApprovedVaccinations(
+vaccinationName VARCHAR(100),
+dateOfApproval DATE,
+vaccinationType ENUM("SAFE","SUSPENDED"),
+dateOfSuspension DATE,
+PRIMARY KEY (vaccinationName)
+);
+
+INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
+ VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
+ ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL),
+ ('AZ', '2020-07-28', 'SAFE', NULL), ('PB', '2020-03-10', 'SAFE', NULL),
+ ('Astra', '2020-04-28', 'SUSPENDED', '2020-10-18'),('Pfiz', '2020-05-29', 'SUSPENDED', '2020-08-29'),
+ ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
+ ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
+ 
+ SELECT * FROM ApprovedVaccinations;
+ 
+ DROP TABLE ApprovedVaccinations;
+ 
+/*
+====================================================================
+ InfectionTypes
+====================================================================
+*/
+
+CREATE TABLE InfectionTypes(
+	name VARCHAR(100),
+	PRIMARY KEY (name)
+);
+
+INSERT INTO InfectionTypes(name) 
+VALUES ("Alpha"),
+("Beta"),
+("Gamma"),
+("Delta"),
+("Mu");
+
+SELECT * FROM InfectionTypes;
+
+DROP TABLE IF EXISTS InfectionTypes;
+
+
 /*
 ====================================================================
  Person
@@ -221,7 +271,7 @@ DROP TABLE HealthWorker;
 CREATE TABLE PublicHealthFacilities(
 name VARCHAR(100),
 address VARCHAR(100),
-province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
+province VARCHAR(2),
 country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
@@ -249,28 +299,6 @@ VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITA
 SELECT * FROM PublicHealthFacilities;
 
 DROP TABLE PublicHealthFacilities;
-
-/*
-====================================================================
- InfectionTypes
-====================================================================
-*/
-
-CREATE TABLE InfectionTypes(
-	name VARCHAR(100),
-	PRIMARY KEY (name)
-);
-
-INSERT INTO InfectionTypes(name) 
-VALUES ("Alpha"),
-("Beta"),
-("Gamma"),
-("Delta"),
-("Mu");
-
-SELECT * FROM InfectionTypes;
-
-DROP TABLE IF EXISTS InfectionTypes;
 
 /*
 ====================================================================
@@ -316,31 +344,6 @@ DROP TABLE Assignments;
 
 /*
 ====================================================================
- ApprovedVaccinations
-====================================================================
-*/
-
-CREATE TABLE ApprovedVaccinations(
-vaccinationName VARCHAR(100),
-dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED"),
-dateOfSuspension DATE,
-PRIMARY KEY (vaccinationName)
-);
-
-INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
- VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
- ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL),
- ('AZ', '2020-07-28', 'SAFE', NULL), ('PB', '2020-03-10', 'SAFE', NULL),
- ('Astra', '2020-04-28', 'SUSPENDED', '2020-10-18'),('Pfiz', '2020-05-29', 'SUSPENDED', '2020-08-29'),
- ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
- ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
- 
- SELECT * FROM ApprovedVaccinations;
- 
- DROP TABLE ApprovedVaccinations;
-/*
-====================================================================
  Vaccinations
 ====================================================================
 */
@@ -352,7 +355,7 @@ vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
-province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
+province VARCHAR(2),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
@@ -445,22 +448,25 @@ DROP TABLE WorkerSchedule;
 ====================================================================
 */
 CREATE TABLE Province(
-name VARCHAR(100),
+name VARCHAR(2), 
 ageGroup int, 
 PRIMARY KEY(name),
 FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
 
 INSERT INTO Province(name, ageGroup)
-VALUES('Quebec', NULL),
-('Ontario', NULL),
-('Nova Scotia', NULL),
-('Manitoba', NULL),
-('New Brunswick', NULL),
-('Prince Edward Island', NULL),
-('Saskatchewan', NULL),
-('Alberta', NULL),
-('Newfoundland and Labrador', NULL),
-('British Columbia', NULL);
+VALUES('NL', NULL),
+('PE', NULL),
+('NS', NULL),
+('NB', NULL),
+('QC', NULL),
+('ON', NULL),
+('MB', NULL),
+('SK', NULL),
+('AB', NULL),
+('YT', NULL),
+('NT', NULL),
+('NU', NULL),
+('BC', NULL);
 
 /*
 ====================================================================

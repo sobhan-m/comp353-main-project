@@ -160,21 +160,21 @@ WHERE groupDescription = "80+";
 */
 -- Creating.
 INSERT INTO Province(name, ageGroup)
-VALUES('prv', NULL);
+VALUES('pr', NULL);
 
 -- Editing.
 UPDATE Province
-SET name = 'prv_updated', ageGroup=NULL
-WHERE name = 'prv';
+SET name = 'pq', ageGroup=NULL
+WHERE name = 'pr';
 
 -- Displaying.
 SELECT *
 FROM Province
-WHERE name = 'prv_updated';
+WHERE name = 'pq';
 
 -- Deleting.
 DELETE FROM Province
-WHERE name = 'prv_updated';
+WHERE name = 'pq';
 
 /*
 ====================================================================
