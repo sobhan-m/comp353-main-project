@@ -158,18 +158,56 @@ WHERE groupDescription = "80+";
  Query 7
 ====================================================================
 */
+-- Creating.
+INSERT INTO Province(name, ageGroup)
+VALUES('prv', NULL);
+
+-- Editing.
+UPDATE Province
+SET name = 'prv_updated', ageGroup=NULL
+WHERE name = 'prv';
+
+-- Displaying.
+SELECT *
+FROM Province
+WHERE name = 'prv_updated';
+
+-- Deleting.
+DELETE FROM Province
+WHERE name = 'prv_updated';
 
 /*
 ====================================================================
  Query 8
 ====================================================================
 */
+-- Editing.
+UPDATE Province
+SET name = 'Quebec', ageGroup=2
+WHERE name = 'Quebec';
 
 /*
 ====================================================================
  Query 9
 ====================================================================
 */
+-- Creating.
+INSERT INTO Appointments(date, time, pID, facilityName)
+VALUES("2020-8-7" , "11:25:22" , 2, "C");
+
+-- Editing.
+UPDATE Appointments
+SET date="2020-8-7" , time="11:25:22", pID=3, facilityName="D"
+WHERE date="2020-8-7" AND time="11:25:22";
+
+-- Displaying.
+SELECT *
+FROM Appointments
+WHERE date="2020-8-7" AND time="11:25:22";
+
+-- Deleting.
+DELETE FROM Appointments
+WHERE date="2020-8-7" AND time="11:25:22";
 
 /*
 ====================================================================
@@ -177,11 +215,35 @@ WHERE groupDescription = "80+";
 ====================================================================
 */
 
+-- Creating.
+INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
+VALUES(2, 'C', '2017-1-20', NULL, 20);
+
+-- Editing.
+UPDATE Assignments
+SET pID=2, facilityName='C', startDate='2016-11-20', endDate=NULL, hourlyWage=38
+WHERE pID=2 AND facilityName='C' AND startDate='2017-1-20';
+
+-- Displaying.
+SELECT *
+FROM Assignments
+WHERE pID=2 AND facilityName='C' AND startDate='2016-11-20';
+
+-- Deleting.
+DELETE FROM Assignments
+WHERE pID=2 AND facilityName='C' AND startDate='2016-11-20';
+
 /*
 ====================================================================
  Query 11
 ====================================================================
 */
+-- $facilityName, $startTime, $endTime
+SELECT *
+FROM Appointments A
+INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
+INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
+WHERE SUBSTRING(DAYNAME('2016-11-20'), 1, 3) LIKE FS.days;
 
 /*
 ====================================================================

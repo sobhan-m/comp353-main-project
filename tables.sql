@@ -202,7 +202,7 @@ PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Person(id)
 );
 
-INSERT INTO HealthWorker(id, ssn, employeeType)
+INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
 (6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
 (22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
@@ -447,7 +447,8 @@ DROP TABLE WorkerSchedule;
 CREATE TABLE Province(
 name VARCHAR(100),
 ageGroup int, 
-FOREIGN KEY (ageGroup) REFERENCES GroupAge(groupID));
+PRIMARY KEY(name),
+FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
 
 INSERT INTO Province(name, ageGroup)
 VALUES('Quebec', NULL),
