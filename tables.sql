@@ -460,3 +460,22 @@ VALUES('Quebec', NULL),
 ('Alberta', NULL),
 ('Newfoundland and Labrador', NULL),
 ('British Columbia', NULL);
+
+/*
+====================================================================
+Appointments
+====================================================================
+*/
+
+CREATE TABLE Appointments(
+date date,
+time time,
+pID int,
+facilityName varchar(100),
+PRIMARY KEY(date, time),
+FOREIGN KEY (pID) REFERENCES Person(id),
+FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+);
+
+INSERT INTO Appointments(date, time, pID, facilityName)
+VALUES("2021-12-25" , "12:00:00" , 9, "A");
