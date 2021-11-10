@@ -153,6 +153,7 @@ WHERE groupDescription = "80+";
 SELECT *
 FROM AgeGroup
 WHERE groupDescription = "80+";
+
 /*
 ====================================================================
  Query 7
@@ -183,8 +184,10 @@ WHERE name = 'pq';
 */
 -- Editing.
 UPDATE Province
-SET name = 'Quebec', ageGroup=2
-WHERE name = 'Quebec';
+SET name = 'QC', ageGroup=2
+WHERE name = 'QC';
+
+SELECT * FROM Province;
 
 /*
 ====================================================================

@@ -1,7 +1,6 @@
+DROP DATABASE Project;
 CREATE DATABASE Project;
 USE Project;
-DROP DATABASE Project;
-
 
 /*
 ====================================================================
@@ -27,7 +26,7 @@ INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationTyp
  
  SELECT * FROM ApprovedVaccinations;
  
- DROP TABLE ApprovedVaccinations;
+ -- -- DROP TABLE ApprovedVaccinations;
  
 /*
 ====================================================================
@@ -49,7 +48,7 @@ VALUES ("Alpha"),
 
 SELECT * FROM InfectionTypes;
 
-DROP TABLE IF EXISTS InfectionTypes;
+-- -- DROP TABLE IF EXISTS InfectionTypes;
 
 /*
 ====================================================================
@@ -76,7 +75,8 @@ VALUES ("80+"),
 
 SELECT * FROM AgeGroup;
 
-DROP TABLE AgeGroup;
+
+-- -- DROP TABLE AgeGroup;
 
 /*
 ====================================================================
@@ -93,7 +93,7 @@ dateOfBirth DATE,
 telephoneNumber INT,
 address VARCHAR(100),
 city VARCHAR(100),
-province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
+province VARCHAR(100),
 postalCode VARCHAR(6),
 citizenship VARCHAR(100),
 emailAddress VARCHAR(100),
@@ -154,7 +154,7 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 #("0-4"); 10
 SELECT * FROM Person;
 
-DROP TABLE Person;
+-- -- DROP TABLE Person;
 
 /*
 ====================================================================
@@ -193,7 +193,7 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (30, '1991-12-02', '2041-12-02');
 
 
-DROP TABLE Registered;
+-- -- DROP TABLE Registered;
 
 /*
 ====================================================================
@@ -213,7 +213,8 @@ VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
 
 SELECT * FROM Unregistered;
 
-DROP TABLE Unregistered;
+
+-- DROP TABLE Unregistered;
 
 /*
 ====================================================================
@@ -236,9 +237,9 @@ VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Ga
 
 SELECT * FROM InfectionHistory;
 
-DELETE FROM InfectionHistory;
+-- DELETE FROM InfectionHistory;
 
-DROP TABLE InfectionHistory;
+-- DROP TABLE InfectionHistory;
 /*
 ====================================================================
  Health Worker
@@ -261,7 +262,32 @@ VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secr
 
 SELECT * FROM HealthWorker;
 
-DROP TABLE HealthWorker;
+-- DROP TABLE HealthWorker;
+/*
+====================================================================
+ Province
+====================================================================
+*/
+CREATE TABLE Province(
+name VARCHAR(100), 
+ageGroup int, 
+PRIMARY KEY(name),
+FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+
+INSERT INTO Province(name, ageGroup)
+VALUES('NL', NULL),
+('PE', NULL),
+('NS', NULL),
+('NB', NULL),
+('QC', NULL),
+('ON', NULL),
+('MB', NULL),
+('SK', NULL),
+('AB', NULL),
+('YT', NULL),
+('NT', NULL),
+('NU', NULL),
+('BC', NULL);
 
 /*
 ====================================================================
@@ -272,7 +298,7 @@ DROP TABLE HealthWorker;
 CREATE TABLE PublicHealthFacilities(
 name VARCHAR(100),
 address VARCHAR(100),
-province VARCHAR(2),
+province VARCHAR(100),
 country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
@@ -287,19 +313,19 @@ PRIMARY KEY (name)
 
 INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
 VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
-('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 11),
-('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 12),
-('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 13),
-('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 14),
-('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 15),
-('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 16),
-('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 17),
-('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 18),
-('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 19);
+('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 22),
+('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 29),
+('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 23),
+('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 24),
+('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 25),
+('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 26),
+('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 27),
+('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 28),
+('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29);
 
 SELECT * FROM PublicHealthFacilities;
 
-DROP TABLE PublicHealthFacilities;
+-- DROP TABLE PublicHealthFacilities;
 
 /*
 ====================================================================
@@ -331,17 +357,19 @@ VALUES(1, 'A', '2019-12-12', NULL, 11),
 (8, 'H', '2020-07-12', '2020-12-12', 18),
 (9, 'I', '2020-06-11', '2020-11-11', 19),
 (10, 'J', '2020-09-02', '2020-02-02', 20),
-(11, 'B', '2019-12-12', NULL, 21),
-(12, 'C', '2020-01-01', NULL, 22),
-(13, 'D', '2020-05-13', NULL, 23),
-(14, 'E', '2020-04-25', NULL, 24),
-(15, 'F', '2021-01-01', NULL, 25),
-(16, 'G', '2020-10-10', NULL, 26),
-(17, 'H', '2020-03-23', NULL, 27),
-(18, 'I', '2020-07-12', NULL, 28),
-(19, 'J', '2020-06-11', NULL, 29);
+(21, 'B', '2019-12-12', NULL, 21),
+(22, 'C', '2020-01-01', NULL, 22),
+(23, 'D', '2020-05-13', NULL, 23),
+(24, 'E', '2020-04-25', NULL, 24),
+(25, 'F', '2021-01-01', NULL, 25),
+(26, 'G', '2020-10-10', NULL, 26),
+(27, 'H', '2020-03-23', NULL, 27),
+(28, 'I', '2020-07-12', NULL, 28),
+(29, 'J', '2020-06-11', NULL, 29);
 
-DROP TABLE Assignments;
+
+SELECT * FROM Assignments;
+-- DROP TABLE Assignments;
 
 /*
 ====================================================================
@@ -356,7 +384,7 @@ vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
-province VARCHAR(2),
+province VARCHAR(100),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
@@ -366,28 +394,37 @@ FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
 FOREIGN KEY (province) REFERENCES Province(name)
 );
 
+SELECT * FROM Assignments;
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'A', 'QC', 'Canada', 1),
-(12, 6, 'AstraZeneca', '2020-08-12', 10, 'B', NULL, 'United States', 1),
-(12, 6, 'AstraZeneca', '2020-12-12', 10, 'B', NULL, 'United States', 2),
-(22, 9, 'Pfizer', '2020-07-10', 7, 'C', NULL, 'Iran', 1),
-(16, 9, 'M.', '2020-11-12', 12, 'D', NULL, 'Iraq', 1),
-(16, 9, 'M.', '2020-12-12', 12, 'D', NULL, 'Iraq', 2),
-(14, 6, 'Janssen', '2020-12-12', 6, 'E', NULL, 'Lebanon', 1),
-(19, 2, 'PB', '2020-11-12', 8, 'F', NULL, 'Syria', 1),
-(19, 2, 'PB', '2020-12-12', 8, 'F', NULL, 'Syria', 2),
-(7, 2, 'Moderna', '2020-12-12', 9, 'F', NULL, 'Morocco', 1),
-(4, 2, 'AZ', '2020-11-12', 11, 'G', NULL, 'Algeria', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'G', NULL, 'Algeria', 2),
-(1, 9, 'AstraZeneca', '2020-12-12', 13, 'H', NULL, 'Tunisia', 1),
-(2, 9, 'AstraZeneca', '2020-11-12', 14, 'H', 'QC', 'Canada', 1),
-(2, 9, 'AstraZeneca', '2020-12-12', 14, 'H', 'BC', 'Canada', 2);
+VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'F', NULL, 'United States', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'F', NULL, 'United States', 2),
+(22, 9, 'Pfizer', '2020-07-10', 7, 'I', NULL, 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'I', NULL, 'Iraq', 1),
+(16, 9, 'M.', '2020-12-12', 12, 'I', NULL, 'Iraq', 2),
+(14, 6, 'Janssen', '2020-12-12', 6, 'F', NULL, 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'B', NULL, 'Syria', 1),
+(19, 2, 'PB', '2020-12-12', 8, 'B', NULL, 'Syria', 2),
+(7, 2, 'Moderna', '2020-12-12', 9, 'B', NULL, 'Morocco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'B', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'B', NULL, 'Algeria', 2),
+(1, 9, 'AstraZeneca', '2020-12-12', 13, 'I', NULL, 'Tunisia', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2);
+-- In Assignments table, workerID and facilityName didn't match in the previous version. Updated all values inserted to Vaccinations
 
 SELECT * FROM Vaccinations;
 
-DELETE FROM Vaccinations;
 
-DROP TABLE Vaccinations;
+-- DELETE FROM Vaccinations;
+
+-- DROP TABLE Vaccinations;
+
+/*
+====================================================================
+ FacilitySchedule
+====================================================================
+*/
 
 CREATE TABLE FacilitySchedule(
 name VARCHAR(100),
@@ -411,11 +448,15 @@ VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 
 SELECT * FROM FacilitySchedule;
 
-DELETE FROM FacilitySchedule;
+-- DELETE FROM FacilitySchedule;
 
-DROP TABLE FacilitySchedule;
+-- DROP TABLE FacilitySchedule;
 
-
+/*
+====================================================================
+ WorkerSchedule
+====================================================================
+*/
 CREATE TABLE WorkerSchedule(
 workerID INT,
 facilityName VARCHAR(100),
@@ -440,34 +481,9 @@ VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
 
 SELECT * FROM WorkerSchedule;
 
-DELETE FROM WorkerSchedule;
+-- DELETE FROM WorkerSchedule;
 
-DROP TABLE WorkerSchedule;
-/*
-====================================================================
- Province
-====================================================================
-*/
-CREATE TABLE Province(
-name VARCHAR(2), 
-ageGroup int, 
-PRIMARY KEY(name),
-FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
-
-INSERT INTO Province(name, ageGroup)
-VALUES('NL', NULL),
-('PE', NULL),
-('NS', NULL),
-('NB', NULL),
-('QC', NULL),
-('ON', NULL),
-('MB', NULL),
-('SK', NULL),
-('AB', NULL),
-('YT', NULL),
-('NT', NULL),
-('NU', NULL),
-('BC', NULL);
+-- DROP TABLE WorkerSchedule;
 
 /*
 ====================================================================
