@@ -51,6 +51,32 @@ SELECT * FROM InfectionTypes;
 
 DROP TABLE IF EXISTS InfectionTypes;
 
+/*
+====================================================================
+ Age Group
+====================================================================
+*/
+
+CREATE TABLE AgeGroup(
+groupID int AUTO_INCREMENT,
+groupDescription VARCHAR(20),
+PRIMARY KEY (groupID));
+
+INSERT INTO AgeGroup (groupDescription)
+VALUES ("80+"), 
+("70-79"), 
+("60-69"), 
+("50-59"), 
+("40-49"), 
+("30-39"), 
+("18-29"), 
+("12-17"), 
+("5-11"), 
+("0-4");
+
+SELECT * FROM AgeGroup;
+
+DROP TABLE AgeGroup;
 
 /*
 ====================================================================
@@ -188,32 +214,7 @@ VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
 SELECT * FROM Unregistered;
 
 DROP TABLE Unregistered;
-/*
-====================================================================
- Age Group
-====================================================================
-*/
 
-CREATE TABLE AgeGroup(
-groupID int AUTO_INCREMENT,
-groupDescription VARCHAR(20),
-PRIMARY KEY (groupID));
-
-INSERT INTO AgeGroup (groupDescription)
-VALUES ("80+"), 
-("70-79"), 
-("60-69"), 
-("50-59"), 
-("40-49"), 
-("30-39"), 
-("18-29"), 
-("12-17"), 
-("5-11"), 
-("0-4");
-
-SELECT * FROM AgeGroup;
-
-DROP TABLE AgeGroup;
 /*
 ====================================================================
  Infection History
