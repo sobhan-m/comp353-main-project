@@ -4,59 +4,6 @@ USE Project;
 
 /*
 ====================================================================
- ApprovedVaccinations
-====================================================================
-*/
-
-DROP TABLE IF EXISTS ApprovedVaccinations;
-
-CREATE TABLE ApprovedVaccinations(
-vaccinationName VARCHAR(100),
-dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED"),
-dateOfSuspension DATE,
-PRIMARY KEY (vaccinationName)
-);
-
-SELECT * FROM ApprovedVaccinations;
-
-DELETE FROM ApprovedVaccinations;
-
-INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
- VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
- ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL),
- ('AZ', '2020-07-28', 'SAFE', NULL), ('PB', '2020-03-10', 'SAFE', NULL),
- ('Astra', '2020-04-28', 'SUSPENDED', '2020-10-18'),('Pfiz', '2020-05-29', 'SUSPENDED', '2020-08-29'),
- ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
- ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
- 
- 
-/*
-====================================================================
- InfectionTypes
-====================================================================
-*/
-
-DROP TABLE IF EXISTS InfectionTypes;
-
-CREATE TABLE InfectionTypes(
-	name VARCHAR(100),
-	PRIMARY KEY (name)
-);
-
-SELECT * FROM InfectionTypes;
-
-DELETE FROM InfectionTypes;
-
-INSERT INTO InfectionTypes(name) 
-VALUES ("Alpha"),
-("Beta"),
-("Gamma"),
-("Delta"),
-("Mu");
-
-/*
-====================================================================
  Age Group
 ====================================================================
 */
@@ -83,6 +30,67 @@ VALUES ("80+"),
 ("12-17"), 
 ("5-11"), 
 ("0-4");
+
+/*
+====================================================================
+ ApprovedVaccinations
+====================================================================
+*/
+
+DROP TABLE IF EXISTS ApprovedVaccinations;
+
+CREATE TABLE ApprovedVaccinations(
+vaccinationName VARCHAR(100),
+dateOfApproval DATE,
+vaccinationType ENUM("SAFE","SUSPENDED"),
+dateOfSuspension DATE,
+PRIMARY KEY (vaccinationName)
+);
+
+SELECT * FROM ApprovedVaccinations;
+
+DELETE FROM ApprovedVaccinations;
+
+INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
+ VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
+ ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL),
+ ('AZ', '2020-07-28', 'SAFE', NULL), ('PB', '2020-03-10', 'SAFE', NULL),
+ ('Astra', '2020-04-28', 'SUSPENDED', '2020-10-18'),('Pfiz', '2020-05-29', 'SUSPENDED', '2020-08-29'),
+ ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
+ ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
+ 
+ /*
+====================================================================
+ Province
+====================================================================
+*/
+
+DROP TABLE IF EXISTS Province;
+
+CREATE TABLE Province(
+name VARCHAR(100), 
+ageGroup int, 
+PRIMARY KEY(name),
+FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+
+SELECT * FROM Province;
+
+DELETE FROM Province;
+
+INSERT INTO Province(name, ageGroup)
+VALUES('NL', NULL),
+('PE', NULL),
+('NS', NULL),
+('NB', NULL),
+('QC', NULL),
+('ON', NULL),
+('MB', NULL),
+('SK', NULL),
+('AB', NULL),
+('YT', NULL),
+('NT', NULL),
+('NU', NULL),
+('BC', NULL);
 
 /*
 ====================================================================
@@ -148,7 +156,7 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 
 /*
 ====================================================================
- Registered Person
+ Registered
 ====================================================================
 */
 
@@ -213,31 +221,6 @@ VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
 
 /*
 ====================================================================
- Infection History
-====================================================================
-*/
-
-DROP TABLE IF EXISTS InfectionHistory;
-
-CREATE TABLE InfectionHistory(
-personID INT,
-infectionDate DATE,
-type varchar(100),
-PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id),
-FOREIGN KEY (type) REFERENCES InfectionTypes(name)
-);
-
-SELECT * FROM InfectionHistory;
-
-DELETE FROM InfectionHistory;
-
-INSERT INTO InfectionHistory(personID, infectionDate, type)
-VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
-(5, '2020-05-05', "Beta"),(11, '2020-04-04', "Beta"),(13, '2020-03-03', "Alpha"),(1, '2020-02-02', "Alpha"),(3, '2020-01-01', "Delta"), (3, '2021-01-01', "MU"), (2, '2021-01-01', "Delta"), (2, '2021-03-01', "Delta"), (4, '2021-01-01', "Delta"), (12, '2021-01-01', "Delta");
-
-/*
-====================================================================
  Health Worker
 ====================================================================
 */
@@ -264,36 +247,52 @@ VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secr
 
 /*
 ====================================================================
- Province
+ InfectionTypes
 ====================================================================
 */
 
-DROP TABLE IF EXISTS Province;
+DROP TABLE IF EXISTS InfectionTypes;
 
-CREATE TABLE Province(
-name VARCHAR(100), 
-ageGroup int, 
-PRIMARY KEY(name),
-FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+CREATE TABLE InfectionTypes(
+	name VARCHAR(100),
+	PRIMARY KEY (name)
+);
 
-SELECT * FROM Province;
+SELECT * FROM InfectionTypes;
 
-DELETE FROM Province;
+DELETE FROM InfectionTypes;
 
-INSERT INTO Province(name, ageGroup)
-VALUES('NL', NULL),
-('PE', NULL),
-('NS', NULL),
-('NB', NULL),
-('QC', NULL),
-('ON', NULL),
-('MB', NULL),
-('SK', NULL),
-('AB', NULL),
-('YT', NULL),
-('NT', NULL),
-('NU', NULL),
-('BC', NULL);
+INSERT INTO InfectionTypes(name) 
+VALUES ("Alpha"),
+("Beta"),
+("Gamma"),
+("Delta"),
+("Mu");
+
+/*
+====================================================================
+ Infection History
+====================================================================
+*/
+
+DROP TABLE IF EXISTS InfectionHistory;
+
+CREATE TABLE InfectionHistory(
+personID INT,
+infectionDate DATE,
+type varchar(100),
+PRIMARY KEY (personID, infectionDate),
+FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (type) REFERENCES InfectionTypes(name)
+);
+
+SELECT * FROM InfectionHistory;
+
+DELETE FROM InfectionHistory;
+
+INSERT INTO InfectionHistory(personID, infectionDate, type)
+VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
+(5, '2020-05-05', "Beta"),(11, '2020-04-04', "Beta"),(13, '2020-03-03', "Alpha"),(1, '2020-02-02', "Alpha"),(3, '2020-01-01', "Delta"), (3, '2021-01-01', "MU"), (2, '2021-01-01', "Delta"), (2, '2021-03-01', "Delta"), (4, '2021-01-01', "Delta"), (12, '2021-01-01', "Delta");
 
 /*
 ====================================================================
