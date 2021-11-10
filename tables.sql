@@ -75,6 +75,7 @@ VALUES ("80+"),
 
 SELECT * FROM AgeGroup;
 
+
 -- -- DROP TABLE AgeGroup;
 
 /*
@@ -212,8 +213,8 @@ VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
 
 SELECT * FROM Unregistered;
 
--- DROP TABLE Unregistered;
 
+-- DROP TABLE Unregistered;
 
 /*
 ====================================================================
