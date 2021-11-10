@@ -1,4 +1,4 @@
-DROP DATABASE Project;
+DROP DATABASE IF EXISTS Project;
 CREATE DATABASE Project;
 USE Project;
 
@@ -8,6 +8,8 @@ USE Project;
 ====================================================================
 */
 
+DROP TABLE IF EXISTS ApprovedVaccinations;
+
 CREATE TABLE ApprovedVaccinations(
 vaccinationName VARCHAR(100),
 dateOfApproval DATE,
@@ -15,6 +17,10 @@ vaccinationType ENUM("SAFE","SUSPENDED"),
 dateOfSuspension DATE,
 PRIMARY KEY (vaccinationName)
 );
+
+SELECT * FROM ApprovedVaccinations;
+
+DELETE FROM ApprovedVaccinations;
 
 INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
  VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
@@ -24,9 +30,6 @@ INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationTyp
  ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
  ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
  
- SELECT * FROM ApprovedVaccinations;
- 
- -- -- DROP TABLE ApprovedVaccinations;
  
 /*
 ====================================================================
@@ -34,10 +37,16 @@ INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationTyp
 ====================================================================
 */
 
+DROP TABLE IF EXISTS InfectionTypes;
+
 CREATE TABLE InfectionTypes(
 	name VARCHAR(100),
 	PRIMARY KEY (name)
 );
+
+SELECT * FROM InfectionTypes;
+
+DELETE FROM InfectionTypes;
 
 INSERT INTO InfectionTypes(name) 
 VALUES ("Alpha"),
@@ -46,20 +55,22 @@ VALUES ("Alpha"),
 ("Delta"),
 ("Mu");
 
-SELECT * FROM InfectionTypes;
-
--- -- DROP TABLE IF EXISTS InfectionTypes;
-
 /*
 ====================================================================
  Age Group
 ====================================================================
 */
 
+DROP TABLE IF EXISTS AgeGroup;
+
 CREATE TABLE AgeGroup(
 groupID int AUTO_INCREMENT,
 groupDescription VARCHAR(20),
 PRIMARY KEY (groupID));
+
+SELECT * FROM AgeGroup;
+
+DELETE FROM AgeGroup;
 
 INSERT INTO AgeGroup (groupDescription)
 VALUES ("80+"), 
@@ -73,16 +84,13 @@ VALUES ("80+"),
 ("5-11"), 
 ("0-4");
 
-SELECT * FROM AgeGroup;
-
-
--- -- DROP TABLE AgeGroup;
-
 /*
 ====================================================================
  Person
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Person;
 
 CREATE TABLE Person(
 id INT AUTO_INCREMENT,
@@ -101,16 +109,11 @@ ageGroupID INT,
 PRIMARY KEY(id),
 FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
 );
-#("80+"), 1
-#("70-79"), 2 
-#("60-69"), 3
-#("50-59"), 4
-#("40-49"), 5
-#("30-39"), 6
-#("18-29"), 7
-#("12-17"), 8
-#("5-11"), 9
-#("0-4"); 10
+
+SELECT * FROM Person;
+
+DELETE FROM Person;
+
 INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
 VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6),
 ("Mark", "B", "Julius", '1987-10-23', 111111, '200 Maisonneuve Street', 'Almaty', 'NB', 'B1B1B1', 'Kazakhastanian', 'mark.julius@gmail.com', 5),
@@ -142,25 +145,14 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 ("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com', 7),
 ("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com', 3),
 ("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com', 6);
-#("80+"), 1
-#("70-79"), 2 
-#("60-69"), 3
-#("50-59"), 4
-#("40-49"), 5
-#("30-39"), 6
-#("18-29"), 7
-#("12-17"), 8
-#("5-11"), 9
-#("0-4"); 10
-SELECT * FROM Person;
-
--- -- DROP TABLE Person;
 
 /*
 ====================================================================
  Registered Person
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Registered;
 
 CREATE TABLE Registered(
 id INT,
@@ -170,6 +162,11 @@ medicareExpiryDate DATE,
 PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
 );
+
+SELECT * FROM Registered;
+
+DELETE FROM Registered;
+
 INSERT INTO Registered (id, medicareIssueDate, medicareExpiryDate)
 VALUES(1, '1990-01-01','2040-01-01'),
 (2,'1987-10-23', '2037-10-23'),
@@ -192,14 +189,13 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (29, '1954-10-28', '2025-10-28'),
 (30, '1991-12-02', '2041-12-02');
 
-
--- -- DROP TABLE Registered;
-
 /*
 ====================================================================
  Unregistered Person
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Unregistered;
 
 CREATE TABLE Unregistered(
 id INT,
@@ -208,19 +204,20 @@ PRIMARY KEY (passportNum),
 FOREIGN KEY (id) REFERENCES Person(id)
 );
 
-INSERT INTO Unregistered(id)
-VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
-
 SELECT * FROM Unregistered;
 
+DELETE FROM Unregistered;
 
--- DROP TABLE Unregistered;
+INSERT INTO Unregistered(id)
+VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
 
 /*
 ====================================================================
  Infection History
 ====================================================================
 */
+
+DROP TABLE IF EXISTS InfectionHistory;
 
 CREATE TABLE InfectionHistory(
 personID INT,
@@ -231,20 +228,21 @@ FOREIGN KEY (personID) REFERENCES Person(id),
 FOREIGN KEY (type) REFERENCES InfectionTypes(name)
 );
 
+SELECT * FROM InfectionHistory;
+
+DELETE FROM InfectionHistory;
+
 INSERT INTO InfectionHistory(personID, infectionDate, type)
 VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
 (5, '2020-05-05', "Beta"),(11, '2020-04-04', "Beta"),(13, '2020-03-03', "Alpha"),(1, '2020-02-02', "Alpha"),(3, '2020-01-01', "Delta"), (3, '2021-01-01', "MU"), (2, '2021-01-01', "Delta"), (2, '2021-03-01', "Delta"), (4, '2021-01-01', "Delta"), (12, '2021-01-01', "Delta");
 
-SELECT * FROM InfectionHistory;
-
--- DELETE FROM InfectionHistory;
-
--- DROP TABLE InfectionHistory;
 /*
 ====================================================================
  Health Worker
 ====================================================================
 */
+
+DROP TABLE IF EXISTS HealthWorker;
 
 CREATE TABLE HealthWorker(
 pID INT,
@@ -254,25 +252,33 @@ PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Person(id)
 );
 
+SELECT * FROM HealthWorker;
+
+DELETE FROM HealthWorker;
+
 INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
 (6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
 (22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
 (29, 120, 'Manager'),(30, 121, 'Manager');
 
-SELECT * FROM HealthWorker;
-
--- DROP TABLE HealthWorker;
 /*
 ====================================================================
  Province
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Province;
+
 CREATE TABLE Province(
 name VARCHAR(100), 
 ageGroup int, 
 PRIMARY KEY(name),
 FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+
+SELECT * FROM Province;
+
+DELETE FROM Province;
 
 INSERT INTO Province(name, ageGroup)
 VALUES('NL', NULL),
@@ -295,6 +301,8 @@ VALUES('NL', NULL),
 ====================================================================
 */
 
+DROP TABLE IF EXISTS PublicHealthFacilities;
+
 CREATE TABLE PublicHealthFacilities(
 name VARCHAR(100),
 address VARCHAR(100),
@@ -311,6 +319,10 @@ FOREIGN KEY (province) REFERENCES Province(name),
 PRIMARY KEY (name)
 );
 
+SELECT * FROM PublicHealthFacilities;
+
+DELETE FROM PublicHealthFacilities;
+
 INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
 VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
 ('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 22),
@@ -323,15 +335,13 @@ VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITA
 ('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 28),
 ('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29);
 
-SELECT * FROM PublicHealthFacilities;
-
--- DROP TABLE PublicHealthFacilities;
-
 /*
 ====================================================================
  Assignments
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Assignments;
 
 CREATE TABLE Assignments(
 pID INT,
@@ -345,6 +355,10 @@ PRIMARY KEY (pID, facilityName, startDate),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
+
+SELECT * FROM Assignments;
+
+DELETE FROM Assignments;
 
 INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
 VALUES(1, 'A', '2019-12-12', NULL, 11),
@@ -367,15 +381,13 @@ VALUES(1, 'A', '2019-12-12', NULL, 11),
 (28, 'I', '2020-07-12', NULL, 28),
 (29, 'J', '2020-06-11', NULL, 29);
 
-
-SELECT * FROM Assignments;
--- DROP TABLE Assignments;
-
 /*
 ====================================================================
  Vaccinations
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Vaccinations;
 
 CREATE TABLE Vaccinations(
 id INT,
@@ -394,7 +406,10 @@ FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
 FOREIGN KEY (province) REFERENCES Province(name)
 );
 
-SELECT * FROM Assignments;
+SELECT * FROM Vaccinations;
+
+DELETE FROM Vaccinations;
+
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (12, 6, 'AstraZeneca', '2020-08-12', 10, 'F', NULL, 'United States', 1),
@@ -411,20 +426,14 @@ VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (1, 9, 'AstraZeneca', '2020-12-12', 13, 'I', NULL, 'Tunisia', 1),
 (2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
 (2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2);
--- In Assignments table, workerID and facilityName didn't match in the previous version. Updated all values inserted to Vaccinations
-
-SELECT * FROM Vaccinations;
-
-
--- DELETE FROM Vaccinations;
-
--- DROP TABLE Vaccinations;
 
 /*
 ====================================================================
  FacilitySchedule
 ====================================================================
 */
+
+DROP TABLE IF EXISTS FacilitySchedule;
 
 CREATE TABLE FacilitySchedule(
 name VARCHAR(100),
@@ -433,6 +442,10 @@ openingHour TIME,
 closingHour TIME,
 PRIMARY KEY (name)
 );
+
+SELECT * FROM FacilitySchedule;
+
+DELETE FROM FacilitySchedule;
 
 INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
 VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
@@ -446,17 +459,14 @@ VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 ("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 ("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
 
-SELECT * FROM FacilitySchedule;
-
--- DELETE FROM FacilitySchedule;
-
--- DROP TABLE FacilitySchedule;
-
 /*
 ====================================================================
  WorkerSchedule
 ====================================================================
 */
+
+DROP TABLE IF EXISTS WorkerSchedule;
+
 CREATE TABLE WorkerSchedule(
 workerID INT,
 facilityName VARCHAR(100),
@@ -466,6 +476,10 @@ endingHour TIME,
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
 );
+
+SELECT * FROM WorkerSchedule;
+
+DELETE FROM WorkerSchedule;
 
 INSERT INTO WorkerSchedule(workerID, facilityName, days, startingHour, endingHour)
 VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
@@ -479,17 +493,13 @@ VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
 (9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
 (10, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
 
-SELECT * FROM WorkerSchedule;
-
--- DELETE FROM WorkerSchedule;
-
--- DROP TABLE WorkerSchedule;
-
 /*
 ====================================================================
 Appointments
 ====================================================================
 */
+
+DROP TABLE IF EXISTS Appointments;
 
 CREATE TABLE Appointments(
 date date,
@@ -500,6 +510,10 @@ PRIMARY KEY(date, time),
 FOREIGN KEY (pID) REFERENCES Person(id),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
+
+SELECT * FROM Appointments;
+
+DELETE FROM Appointments;
 
 INSERT INTO Appointments(date, time, pID, facilityName)
 VALUES("2021-12-25" , "12:00:00" , 9, "A");
