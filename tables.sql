@@ -115,7 +115,8 @@ citizenship VARCHAR(100),
 emailAddress VARCHAR(100),
 ageGroupID INT,
 PRIMARY KEY(id),
-FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
+FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID),
+FOREIGN KEY (province) REFERENCES Province(name)
 );
 
 SELECT * FROM Person;
@@ -232,7 +233,7 @@ pID INT,
 ssn INT,
 employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee"),
 PRIMARY KEY (pID),
-FOREIGN KEY (pID) REFERENCES Person(id)
+FOREIGN KEY (pID) REFERENCES Registered(id)
 );
 
 SELECT * FROM HealthWorker;
@@ -435,7 +436,7 @@ VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 DROP TABLE IF EXISTS FacilitySchedule;
 
 CREATE TABLE FacilitySchedule(
-name VARCHAR(100),
+name VARCHAR(100), -- This is the facility name.
 days VARCHAR(1000),
 openingHour TIME,
 closingHour TIME,
