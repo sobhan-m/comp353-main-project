@@ -13,3 +13,4 @@
 - ApprovedVaccinations(<ins>vaccinationName</ins>, dateOfApproval, vaccinationType, dateOfSuspension)
 - Vaccinations(<ins>id</ins>, healthWorkerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, location, province, country, doseNumber)
 - Province(<ins>name</ins>, ageGroup)
+- Appointments(pID, <ins>date</ins>, <ins>time</ins>, facilityName)
