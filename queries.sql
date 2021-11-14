@@ -246,7 +246,7 @@ SELECT *
 FROM Appointments A
 INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
 INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE SUBSTRING(DAYNAME('2016-11-20'), 1, 3) LIKE FS.days;
+WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
 
 /*
 ====================================================================
