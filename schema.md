@@ -11,7 +11,7 @@
 
 - Unregistered(id, <ins>passportNum</ins>)
 
-- HealthWorker(<ins>id</ins>, ssn, employeeType)
+- HealthWorker(<ins>pID</ins>, ssn, employeeType)
 
 - InfectionTypes(<ins>name</ins>)
 
@@ -19,12 +19,12 @@
 
 - PublicHealthFacilities(<ins>name</ins>, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
 
-- Assignments(<ins>pID</ins>, <ins>startDate</ins>, workerID, hourlyWage <ins>facilityName</ins>, endDate)
+- Assignments(<ins>pID</ins>, <ins>facilityName</ins>, <ins>startDate</ins>, endDate, workerID, hourlyWage)
 
-- Vaccinations(<ins>id</ins>, healthWorkerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, location, province, country, doseNumber)
+- Vaccinations(<ins>id</ins>, workerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, facilityName, province, country, doseNumber)
 
 - FacilitySchedule(<ins>name</ins>, days, openingHour, closingHour)
 
-- WorkerSchedule(<ins>workerID</ins>, <ins>facilityName</ins>, day, startingHour, endingHour)
+- WorkerSchedule(<ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour)
 
-- Appointments(pID, <ins>date</ins>, <ins>time</ins>, facilityName)
+- Appointments(<ins>date</ins>, <ins>time</ins>, pID, facilityName)
