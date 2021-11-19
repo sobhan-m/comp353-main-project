@@ -305,6 +305,21 @@ ORDER BY vaccinationCount DESC;
 ====================================================================
 */
 
+SELECT phf.name, phf.address, phf.facilityType, phf.phoneNumber, phf.capacity, workerQuery.workerCount, doseQuery.doseCount, futureDoseQuery.futureDoseCount
+FROM PublicHealthFacilities phf 
+	LEFT JOIN (SELECT facilityName, COUNT(DISTINCT workerID) workerCount
+				FROM Assignments
+				GROUP BY facilityName) workerQuery ON phf.name = workerQuery.facilityName
+	LEFT JOIN (SELECT facilityName, COUNT(*) doseCount
+				FROM Vaccinations
+				GROUP BY facilityName) doseQuery ON phf.name = doseQuery.facilityName
+	LEFT JOIN (SELECT facilityName, COUNT(*) futureDoseCount
+				FROM Appointments
+				WHERE pID IS NOT NULL
+				GROUP BY facilityName) futureDoseQuery ON phf.name = futureDoseQuery.facilityName
+-- Modify schema to add facility city. WHERE phf.city = "Montreal"
+ORDER BY doseQuery.doseCount ASC;
+
 /*
 ====================================================================
  Query 20
