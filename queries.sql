@@ -325,3 +325,19 @@ ORDER BY doseQuery.doseCount ASC;
  Query 20
 ====================================================================
 */
+
+-- The appointment information.
+SELECT a.date, a.time, a.facilityName, phf.address
+FROM Appointments a INNER JOIN PublicHealthFacilities phf ON a.facilityName  = phf.name
+	INNER JOIN Person p ON a.pID = p.id
+WHERE p.firstName = "John" AND p.middleInitial = "A" AND p.lastName = "Smith";
+
+-- The vaccination information.
+SELECT v.vaccinationName, v.vaccinationDate, v.lotNumber, v.facilityName, v.doseNumber
+FROM Vaccinations v INNER JOIN Person p ON v.id = p.id
+WHERE p.firstName = "John" AND p.middleInitial = "A" AND p.lastName = "Smith";
+
+-- The infection information.
+SELECT ih.infectionDate, ih.type
+FROM InfectionHistory ih INNER JOIN Person p ON ih.personID = p.id
+WHERE p.firstName = "John" AND p.middleInitial = "A" AND p.lastName = "Smith";
