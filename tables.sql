@@ -115,6 +115,7 @@ citizenship VARCHAR(100),
 emailAddress VARCHAR(100),
 ageGroupID INT,
 PRIMARY KEY(id),
+UNIQUE (firstName, middleInitial, lastName),
 FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID),
 FOREIGN KEY (province) REFERENCES Province(name)
 );
