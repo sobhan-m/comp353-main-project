@@ -290,6 +290,15 @@ WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
 ====================================================================
 */
 
+SELECT p.firstName, p.middleInitial, p.lastName, p.telephoneNumber, countQuery.vaccinationCount
+FROM HealthWorker hw INNER JOIN Person p ON hw.pID = p.id
+	INNER JOIN Assignments a ON hw.pID = a.pID
+    INNER JOIN (SELECT workerID, facilityName, COUNT(*) vaccinationCount
+				FROM Vaccinations
+				GROUP BY workerID, facilityName) countQuery ON a.workerID = countQuery.workerID AND a.facilityName = countQuery.facilityName
+WHERE hw.employeeType = "Nurse" AND vaccinationCount >= 20
+ORDER BY vaccinationCount DESC;
+
 /*
 ====================================================================
  Query 19
