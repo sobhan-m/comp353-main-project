@@ -25,6 +25,6 @@
 
 - FacilitySchedule(<ins>name</ins>, days, openingHour, closingHour)
 
-- WorkerSchedule(<ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour)
+- WorkerSchedule( pID, <ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour)
 
 - Appointments(<ins>date</ins>, <ins>time</ins>, pID, facilityName)
