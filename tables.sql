@@ -469,12 +469,14 @@ VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 DROP TABLE IF EXISTS WorkerSchedule;
 
 CREATE TABLE WorkerSchedule(
+pID int,
 workerID INT,
 facilityName VARCHAR(100),
 days VARCHAR(1000),
 startingHour TIME,
 endingHour TIME,
 PRIMARY KEY (workerID, facilityName),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
 );
 

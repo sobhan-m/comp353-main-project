@@ -260,6 +260,15 @@ WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
 ====================================================================
 */
 
+SELECT A.workerID, P.firstName, P.lastName, P.emailAddress, A.hourlyWage
+FROM Assignments A INNER JOIN Person P ON A.pID = P.id
+	INNER JOIN HealthWorker HW ON HW.pID = P.id
+    INNER JOIN WorkerSchedule WS ON WS.pID = HW.pID
+WHERE HW.employeeType = "Nurse" 
+AND A.startDate = NULL
+AND A.facilityName = "A"
+ORDER BY hourlyWage;
+
 /*
 ====================================================================
  Query 14
