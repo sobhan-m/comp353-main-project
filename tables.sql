@@ -154,7 +154,8 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 ("Jean-Francois","A", "Vo", '1983-11-10', 776666, '1113 Fillion Street', 'Shiraz', 'MB', 'C2C2C2', 'Iranian', 'jeanfrancois.vo@gmail.com', 6),
 ("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com', 7),
 ("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com', 3),
-("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com', 6);
+("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com', 6),
+("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com', 5);
 
 /*
 ====================================================================
@@ -197,7 +198,8 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (27, '1983-11-10', '2033-11-10'),
 (28, '1997-01-01', '2047-01-01'),
 (29, '1954-10-28', '2025-10-28'),
-(30, '1991-12-02', '2041-12-02');
+(30, '1991-12-02', '2041-12-02'),
+(31, '1991-12-03', '2041-12-03');
 
 /*
 ====================================================================
@@ -245,7 +247,7 @@ INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
 (6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
 (22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
-(29, 120, 'Manager'),(30, 121, 'Manager');
+(29, 120, 'Manager'),(30, 121, 'Nurse'),(31, 122, 'Nurse');
 
 /*
 ====================================================================
@@ -334,7 +336,8 @@ VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITA
 ('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 26),
 ('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 27),
 ('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 28),
-('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29);
+('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29),
+('K', '12 Christine street', 'ON', 'Canada',  51412346,'www.k.com', 'HOSPITAL', 'RESERVATION-ONLY', 1, 28);
 
 /*
 ====================================================================
@@ -380,7 +383,9 @@ VALUES(1, 'A', '2019-12-12', NULL, 11),
 (26, 'G', '2020-10-10', NULL, 26),
 (27, 'H', '2020-03-23', NULL, 27),
 (28, 'I', '2020-07-12', NULL, 28),
-(29, 'J', '2020-06-11', NULL, 29);
+(29, 'J', '2020-06-11', NULL, 29),
+(30, 'K', '0001-12-12', NULL, 30),
+(31, 'K', '0001-12-12', NULL, 33);
 
 /*
 ====================================================================
@@ -458,7 +463,8 @@ VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 ("G","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 ("H","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
 ("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
+("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
+("K","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
 
 /*
 ====================================================================
@@ -477,24 +483,26 @@ startingHour TIME,
 endingHour TIME,
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
-FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
+FOREIGN KEY (pID) REFERENCES Assignments (pID),
+FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
 
 SELECT * FROM WorkerSchedule;
 
 DELETE FROM WorkerSchedule;
 
-INSERT INTO WorkerSchedule(workerID, facilityName, days, startingHour, endingHour)
-VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
-(2, 'B', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
-(3, 'C', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(4, 'D', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(5, 'E', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(6, 'F', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(7, 'G', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(8, 'H', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(10, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
+INSERT INTO WorkerSchedule(pID, workerID, facilityName, days, startingHour, endingHour)
+VALUES (1, 1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(2, 2, 'B', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
+(3, 3, 'C', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(4, 4, 'D', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(5, 5, 'E', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(6, 6, 'F', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(7, 7, 'G', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(8, 8, 'H', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(9, 9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(30, 20, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
+(31, 21, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
 
 /*
 ====================================================================

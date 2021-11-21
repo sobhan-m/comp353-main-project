@@ -254,6 +254,8 @@ WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
 ====================================================================
 */
 
+
+
 /*
 ====================================================================
  Query 13
@@ -261,12 +263,12 @@ WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
 */
 
 SELECT A.workerID, P.firstName, P.lastName, P.emailAddress, A.hourlyWage
-FROM Assignments A INNER JOIN Person P ON A.pID = P.id
-	INNER JOIN HealthWorker HW ON HW.pID = P.id
+FROM Person P INNER JOIN Assignments A ON P.id = A.pID
+	INNER JOIN HealthWorker HW ON HW.pID = A.pID
     INNER JOIN WorkerSchedule WS ON WS.pID = HW.pID
 WHERE HW.employeeType = "Nurse" 
-AND A.startDate = NULL
-AND A.facilityName = "A"
+AND YEAR(A.startDate) = 0001
+AND A.facilityName = "K"
 ORDER BY hourlyWage;
 
 /*
