@@ -286,6 +286,10 @@ ORDER BY hourlyWage;
  Query 16
 ====================================================================
 */
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
+FROM Person p, Vaccinations v
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
+
 SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country'
 FROM Person, Appointments a, PublicHealthFacilities phf
 WHERE Person.id = a.pID AND firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND phf.name = a.facilityName
@@ -300,7 +304,12 @@ VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
  Query 17
 ====================================================================
 */
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
+FROM Person p, Vaccinations v
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
 
+INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
 /*
 ====================================================================
  Query 18
