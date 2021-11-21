@@ -17,7 +17,7 @@ PRIMARY KEY (groupID));
 
 SELECT * FROM AgeGroup;
 
-DELETE FROM AgeGroup;
+-- DELETE FROM AgeGroup;
 
 INSERT INTO AgeGroup (groupDescription)
 VALUES ("80+"), 
@@ -49,7 +49,7 @@ PRIMARY KEY (vaccinationName)
 
 SELECT * FROM ApprovedVaccinations;
 
-DELETE FROM ApprovedVaccinations;
+-- DELETE FROM ApprovedVaccinations;
 
 INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
  VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
@@ -75,7 +75,7 @@ FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
 
 SELECT * FROM Province;
 
-DELETE FROM Province;
+-- DELETE FROM Province;
 
 INSERT INTO Province(name, ageGroup)
 VALUES('NL', NULL),
@@ -122,7 +122,7 @@ FOREIGN KEY (province) REFERENCES Province(name)
 
 SELECT * FROM Person;
 
-DELETE FROM Person;
+-- DELETE FROM Person;
 
 INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
 VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6),
@@ -175,7 +175,7 @@ FOREIGN KEY (id) REFERENCES Person(id)
 
 SELECT * FROM Registered;
 
-DELETE FROM Registered;
+-- DELETE FROM Registered;
 
 INSERT INTO Registered (id, medicareIssueDate, medicareExpiryDate)
 VALUES(1, '1990-01-01','2040-01-01'),
@@ -216,7 +216,7 @@ FOREIGN KEY (id) REFERENCES Person(id)
 
 SELECT * FROM Unregistered;
 
-DELETE FROM Unregistered;
+-- DELETE FROM Unregistered;
 
 INSERT INTO Unregistered(id)
 VALUES (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
@@ -239,7 +239,7 @@ FOREIGN KEY (pID) REFERENCES Registered(id)
 
 SELECT * FROM HealthWorker;
 
-DELETE FROM HealthWorker;
+-- DELETE FROM HealthWorker;
 
 INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
@@ -262,7 +262,7 @@ CREATE TABLE InfectionTypes(
 
 SELECT * FROM InfectionTypes;
 
-DELETE FROM InfectionTypes;
+-- DELETE FROM InfectionTypes;
 
 INSERT INTO InfectionTypes(name) 
 VALUES ("Alpha"),
@@ -290,7 +290,7 @@ FOREIGN KEY (type) REFERENCES InfectionTypes(name)
 
 SELECT * FROM InfectionHistory;
 
-DELETE FROM InfectionHistory;
+-- DELETE FROM InfectionHistory;
 
 INSERT INTO InfectionHistory(personID, infectionDate, type)
 VALUES(6,'2020-10-10', "Alpha"),(16,'2020-09-09', "Beta"),(19, '2020-08-08', "Gamma"),(8, '2020-07-07', "MU"),(9, '2020-06-06', "MU"),
@@ -323,7 +323,7 @@ PRIMARY KEY (name)
 
 SELECT * FROM PublicHealthFacilities;
 
-DELETE FROM PublicHealthFacilities;
+-- DELETE FROM PublicHealthFacilities;
 
 INSERT INTO PublicHealthFacilities(name, address, city, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
 VALUES('A', '1 Elephant street', 'Montreal', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
@@ -360,7 +360,7 @@ FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 
 SELECT * FROM Assignments;
 
-DELETE FROM Assignments;
+-- DELETE FROM Assignments;
 
 INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
 VALUES(1, 'A', '2019-12-12', NULL, 11),
@@ -410,7 +410,7 @@ FOREIGN KEY (province) REFERENCES Province(name)
 
 SELECT * FROM Vaccinations;
 
-DELETE FROM Vaccinations;
+-- DELETE FROM Vaccinations;
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
@@ -442,12 +442,13 @@ name VARCHAR(100), -- This is the facility name.
 days VARCHAR(1000),
 openingHour TIME,
 closingHour TIME,
-PRIMARY KEY (name)
+PRIMARY KEY (name),
+FOREIGN KEY (name) REFERENCES PublicHealthFacilities(name)
 );
 
 SELECT * FROM FacilitySchedule;
 
-DELETE FROM FacilitySchedule;
+-- DELETE FROM FacilitySchedule;
 
 INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
 VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
@@ -483,7 +484,7 @@ FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityN
 
 SELECT * FROM WorkerSchedule;
 
-DELETE FROM WorkerSchedule;
+-- DELETE FROM WorkerSchedule;
 
 INSERT INTO WorkerSchedule(workerID, facilityName, days, startingHour, endingHour)
 VALUES (1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
@@ -517,7 +518,7 @@ FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 
 SELECT * FROM Appointments;
 
-DELETE FROM Appointments;
+-- DELETE FROM Appointments;
 
 INSERT INTO Appointments(date, time, pID, facilityName)
 VALUES("2021-12-25" , "12:00:00" , 9, "A"),
