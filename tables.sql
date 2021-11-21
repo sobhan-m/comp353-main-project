@@ -307,6 +307,7 @@ DROP TABLE IF EXISTS PublicHealthFacilities;
 CREATE TABLE PublicHealthFacilities(
 name VARCHAR(100),
 address VARCHAR(100),
+city VARCHAR(100),
 province VARCHAR(100),
 country VARCHAR(100),
 phoneNumber INT,
@@ -324,17 +325,17 @@ SELECT * FROM PublicHealthFacilities;
 
 DELETE FROM PublicHealthFacilities;
 
-INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
-VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
-('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 22),
-('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 29),
-('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 23),
-('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 24),
-('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 25),
-('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 26),
-('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 27),
-('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 28),
-('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29);
+INSERT INTO PublicHealthFacilities(name, address, city, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
+VALUES('A', '1 Elephant street', 'Montreal', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 'RESERVATION-ONLY', 5000, 1),
+('B', '2 Mouse street', 'Laval', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 'WALKIN-ALLOWED', 500, 22),
+('C', '3 Cat street', 'Montreal', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 50, 29),
+('D', '4 Dog street', 'Vancouver', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 'RESERVATION-ONLY', 6000, 23),
+('E', '5 Bird street', 'Vancouver', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 'WALKIN-ALLOWED', 600, 24),
+('F', '6 Snake street', 'Calgary', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 60, 25),
+('G', '7 Spider street', 'Ottawa', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 'RESERVATION-ONLY', 7000, 26),
+('H', '8 Kangoroo street', 'Toronto', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 'WALKIN-ALLOWED', 700, 27),
+('I', '9 Ant street', 'Vancouver', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 'RESERVATION-ONLY', 70, 28),
+('J', '10 Rabbit street', 'Quebec City', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 'RESERVATION-ONLY', 8000, 29);
 
 /*
 ====================================================================

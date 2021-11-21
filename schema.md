@@ -17,7 +17,7 @@
 
 - InfectionHistory(<ins>personID</ins>, <ins>infectionDate</ins>, type)
 
-- PublicHealthFacilities(<ins>name</ins>, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
+- PublicHealthFacilities(<ins>name</ins>, address, city, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
 
 - Assignments(<ins>pID</ins>, <ins>facilityName</ins>, <ins>startDate</ins>, endDate, workerID, hourlyWage)
 

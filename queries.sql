@@ -334,7 +334,7 @@ FROM PublicHealthFacilities phf
 				FROM Appointments
 				WHERE pID IS NOT NULL
 				GROUP BY facilityName) futureDoseQuery ON phf.name = futureDoseQuery.facilityName
--- Modify schema to add facility city. WHERE phf.city = "Montreal"
+WHERE phf.city = "Montreal"
 ORDER BY doseQuery.doseCount ASC;
 
 /*
