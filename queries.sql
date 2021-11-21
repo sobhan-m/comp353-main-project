@@ -299,32 +299,17 @@ AND HW.employeeType="Nurse");
 ====================================================================
  Query 15
 ====================================================================
-For a given facility and on a given date, display the schedule for the facility.
-The schedule includes all nurses’ name assigned to the facility and schedule
-for each nurse, all other public health workers name, duty (such as secretary,
-security, etc.), and schedule for each worker. Also, the schedule for people
-who have appointments to be vaccinated on that date.
 */
-SELECT  FW.facilityDays, FW.openingHour, FW.closingHour,
-		FW.workerDays, FW.startingHour, FW.endingHour, FW.employeeType, FW.facilityName,
-        V.vaccinationDate AS "dateToGetVaccinated", FW.workerFirstName, FW.workerMiddleName, FW.workerLastName
-FROM Person P2 LEFT JOIN Vaccinations V ON V.id=P2.id 
-LEFT JOIN (
-SELECT P.firstName AS "workerFirstName", P.middleInitial AS "workerMiddleName", P.lastName AS "workerLastName",  FS.days AS "facilityDays", FS.openingHour, FS.closingHour,
-		WS.days AS "workerDays", WS.startingHour, WS.endingHour, HW.employeeType, PHF.name AS "facilityName", P.id
-FROM PublicHealthFacilities PHF
-INNER JOIN FacilitySchedule FS
-INNER JOIN Assignments A  INNER JOIN HealthWorker HW 
-INNER JOIN Registered R INNER JOIN Person P 
-INNER JOIN WorkerSchedule WS 
-	ON A.facilityName= PHF.name AND A.pID=HW.pID 
-    AND HW.pID=R.id AND R.id=P.id 
-    AND WS.pID=HW.pID AND FS.name=PHF.name) AS FW -- Facility and worker info
-ON P2.id=FW.id
-WHERE FW.facilityName = "B" AND V.vaccinationDate="2020-12-12";
 
+SELECT PHF.name, P.firstName, P.middleInitial, P.lastName, HW.employeeType, WS.days, WS.startingHour, WS.endingHour
+FROM Person P INNER JOIN HealthWorker HW ON P.id = HW.pID
+	INNER JOIN WorkerSchedule WS ON  HW.pID = WS.pID
+    INNER JOIN PublicHealthFacilities PHF ON WS.facilityName = PHF.name
+WHERE PHF.name = 'A' AND POSITION(DAYNAME('2020-04-01') IN WS.days);
 
-
+SELECT A.facilityName, A.date, A.time, P.firstName, P.middleInitial, P.lastName
+FROM Appointments A INNER JOIN Person P ON A.pID = P.id
+	WHERE A.facilityName = 'A' AND A.date = '2021-12-25';
 
 /*
 ====================================================================
