@@ -277,17 +277,58 @@ ORDER BY hourlyWage;
 ====================================================================
 */
 
+SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity, FS.days, FS.openingHour, FS.closingHour
+FROM FacilitySchedule FS 
+INNER JOIN PublicHealthFacilities PHF ON FS.name=PHF.name
+WHERE PHF.name NOT IN (
+	SELECT PHF.name
+	FROM  Assignments A
+	INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
+	INNER JOIN FacilitySchedule FS ON FS.name=PHF.name
+	INNER JOIN HealthWorker HW ON HW.pID=A.pID 
+		WHERE HW.employeeType="Nurse" AND A.startDate <= '2020-04-01' AND A.endDate>'2020-04-01');
+										
+
 /*
 ====================================================================
  Query 15
 ====================================================================
+For a given facility and on a given date, display the schedule for the facility.
+The schedule includes all nurses’ name assigned to the facility and schedule
+for each nurse, all other public health workers name, duty (such as secretary,
+security, etc.), and schedule for each worker. Also, the schedule for people
+who have appointments to be vaccinated on that date.
 */
+SELECT  FW.facilityDays, FW.openingHour, FW.closingHour,
+		FW.workerDays, FW.startingHour, FW.endingHour, FW.employeeType, FW.facilityName,
+        V.vaccinationDate AS "dateToGetVaccinated", FW.workerFirstName, FW.workerMiddleName, FW.workerLastName
+FROM Person P2 LEFT JOIN Vaccinations V ON V.id=P2.id 
+LEFT JOIN (
+SELECT P.firstName AS "workerFirstName", P.middleInitial AS "workerMiddleName", P.lastName AS "workerLastName",  FS.days AS "facilityDays", FS.openingHour, FS.closingHour,
+		WS.days AS "workerDays", WS.startingHour, WS.endingHour, HW.employeeType, PHF.name AS "facilityName", P.id
+FROM PublicHealthFacilities PHF
+INNER JOIN FacilitySchedule FS
+INNER JOIN Assignments A  INNER JOIN HealthWorker HW 
+INNER JOIN Registered R INNER JOIN Person P 
+INNER JOIN WorkerSchedule WS 
+	ON A.facilityName= PHF.name AND A.pID=HW.pID 
+    AND HW.pID=R.id AND R.id=P.id 
+    AND WS.pID=HW.pID AND FS.name=PHF.name) AS FW -- Facility and worker info
+ON P2.id=FW.id
+WHERE FW.facilityName = "B" AND V.vaccinationDate="2020-12-12";
+
+
+
 
 /*
 ====================================================================
  Query 16
 ====================================================================
 */
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
+FROM Person p, Vaccinations v
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
+
 SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country'
 FROM Person, Appointments a, PublicHealthFacilities phf
 WHERE Person.id = a.pID AND firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND phf.name = a.facilityName
@@ -302,7 +343,12 @@ VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
  Query 17
 ====================================================================
 */
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
+FROM Person p, Vaccinations v
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
 
+INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
 /*
 ====================================================================
  Query 18
@@ -336,7 +382,7 @@ FROM PublicHealthFacilities phf
 				FROM Appointments
 				WHERE pID IS NOT NULL
 				GROUP BY facilityName) futureDoseQuery ON phf.name = futureDoseQuery.facilityName
--- Modify schema to add facility city. WHERE phf.city = "Montreal"
+WHERE phf.city = "Montreal"
 ORDER BY doseQuery.doseCount ASC;
 
 /*
