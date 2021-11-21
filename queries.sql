@@ -246,7 +246,15 @@ SELECT *
 FROM Appointments A
 INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
 INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01";
+WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+AND pID IS NOT NULL;
+
+SELECT *
+FROM Appointments A
+INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
+INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
+WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+AND pID IS NULL;
 
 /*
 ====================================================================
@@ -325,13 +333,13 @@ WHERE FW.facilityName = "B" AND V.vaccinationDate="2020-12-12";
  Query 16
 ====================================================================
 */
-SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
-FROM Person p, Vaccinations v
-WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
-
-SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country'
-FROM Person, Appointments a, PublicHealthFacilities phf
-WHERE Person.id = a.pID AND firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND phf.name = a.facilityName
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber)
+FROM Person
+ INNER JOIN  Appointments a ON Person.id = a.pID
+ INNER JOIN PublicHealthFacilities phf ON phf.name = a.facilityName 
+ LEFT JOIN Vaccinations v ON Person.id = v.id
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith"
+GROUP BY Person.id
 ORDER BY Person.id;
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
@@ -344,8 +352,9 @@ VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
 ====================================================================
 */
 SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
-FROM Person p, Vaccinations v
-WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith" AND p.id = v.id;
+FROM Person p
+INNER JOIN Vaccinations v ON p.id = v.id
+WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith";
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
