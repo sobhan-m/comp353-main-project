@@ -285,17 +285,15 @@ ORDER BY hourlyWage;
 ====================================================================
 */
 
-SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity, FS.days, FS.openingHour, FS.closingHour
-FROM FacilitySchedule FS 
-INNER JOIN PublicHealthFacilities PHF ON FS.name=PHF.name
+SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity
+FROM PublicHealthFacilities PHF
 WHERE PHF.name NOT IN (
-	SELECT PHF.name
-	FROM  Assignments A
-	INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
-	INNER JOIN FacilitySchedule FS ON FS.name=PHF.name
-	INNER JOIN HealthWorker HW ON HW.pID=A.pID 
-		WHERE HW.employeeType="Nurse" AND A.startDate <= '2020-04-01' AND A.endDate>'2020-04-01');
-										
+SELECT PHF.name
+	FROM PublicHealthFacilities PHF
+	INNER JOIN WorkerSchedule WS ON WS.facilityName=PHF.name
+	INNER JOIN HealthWorker HW ON HW.pID=WS.pID
+WHERE POSITION(DAYNAME('2020-04-01') IN WS.days)
+AND HW.employeeType="Nurse");
 
 /*
 ====================================================================

@@ -495,17 +495,18 @@ SELECT * FROM WorkerSchedule;
 DELETE FROM WorkerSchedule;
 
 INSERT INTO WorkerSchedule(pID, workerID, facilityName, days, startingHour, endingHour)
-VALUES (1, 1, 'A', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
-(2, 2, 'B', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00" ),
-(3, 3, 'C', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(4, 4, 'D', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(5, 5, 'E', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(6, 6, 'F', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(7, 7, 'G', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(8, 8, 'H', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(9, 9, 'I', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(30, 20, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00"),
-(31, 21, 'J', "MON-TUE-WED-THU-FRI","07:00:00","21:00:00");
+VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
+(1, 1, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
+(2, 2, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
+(3, 3, 'C', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(4, 4, 'D', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(5, 5, 'E', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(6, 6, 'F', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(7, 7, 'G', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(8, 8, 'H', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(9, 9, 'I', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(30, 20, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(31, 21, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
 
 /*
 ====================================================================
