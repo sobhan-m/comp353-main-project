@@ -1,11 +1,13 @@
 # Relational Schema
-- AgeGroup(<ins>groupID</ins>, groupDescription)
+- AgeGroup(<ins>groupID</ins>, minAge, maxAge)
 
 - ApprovedVaccinations(<ins>vaccinationName</ins>, dateOfApproval, vaccinationType, dateOfSuspension)
 
 - Province(<ins>name</ins>, ageGroup)
 
-- Person(<ins>id</ins>, firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) <!-- dateOfBirth determines ageGroupID so split this into another table AgeAssignment(id, ageGroupID) -->
+- Person(<ins>id</ins>, firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress)
+
+- PersonAgeGroup(<ins>id</ins>, ageGroupID)
 
 - Registered(id, <ins>medicareCardNum</ins>, medicareIssueDate, medicareExpiryDate)
 
