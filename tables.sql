@@ -11,10 +11,11 @@ USE Project;
 DROP TABLE IF EXISTS AgeGroup;
 
 CREATE TABLE AgeGroup(
-groupID int AUTO_INCREMENT,
+groupID int,
 minAge int,
-maxAge int CHECK (maxAge > minAge),
-PRIMARY KEY (groupID));
+maxAge int,
+PRIMARY KEY (groupID),
+CHECK (maxAge > minAge));
 
 SELECT * FROM AgeGroup;
 
@@ -81,19 +82,19 @@ SELECT * FROM Province;
 DELETE FROM Province;
 
 INSERT INTO Province(name, ageGroup)
-VALUES('NL', 0),
-('PE', 0),
-('NS', 0),
-('NB', 0),
-('QC', 0),
-('ON', 0),
-('MB', 0),
-('SK', 0),
-('AB', 0),
-('YT', 0),
-('NT', 0),
-('NU', 0),
-('BC', 0);
+VALUES('NL', 10),
+('PE', 10),
+('NS', 10),
+('NB', 10),
+('QC', 10),
+('ON', 10),
+('MB', 10),
+('SK', 10),
+('AB', 10),
+('YT', 10),
+('NT', 10),
+('NU', 10),
+('BC', 10);
 
 /*
 ====================================================================
@@ -167,8 +168,8 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 DROP TABLE IF EXISTS PersonAgeGroup;
 
 CREATE TABLE PersonAgeGroup(
-	id,
-	ageGroupID,
+	id INT,
+	ageGroupID INT,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id) REFERENCES Person(id),
 	FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
@@ -442,7 +443,7 @@ SELECT * FROM Vaccinations;
 DELETE FROM Vaccinations;
 
 DELIMITER $$
-CREATE TRIGGER NursesMustBeVaccinated
+CREATE TRIGGER NursesMustBeVaccinated_INSERT
 AFTER INSERT ON Vaccinations
 FOR EACH ROW
 BEGIN
@@ -456,6 +457,84 @@ FROM Assignments
 				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID)) THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
 	END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER NursesMustBeVaccinated_UPDATE
+AFTER UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT workerID, facilityName
+FROM Assignments
+	INNER JOIN (
+			SELECT a.pID
+			FROM Vaccinations v
+				INNER JOIN Assignments a ON v.workerID = a.workerID AND v.facilityName = a.facilityName
+			WHERE a.pID IN (SELECT id FROM Vaccinations)
+				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID)) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
+	END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER ValidateAgeGroup_Insert
+AFTER INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF NEW.province IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge) < (SELECT ageGroup FROM Province WHERE name = NEW.province) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- If the person is a nurse.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse") THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- Otherwise reject changes.
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
+    END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER ValidateAgeGroup_Update
+AFTER UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF NEW.province IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge) < (SELECT ageGroup FROM Province WHERE name = NEW.province) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- If the person is a nurse.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse") THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- Otherwise reject changes.
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
+    END IF;
 END $$
 DELIMITER ;
 
