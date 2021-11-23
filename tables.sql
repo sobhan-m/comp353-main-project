@@ -418,8 +418,31 @@ SELECT * FROM Vaccinations;
 
 DELETE FROM Vaccinations;
 
+DELIMITER $$
+CREATE TRIGGER NursesMustBeVaccinated
+AFTER INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT workerID, facilityName
+FROM Assignments
+	INNER JOIN (
+			SELECT a.pID
+			FROM Vaccinations v
+				INNER JOIN Assignments a ON v.workerID = a.workerID AND v.facilityName = a.facilityName
+			WHERE a.pID IN (SELECT id FROM Vaccinations)
+				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID)) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
+	END IF;
+END $$
+DELIMITER ;
+
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
+VALUES
+(6, NULL, 'Pfizer', '2020-11-12', 14, "I", 'QC', 'Canada', 1),
+(9, NULL, 'Pfizer', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2),
+(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (12, 6, 'AstraZeneca', '2020-08-12', 10, 'F', NULL, 'United States', 1),
 (12, 6, 'AstraZeneca', '2020-12-12', 10, 'F', NULL, 'United States', 2),
 (22, 9, 'Pfizer', '2020-07-10', 7, 'I', NULL, 'Iran', 1),
@@ -429,11 +452,9 @@ VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (19, 2, 'PB', '2020-11-12', 8, 'B', NULL, 'Syria', 1),
 (19, 2, 'PB', '2020-12-12', 8, 'B', NULL, 'Syria', 2),
 (7, 2, 'Moderna', '2020-12-12', 9, 'B', NULL, 'Morocco', 1),
-(4, 2, 'AZ', '2020-11-12', 11, 'B', NULL, 'Algeria', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'B', NULL, 'Algeria', 2),
 (1, 9, 'AstraZeneca', '2020-12-12', 13, 'I', NULL, 'Tunisia', 1),
-(2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
-(2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2);
+(4, 2, 'AZ', '2020-11-12', 11, 'B', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'B', NULL, 'Algeria', 2);
 
 /*
 ====================================================================
