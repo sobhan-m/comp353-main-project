@@ -140,19 +140,19 @@ WHERE name = "Beta";
  Query 6
 ====================================================================
 */
-INSERT INTO AgeGroup(groupDescription)
-VALUES("0-4");
+INSERT INTO AgeGroup(groupID, minAge, maxAge)
+VALUES(11, 0,4);
 
 DELETE FROM AgeGroup
-WHERE groupDescription = "80+";
+WHERE minAge = 80;
 
 UPDATE AgeGroup
-SET groupDescription = "0-4"
-WHERE groupDescription = "80+";
+SET minAge = 0, maxAge = 4
+WHERE minAge = 80;
 
 SELECT *
 FROM AgeGroup
-WHERE groupDescription = "80+";
+WHERE minAge = 80;
 
 /*
 ====================================================================
