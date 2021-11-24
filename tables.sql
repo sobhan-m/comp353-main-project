@@ -488,8 +488,8 @@ BEGIN
 																FROM AgeGroup
 																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
 																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
-	-- If the person is a nurse.
-	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse") THEN
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker) THEN
 		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
 		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
 																FROM AgeGroup
@@ -516,8 +516,8 @@ BEGIN
 																FROM AgeGroup
 																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
 																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
-	-- If the person is a nurse.
-	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse") THEN
+	-- If the person is a healthworker.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker) THEN
 		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
 		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
 																FROM AgeGroup
