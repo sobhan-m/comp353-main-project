@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS ApprovedVaccinations;
 CREATE TABLE ApprovedVaccinations(
 vaccinationName VARCHAR(100),
 dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED"),
+vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL,
 dateOfSuspension DATE,
 PRIMARY KEY (vaccinationName)
 );
@@ -548,6 +548,24 @@ BEGIN
 		AND
 		(14  > ANY(SELECT ABS(DATEDIFF(vaccinationDate, NEW.vaccinationDate)) FROM Vaccinations WHERE id = NEW.id AND vaccinationDate <> OLD.vaccinationDate))) THEN
 			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "A person must wait at least 14 days before getting another vaccine!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinesMustBeSafe_INSERT
+BEFORE INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.vaccinationName NOT IN (SELECT vaccinationName FROM ApprovedVaccinations WHERE vaccinationType = "SAFE")) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Cannot administer an unsafe vaccination!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinesMustBeSafe_UPDATE
+BEFORE UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.vaccinationName NOT IN (SELECT vaccinationName FROM ApprovedVaccinations WHERE vaccinationType = "SAFE")) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Cannot administer an unsafe vaccination!";
 	END IF;
 END $$
 DELIMITER ;
