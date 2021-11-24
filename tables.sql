@@ -291,7 +291,9 @@ SELECT * FROM InfectionTypes;
 DELETE FROM InfectionTypes;
 
 INSERT INTO InfectionTypes(name) 
-VALUES ("Alpha"),
+VALUES 
+("Unknown"),
+("Alpha"),
 ("Beta"),
 ("Gamma"),
 ("Delta"),
@@ -308,7 +310,7 @@ DROP TABLE IF EXISTS InfectionHistory;
 CREATE TABLE InfectionHistory(
 personID INT,
 infectionDate DATE,
-type varchar(100),
+type varchar(100) DEFAULT "Unknown",
 PRIMARY KEY (personID, infectionDate),
 FOREIGN KEY (personID) REFERENCES Person(id),
 FOREIGN KEY (type) REFERENCES InfectionTypes(name)
