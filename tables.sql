@@ -442,19 +442,22 @@ SELECT * FROM Vaccinations;
 
 DELETE FROM Vaccinations;
 
-DELIMITER $$
-CREATE TRIGGER NursesMustBeVaccinated_INSERT
-AFTER INSERT ON Vaccinations
-FOR EACH ROW
-BEGIN
-	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT workerID, facilityName
+CREATE VIEW vaccinatedNurses AS
+SELECT workerID, facilityName
 FROM Assignments
 	INNER JOIN (
 			SELECT a.pID
 			FROM Vaccinations v
 				INNER JOIN Assignments a ON v.workerID = a.workerID AND v.facilityName = a.facilityName
 			WHERE a.pID IN (SELECT id FROM Vaccinations)
-				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID)) THEN
+				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID;
+
+DELIMITER $$
+CREATE TRIGGER NursesMustBeVaccinated_INSERT
+AFTER INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT * FROM vaccinatedNurses)) THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
 	END IF;
 END $$
@@ -465,14 +468,7 @@ CREATE TRIGGER NursesMustBeVaccinated_UPDATE
 AFTER UPDATE ON Vaccinations
 FOR EACH ROW
 BEGIN
-	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT workerID, facilityName
-FROM Assignments
-	INNER JOIN (
-			SELECT a.pID
-			FROM Vaccinations v
-				INNER JOIN Assignments a ON v.workerID = a.workerID AND v.facilityName = a.facilityName
-			WHERE a.pID IN (SELECT id FROM Vaccinations)
-				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID)) THEN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT * FROM vaccinatedNurses)) THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
 	END IF;
 END $$
