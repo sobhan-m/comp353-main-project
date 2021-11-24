@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS AgeGroup;
 
 CREATE TABLE AgeGroup(
 groupID int,
-minAge int,
-maxAge int,
+minAge int NOT NULL,
+maxAge int NOT NULL,
 PRIMARY KEY (groupID),
 CHECK (maxAge > minAge));
 
@@ -106,9 +106,9 @@ DROP TABLE IF EXISTS Person;
 
 CREATE TABLE Person(
 id INT AUTO_INCREMENT,
-firstName VARCHAR(100),
-middleInitial varchar(100),
-lastName VARCHAR(100),
+firstName VARCHAR(100) NOT NULL,
+middleInitial varchar(100) NOT NULL,
+lastName VARCHAR(100) NOT NULL,
 dateOfBirth DATE,
 telephoneNumber INT,
 address VARCHAR(100),
@@ -190,10 +190,10 @@ DELETE FROM PersonAgeGroup;
 DROP TABLE IF EXISTS Registered;
 
 CREATE TABLE Registered(
-id INT,
+id INT NOT NULL,
 medicareCardNum INT AUTO_INCREMENT,
-medicareIssueDate DATE,
-medicareExpiryDate DATE,
+medicareIssueDate DATE NOT NULL,
+medicareExpiryDate DATE NOT NULL,
 PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
 );
@@ -234,7 +234,7 @@ VALUES(1, '1990-01-01','2040-01-01'),
 DROP TABLE IF EXISTS Unregistered;
 
 CREATE TABLE Unregistered(
-id INT,
+id INT NOT NULL,
 passportNum INT AUTO_INCREMENT,
 PRIMARY KEY (passportNum),
 FOREIGN KEY (id) REFERENCES Person(id)
@@ -258,7 +258,7 @@ DROP TABLE IF EXISTS HealthWorker;
 CREATE TABLE HealthWorker(
 pID INT,
 ssn INT,
-employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee"),
+employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL,
 PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Registered(id)
 );
@@ -340,7 +340,7 @@ phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
-capacity INT,
+capacity INT NOT NULL,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (province) REFERENCES Province(name),
@@ -378,7 +378,7 @@ pID INT,
 facilityName VARCHAR(100),
 startDate DATE,
 endDate DATE,
-workerID INT AUTO_INCREMENT,
+workerID INT AUTO_INCREMENT NOT NULL,
 hourlyWage FLOAT,
 UNIQUE (workerID, facilityName),
 PRIMARY KEY (pID, facilityName, startDate),
@@ -424,7 +424,7 @@ DROP TABLE IF EXISTS Vaccinations;
 CREATE TABLE Vaccinations(
 id INT,
 workerID INT,
-vaccinationName VARCHAR(100),
+vaccinationName VARCHAR(100) NOT NULL,
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
@@ -568,9 +568,9 @@ DROP TABLE IF EXISTS FacilitySchedule;
 
 CREATE TABLE FacilitySchedule(
 name VARCHAR(100), -- This is the facility name.
-days VARCHAR(1000),
-openingHour TIME,
-closingHour TIME,
+days VARCHAR(1000) NOT NULL,
+openingHour TIME NOT NULL,
+closingHour TIME NOT NULL,
 PRIMARY KEY (name),
 FOREIGN KEY (name) REFERENCES PublicHealthFacilities(name)
 );
@@ -604,9 +604,9 @@ CREATE TABLE WorkerSchedule(
 pID int,
 workerID INT,
 facilityName VARCHAR(100),
-days VARCHAR(1000),
-startingHour TIME,
-endingHour TIME,
+days VARCHAR(1000) NOT NULL,
+startingHour TIME NOT NULL,
+endingHour TIME NOT NULL,
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (pID) REFERENCES Assignments (pID),
@@ -643,7 +643,7 @@ CREATE TABLE Appointments(
 date date,
 time time,
 pID int,
-facilityName varchar(100),
+facilityName varchar(100) NOT NULL,
 PRIMARY KEY(date, time),
 FOREIGN KEY (pID) REFERENCES Person(id),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
