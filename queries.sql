@@ -5,11 +5,57 @@
 ====================================================================
 */
 
+-- Creating.
+
+INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
+VALUES ("Johnny", "AB", "Smithson", '1990-01-01', 000100, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6);
+
+INSERT INTO InfectionHistory(personID, infectionDate, type)
+VALUES (34, '2021-02-01', "Beta");
+
+-- php should take care of getting the ID from Person for infection history
+
+-- Deleting.
+
+DELETE FROM Person
+WHERE  firstName = 'Johnny';
+
+DELETE FROM InfectionHistory
+WHERE personID = 34;
+
+-- Editing.
+
+UPDATE Person
+SET firstName = 'Johnathan', middleInitial = 'X', lastName = 'Smithhh', dateOfBirth = '1991-02-02', telephoneNumber = 000, address= 'yo mama street', city = 'Compton', province = 'BC', postalCode = '111', citizenship ='Chinese', emailAddress =' gangsta21@gmail.com', ageGroupID = 2
+WHERE firstName = 'Johnny';
+
+UPDATE InfectionHistory
+SET personID = 33, infectionDate = '2020-10-10', type = "Alpha"
+WHERE personID = 34;
+
+-- Displaying.
+SELECT * FROM Person 
+WHERE firstName = 'Johnny';
+
+SELECT * FROM InfectionHistory
+WHERE personID = 33;
+
 /*
 ====================================================================
  Query 2
 ====================================================================
 */
+
+-- Creating.
+
+
+
+-- Deleting.
+
+-- Editing.
+
+-- Displaying.
+
 
 /*
 ====================================================================
