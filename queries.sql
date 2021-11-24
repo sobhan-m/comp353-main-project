@@ -262,7 +262,12 @@ AND pID IS NULL;
 ====================================================================
 */
 
-
+SELECT A.date, A.time, A.facilityName
+FROM Appointments A
+WHERE A.pID IS NULL
+AND A.facilityName = 'C'
+ORDER BY A.time
+LIMIT 1;
 
 /*
 ====================================================================
