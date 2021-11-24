@@ -47,15 +47,24 @@ WHERE personID = 33;
 */
 
 -- Creating.
+INSERT INTO Registered (id, medicareIssueDate, medicareExpiryDate)
+VALUES(33, '1990-01-01','2040-01-01');
 
-
+INSERT INTO HealthWorker(pID, ssn, employeeType)
+VALUES(33, 101, 'Manager');
 
 -- Deleting.
+DELETE FROM HealthWorker
+WHERE pID = 33;
 
 -- Editing.
+UPDATE HealthWorker
+SET pID = 33, ssn = 123, employeeType ='Nurse'
+WHERE pID = 33;
 
 -- Displaying.
-
+SELECT * FROM HealthWorker
+WHERE pID = 33;
 
 /*
 ====================================================================
