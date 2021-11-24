@@ -461,9 +461,7 @@ BEGIN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
 	END IF;
 END $$
-DELIMITER ;
 
-DELIMITER $$
 CREATE TRIGGER NursesMustBeVaccinated_UPDATE
 AFTER UPDATE ON Vaccinations
 FOR EACH ROW
@@ -472,9 +470,7 @@ BEGIN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
 	END IF;
 END $$
-DELIMITER ;
 
-DELIMITER $$
 CREATE TRIGGER ValidateAgeGroup_Insert
 AFTER INSERT ON Vaccinations
 FOR EACH ROW
@@ -502,9 +498,7 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
     END IF;
 END $$
-DELIMITER ;
 
-DELIMITER $$
 CREATE TRIGGER ValidateAgeGroup_Update
 AFTER UPDATE ON Vaccinations
 FOR EACH ROW
@@ -531,6 +525,28 @@ BEGIN
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
     END IF;
+END $$
+
+CREATE TRIGGER VaccinationWaitPeriod_INSERT
+BEFORE INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.id IN (SELECT id FROM Vaccinations) 
+		AND
+		(14  > ANY(SELECT ABS(DATEDIFF(vaccinationDate, NEW.vaccinationDate)) FROM Vaccinations WHERE id = NEW.id))) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "A person must wait at least 14 days before getting another vaccine!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinationWaitPeriod_UPDATE
+BEFORE UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.id IN (SELECT id FROM Vaccinations) 
+		AND
+		(14  > ANY(SELECT ABS(DATEDIFF(vaccinationDate, NEW.vaccinationDate)) FROM Vaccinations WHERE id = NEW.id AND vaccinationDate <> OLD.vaccinationDate))) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "A person must wait at least 14 days before getting another vaccine!";
+	END IF;
 END $$
 DELIMITER ;
 
