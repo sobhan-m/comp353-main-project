@@ -1,15 +1,32 @@
 # Relational Schema
-- Person(<ins>id</ins>, firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID)
-- Registered(id, <ins>medicareCardNum</ins>, medicareIssueDate, medicareExpiryDate)
-- Unregistered(id, <ins>passportNum</ins>)
-- AgeGroup(<ins>groupID</ins>, groupDescription)
-- InfectionHistory(<ins>personID</ins>, <ins>infectionDate</ins>, type)
-- InfectionTypes(<ins>name</ins>)
-- HealthWorker(<ins>id</ins>, ssn, employeeType)
-- PublicHealthFacilities(<ins>name</ins>, address, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
-- FacilitySchedule(<ins>name</ins>, days, openingHour, closingHour)
-- WorkerSchedule(<ins>workerID</ins>, <ins>facilityName</ins>, day, startingHour, endingHour)
-- Assignments(<ins>pID</ins>, <ins>startDate</ins>, workerID, hourlyWage <ins>facilityName</ins>, endDate)
+- AgeGroup(<ins>groupID</ins>, minAge, maxAge)
+
 - ApprovedVaccinations(<ins>vaccinationName</ins>, dateOfApproval, vaccinationType, dateOfSuspension)
-- Vaccinations(<ins>id</ins>, healthWorkerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, location, province, country, doseNumber)
+
 - Province(<ins>name</ins>, ageGroup)
+
+- Person(<ins>id</ins>, firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress)
+
+- PersonAgeGroup(<ins>id</ins>, ageGroupID)
+
+- Registered(id, <ins>medicareCardNum</ins>, medicareIssueDate, medicareExpiryDate)
+
+- Unregistered(id, <ins>passportNum</ins>)
+
+- HealthWorker(<ins>pID</ins>, ssn, employeeType)
+
+- InfectionTypes(<ins>name</ins>)
+
+- InfectionHistory(<ins>personID</ins>, <ins>infectionDate</ins>, type)
+
+- PublicHealthFacilities(<ins>name</ins>, address, city, province, country, phoneNumber, webAddress, facilityType, category, capacity, managerID)
+
+- Assignments(<ins>pID</ins>, <ins>facilityName</ins>, <ins>startDate</ins>, endDate, workerID, hourlyWage)
+
+- Vaccinations(<ins>id</ins>, workerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, facilityName, province, country, doseNumber) <!-- Does facilityName determine province and country? What if the people are vaccinated out of country in a different health facility? -->
+
+- FacilitySchedule(<ins>name</ins>, days, openingHour, closingHour)
+
+- WorkerSchedule( pID, <ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour) <!-- pID and (workerID, facilityName) determine each other. There is redundancy.-->
+
+- Appointments(<ins>date</ins>, <ins>time</ins>, pID, facilityName)
