@@ -11,25 +11,29 @@ USE Project;
 DROP TABLE IF EXISTS AgeGroup;
 
 CREATE TABLE AgeGroup(
-groupID int AUTO_INCREMENT,
-groupDescription VARCHAR(20),
-PRIMARY KEY (groupID));
+groupID int,
+minAge int NOT NULL,
+maxAge int NOT NULL,
+PRIMARY KEY (groupID),
+CHECK (maxAge > minAge));
 
 SELECT * FROM AgeGroup;
 
 DELETE FROM AgeGroup;
 
-INSERT INTO AgeGroup (groupDescription)
-VALUES ("80+"), 
-("70-79"), 
-("60-69"), 
-("50-59"), 
-("40-49"), 
-("30-39"), 
-("18-29"), 
-("12-17"), 
-("5-11"), 
-("0-4");
+INSERT INTO AgeGroup (groupID, minAge, maxAge)
+VALUES 
+(0, 9999, 99999),
+(1, 80, 999),
+(2, 70, 79),
+(3, 60, 69),
+(4, 50, 59),
+(5, 40, 49),
+(6, 30, 39),
+(7, 18, 29),
+(8, 12, 17),
+(9, 5, 11),
+(10, 0, 4);
 
 /*
 ====================================================================
@@ -42,7 +46,7 @@ DROP TABLE IF EXISTS ApprovedVaccinations;
 CREATE TABLE ApprovedVaccinations(
 vaccinationName VARCHAR(100),
 dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED"),
+vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL,
 dateOfSuspension DATE,
 PRIMARY KEY (vaccinationName)
 );
@@ -69,7 +73,7 @@ DROP TABLE IF EXISTS Province;
 
 CREATE TABLE Province(
 name VARCHAR(100), 
-ageGroup int, 
+ageGroup int DEFAULT 0, 
 PRIMARY KEY(name),
 FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
 
@@ -78,19 +82,19 @@ SELECT * FROM Province;
 DELETE FROM Province;
 
 INSERT INTO Province(name, ageGroup)
-VALUES('NL', NULL),
-('PE', NULL),
-('NS', NULL),
-('NB', NULL),
-('QC', NULL),
-('ON', NULL),
-('MB', NULL),
-('SK', NULL),
-('AB', NULL),
-('YT', NULL),
-('NT', NULL),
-('NU', NULL),
-('BC', NULL);
+VALUES('NL', 10),
+('PE', 10),
+('NS', 10),
+('NB', 10),
+('QC', 10),
+('ON', 10),
+('MB', 10),
+('SK', 10),
+('AB', 10),
+('YT', 10),
+('NT', 10),
+('NU', 10),
+('BC', 10);
 
 /*
 ====================================================================
@@ -102,9 +106,9 @@ DROP TABLE IF EXISTS Person;
 
 CREATE TABLE Person(
 id INT AUTO_INCREMENT,
-firstName VARCHAR(100),
-middleInitial varchar(100),
-lastName VARCHAR(100),
+firstName VARCHAR(100) NOT NULL,
+middleInitial varchar(100) NOT NULL,
+lastName VARCHAR(100) NOT NULL,
 dateOfBirth DATE,
 telephoneNumber INT,
 address VARCHAR(100),
@@ -113,10 +117,8 @@ province VARCHAR(100),
 postalCode VARCHAR(6),
 citizenship VARCHAR(100),
 emailAddress VARCHAR(100),
-ageGroupID INT,
 PRIMARY KEY(id),
 UNIQUE (firstName, middleInitial, lastName),
-FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID),
 FOREIGN KEY (province) REFERENCES Province(name)
 );
 
@@ -124,38 +126,60 @@ SELECT * FROM Person;
 
 DELETE FROM Person;
 
-INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
-VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6),
-("Mark", "B", "Julius", '1987-10-23', 111111, '200 Maisonneuve Street', 'Almaty', 'NB', 'B1B1B1', 'Kazakhastanian', 'mark.julius@gmail.com', 5),
-("Jackie", "C", "Chan", '2000-03-30', 222222, '1980 Norman Street', 'Kawasaki', 'NL', 'C1C1C1', 'Japanese', 'jackie.chan@gmail.com', 7),
-("Bruce","D", "Lee", '2021-09-01', 333333, '3475 De la montagne Street', 'Bandung', 'PE', 'D1D1D1', 'Indian', 'bruce.goerge@gmail.com', 10),
-("King", "E","George", '1960-03-20', 444444, '5000 Peel Street', 'Sapporo', 'NS', 'E1E1E1', 'Japanese', 'king.george@gmail.com', 3),
-("Vanilla","F", "Ice", '1975-01-01', 555555, '2001 Dutrisac Street', 'Baghdad', 'ON', 'F1F1F1', 'Indian', 'vanilla.ice@gmail.com', 5),
-("Rock", "G","Lee", '2003-11-10', 666666, '1111 Fillion Street', 'Shiraz', 'MB', 'G1G1G1', 'Iranian', 'rock.lee@gmail.com', 7),
-("Black","H", "Reaper", '2017-01-01', 777777, '908 Deguire Street', 'Praque', 'SK', 'H1H1H1', 'Czechinians', 'black.reaper@gmail.com', 10),
-("Naruto","I", "Uzumaki", '1974-10-28', 888888, '743 Cleroux Street', 'Kathmandu', 'AB', 'I1I1I1', 'Nepalian', 'naruto.uzumaki@gmail.com', 5),
-("Monkey", "J","Luffy", '2011-12-02', 999999, '1111 Sherbrook Street', 'Yokohama', 'YT', 'J1J1J1', 'Japanese', 'monkey.luffy@gmail.com', 9),
-("John","K", "Cena", '1980-01-01', 100000, '101 Guy Street', 'Montreal', 'QC', 'K1K1K1', 'Canadian', 'john.cena@gmail.com', 5),
-("Xin","L", "Lu", '1977-10-23', 211111, '201 Maisonneuve Street', 'Almaty', 'NB', 'L1L1L1', 'Kazakhastanian', 'xin.lu@gmail.com', 5),
-("Spongebob","M", "Squarepants", '1990-03-30', 322222, '1981 Norman Street', 'Kawasaki', 'NL', 'M1M1M1', 'Japanese', 'spongebob.squarepants@gmail.com', 6),
-("Sanji","N", "Blackleg", '2011-09-01', 433333, '3476 De la montagne Street', 'Bandung', 'PE', 'N1N1N1', 'Indian', 'Sanji.Blackleg@gmail.com', 9),
-("Black","O", "Beard", '1950-03-20', 544444, '5001 Peel Street', 'Sapporo', 'NS', 'O1O1O1', 'Japanese', 'black.beard@gmail.com', 2),
-("Junior","P", "Desolo", '1965-01-01', 655555, '2002 Dutrisac Street', 'Baghdad', 'ON', 'P1P1P1', 'Indian', 'junior.desolo@gmail.com', 4),
-("Adrien","Q", "Burns", '1993-11-10', 766666, '1112 Fillion Street', 'Shiraz', 'MB', 'Q1Q1Q1', 'Iranian', 'adrien.burns@gmail.com', 7),
-("Tala","R", "Sleeman", '2007-01-01', 877777, '909 Deguire Street', 'Praque', 'SK', 'R1R1R1', 'Czechinians', 'tala.sleeman@gmail.com', 8),
-("Malek","S", "Jerbi", '1964-10-28', 988888, '744 Cleroux Street', 'Kathmandu', 'AB', 'S1S1S1', 'Nepalian', 'malek.jerbi@gmail.com', 4),
-("Hercules","T", "DeGreece", '2001-12-02', 099999, '1112 Sherbrook Street', 'Yokohama', 'YT', 'T1T1T1', 'Japanese', 'Hercules.degreece@gmail.com', 7),
-("Jimmy","U", "Neutron", '1970-01-01', 110000, '102 Guy Street', 'Montreal', 'QC', 'U1U1U1', 'Canadian', 'jimmy.neutron@gmail.com', 4),
-("Crocodile","V", "Nini", '1967-10-23', 221111, '202 Maisonneuve Street', 'Almaty', 'NB', 'V1V1V1', 'Kazakhastanian', 'crocodile.nini@gmail.com', 4),
-("Ali","W", "Dawah", '1980-03-30', 332222, '1982 Norman Street', 'Kawasaki', 'NL', 'W1W1W1', 'Japanese', 'ali.dawah@gmail.com', 5),
-("Mohammed","X", "Hijad", '2001-09-01', 433333, '3477 De la montagne Street', 'Bandung', 'PE', 'X1X1X1', 'Indian', 'mohammed.hijad@gmail.com', 7),
-("Ragnar","Y", "Lothbrok", '1950-01-01', 554444, '5002 Peel Street', 'Sapporo', 'NS', 'A2A2A2', 'Japanese', 'ragnar.lothbrok@gmail.com', 2),
-("Younes","Z", "Garbili", '1955-01-01', 665555, '2003 Dutrisac Street', 'Baghdad', 'ON', 'B2B2B2', 'Indian', 'younes.garbili@gmail.com', 3),
-("Jean-Francois","A", "Vo", '1983-11-10', 776666, '1113 Fillion Street', 'Shiraz', 'MB', 'C2C2C2', 'Iranian', 'jeanfrancois.vo@gmail.com', 6),
-("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com', 7),
-("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com', 3),
-("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com', 6),
-("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com', 5);
+INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
+VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com'),
+("Mark", "B", "Julius", '1987-10-23', 111111, '200 Maisonneuve Street', 'Almaty', 'NB', 'B1B1B1', 'Kazakhastanian', 'mark.julius@gmail.com'),
+("Jackie", "C", "Chan", '2000-03-30', 222222, '1980 Norman Street', 'Kawasaki', 'NL', 'C1C1C1', 'Japanese', 'jackie.chan@gmail.com'),
+("Bruce","D", "Lee", '2021-09-01', 333333, '3475 De la montagne Street', 'Bandung', 'PE', 'D1D1D1', 'Indian', 'bruce.goerge@gmail.com'),
+("King", "E","George", '1960-03-20', 444444, '5000 Peel Street', 'Sapporo', 'NS', 'E1E1E1', 'Japanese', 'king.george@gmail.com'),
+("Vanilla","F", "Ice", '1975-01-01', 555555, '2001 Dutrisac Street', 'Baghdad', 'ON', 'F1F1F1', 'Indian', 'vanilla.ice@gmail.com'),
+("Rock", "G","Lee", '2003-11-10', 666666, '1111 Fillion Street', 'Shiraz', 'MB', 'G1G1G1', 'Iranian', 'rock.lee@gmail.com'),
+("Black","H", "Reaper", '2017-01-01', 777777, '908 Deguire Street', 'Praque', 'SK', 'H1H1H1', 'Czechinians', 'black.reaper@gmail.com'),
+("Naruto","I", "Uzumaki", '1974-10-28', 888888, '743 Cleroux Street', 'Kathmandu', 'AB', 'I1I1I1', 'Nepalian', 'naruto.uzumaki@gmail.com'),
+("Monkey", "J","Luffy", '2011-12-02', 999999, '1111 Sherbrook Street', 'Yokohama', 'YT', 'J1J1J1', 'Japanese', 'monkey.luffy@gmail.com'),
+("John","K", "Cena", '1980-01-01', 100000, '101 Guy Street', 'Montreal', 'QC', 'K1K1K1', 'Canadian', 'john.cena@gmail.com'),
+("Xin","L", "Lu", '1977-10-23', 211111, '201 Maisonneuve Street', 'Almaty', 'NB', 'L1L1L1', 'Kazakhastanian', 'xin.lu@gmail.com'),
+("Spongebob","M", "Squarepants", '1990-03-30', 322222, '1981 Norman Street', 'Kawasaki', 'NL', 'M1M1M1', 'Japanese', 'spongebob.squarepants@gmail.com'),
+("Sanji","N", "Blackleg", '2011-09-01', 433333, '3476 De la montagne Street', 'Bandung', 'PE', 'N1N1N1', 'Indian', 'Sanji.Blackleg@gmail.com'),
+("Black","O", "Beard", '1950-03-20', 544444, '5001 Peel Street', 'Sapporo', 'NS', 'O1O1O1', 'Japanese', 'black.beard@gmail.com'),
+("Junior","P", "Desolo", '1965-01-01', 655555, '2002 Dutrisac Street', 'Baghdad', 'ON', 'P1P1P1', 'Indian', 'junior.desolo@gmail.com'),
+("Adrien","Q", "Burns", '1993-11-10', 766666, '1112 Fillion Street', 'Shiraz', 'MB', 'Q1Q1Q1', 'Iranian', 'adrien.burns@gmail.com'),
+("Tala","R", "Sleeman", '2007-01-01', 877777, '909 Deguire Street', 'Praque', 'SK', 'R1R1R1', 'Czechinians', 'tala.sleeman@gmail.com'),
+("Malek","S", "Jerbi", '1964-10-28', 988888, '744 Cleroux Street', 'Kathmandu', 'AB', 'S1S1S1', 'Nepalian', 'malek.jerbi@gmail.com'),
+("Hercules","T", "DeGreece", '2001-12-02', 099999, '1112 Sherbrook Street', 'Yokohama', 'YT', 'T1T1T1', 'Japanese', 'Hercules.degreece@gmail.com'),
+("Jimmy","U", "Neutron", '1970-01-01', 110000, '102 Guy Street', 'Montreal', 'QC', 'U1U1U1', 'Canadian', 'jimmy.neutron@gmail.com'),
+("Crocodile","V", "Nini", '1967-10-23', 221111, '202 Maisonneuve Street', 'Almaty', 'NB', 'V1V1V1', 'Kazakhastanian', 'crocodile.nini@gmail.com'),
+("Ali","W", "Dawah", '1980-03-30', 332222, '1982 Norman Street', 'Kawasaki', 'NL', 'W1W1W1', 'Japanese', 'ali.dawah@gmail.com'),
+("Mohammed","X", "Hijad", '2001-09-01', 433333, '3477 De la montagne Street', 'Bandung', 'PE', 'X1X1X1', 'Indian', 'mohammed.hijad@gmail.com'),
+("Ragnar","Y", "Lothbrok", '1950-01-01', 554444, '5002 Peel Street', 'Sapporo', 'NS', 'A2A2A2', 'Japanese', 'ragnar.lothbrok@gmail.com'),
+("Younes","Z", "Garbili", '1955-01-01', 665555, '2003 Dutrisac Street', 'Baghdad', 'ON', 'B2B2B2', 'Indian', 'younes.garbili@gmail.com'),
+("Jean-Francois","A", "Vo", '1983-11-10', 776666, '1113 Fillion Street', 'Shiraz', 'MB', 'C2C2C2', 'Iranian', 'jeanfrancois.vo@gmail.com'),
+("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com'),
+("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com'),
+("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com'),
+("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com');
+
+/*
+====================================================================
+ PersonAgeGroup
+====================================================================
+*/
+
+DROP TABLE IF EXISTS PersonAgeGroup;
+
+CREATE TABLE PersonAgeGroup(
+	id INT,
+	ageGroupID INT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (id) REFERENCES Person(id),
+	FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
+);
+
+SELECT * FROM PersonAgeGroup;
+
+DELETE FROM PersonAgeGroup;
+
+-- No inserts. They are done automatically at the time of vaccination.
 
 /*
 ====================================================================
@@ -166,10 +190,10 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 DROP TABLE IF EXISTS Registered;
 
 CREATE TABLE Registered(
-id INT,
+id INT NOT NULL,
 medicareCardNum INT AUTO_INCREMENT,
-medicareIssueDate DATE,
-medicareExpiryDate DATE,
+medicareIssueDate DATE NOT NULL,
+medicareExpiryDate DATE NOT NULL,
 PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
 );
@@ -210,7 +234,7 @@ VALUES(1, '1990-01-01','2040-01-01'),
 DROP TABLE IF EXISTS Unregistered;
 
 CREATE TABLE Unregistered(
-id INT,
+id INT NOT NULL,
 passportNum INT AUTO_INCREMENT,
 PRIMARY KEY (passportNum),
 FOREIGN KEY (id) REFERENCES Person(id)
@@ -234,7 +258,7 @@ DROP TABLE IF EXISTS HealthWorker;
 CREATE TABLE HealthWorker(
 pID INT,
 ssn INT,
-employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee"),
+employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL,
 PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Registered(id)
 );
@@ -267,7 +291,9 @@ SELECT * FROM InfectionTypes;
 DELETE FROM InfectionTypes;
 
 INSERT INTO InfectionTypes(name) 
-VALUES ("Alpha"),
+VALUES 
+("Unknown"),
+("Alpha"),
 ("Beta"),
 ("Gamma"),
 ("Delta"),
@@ -284,7 +310,7 @@ DROP TABLE IF EXISTS InfectionHistory;
 CREATE TABLE InfectionHistory(
 personID INT,
 infectionDate DATE,
-type varchar(100),
+type varchar(100) DEFAULT "Unknown",
 PRIMARY KEY (personID, infectionDate),
 FOREIGN KEY (personID) REFERENCES Person(id),
 FOREIGN KEY (type) REFERENCES InfectionTypes(name)
@@ -316,7 +342,7 @@ phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
-capacity INT,
+capacity INT NOT NULL,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (province) REFERENCES Province(name),
@@ -354,7 +380,7 @@ pID INT,
 facilityName VARCHAR(100),
 startDate DATE,
 endDate DATE,
-workerID INT AUTO_INCREMENT,
+workerID INT AUTO_INCREMENT NOT NULL,
 hourlyWage FLOAT,
 UNIQUE (workerID, facilityName),
 PRIMARY KEY (pID, facilityName, startDate),
@@ -366,28 +392,28 @@ SELECT * FROM Assignments;
 
 DELETE FROM Assignments;
 
-INSERT INTO Assignments(pID, facilityName, startDate, endDate, hourlyWage)
-VALUES(1, 'A', '2019-12-12', NULL, 11),
-(2, 'B', '2020-01-01', '2020-06-01', 12),
-(3, 'C', '2020-05-13', '2020-10-13', 13),
-(4, 'D', '2020-04-25', '2020-09-25', 14),
-(5, 'E', '2021-01-01', '2021-06-01', 15),
-(6, 'F', '2020-10-10', '2021-03-10', 16),
-(7, 'G', '2020-03-23', '2020-08-23', 17),
-(8, 'H', '2020-07-12', '2020-12-12', 18),
-(9, 'I', '2020-06-11', '2020-11-11', 19),
-(10, 'J', '2020-09-02', '2020-02-02', 20),
-(21, 'B', '2019-12-12', NULL, 21),
-(22, 'C', '2020-01-01', NULL, 22),
-(23, 'D', '2020-05-13', NULL, 23),
-(24, 'E', '2020-04-25', NULL, 24),
-(25, 'F', '2021-01-01', NULL, 25),
-(26, 'G', '2020-10-10', NULL, 26),
-(27, 'H', '2020-03-23', NULL, 27),
-(28, 'I', '2020-07-12', NULL, 28),
-(29, 'J', '2020-06-11', NULL, 29),
-(30, 'K', '0001-12-12', NULL, 30),
-(31, 'K', '0001-12-12', NULL, 33);
+INSERT INTO Assignments(pID, facilityName, startDate, endDate, workerID, hourlyWage)
+VALUES(1, 'A', '2019-12-12', NULL, 1, 11),
+(2, 'B', '2020-01-01', '2020-06-01', 2, 12),
+(3, 'C', '2020-05-13', '2020-10-13', 3, 13),
+(4, 'D', '2020-04-25', '2020-09-25', 4, 14),
+(5, 'E', '2021-01-01', '2021-06-01', 5, 15),
+(6, 'F', '2020-10-10', '2021-03-10', 6, 16),
+(7, 'G', '2020-03-23', '2020-08-23', 7, 17),
+(8, 'H', '2020-07-12', '2020-12-12', 8, 18),
+(9, 'I', '2020-06-11', '2020-11-11', 9, 19),
+(10, 'J', '2020-09-02', '2020-02-02', 10, 20),
+(21, 'B', '2019-12-12', NULL, 11, 21),
+(22, 'C', '2020-01-01', NULL, 12, 22),
+(23, 'D', '2020-05-13', NULL, 13, 23),
+(24, 'E', '2020-04-25', NULL, 14, 24),
+(25, 'F', '2021-01-01', NULL, 15, 25),
+(26, 'G', '2020-10-10', NULL, 16, 26),
+(27, 'H', '2020-03-23', NULL, 17, 27),
+(28, 'I', '2020-07-12', NULL, 18, 28),
+(29, 'J', '2020-06-11', NULL, 19, 29),
+(30, 'K', '0001-12-12', NULL, 20, 30),
+(31, 'K', '0001-12-12', NULL, 21, 33);
 
 /*
 ====================================================================
@@ -400,7 +426,7 @@ DROP TABLE IF EXISTS Vaccinations;
 CREATE TABLE Vaccinations(
 id INT,
 workerID INT,
-vaccinationName VARCHAR(100),
+vaccinationName VARCHAR(100) NOT NULL,
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
@@ -418,8 +444,139 @@ SELECT * FROM Vaccinations;
 
 DELETE FROM Vaccinations;
 
+CREATE VIEW vaccinatedNurses AS
+SELECT workerID, facilityName
+FROM Assignments
+	INNER JOIN (
+			SELECT a.pID
+			FROM Vaccinations v
+				INNER JOIN Assignments a ON v.workerID = a.workerID AND v.facilityName = a.facilityName
+			WHERE a.pID IN (SELECT id FROM Vaccinations)
+				AND a.pID IN (SELECT pID FROM HealthWorker WHERE employeeType = "Nurse")) vaccinatedNurses ON Assignments.pID =  vaccinatedNurses.pID;
+
+DELIMITER $$
+CREATE TRIGGER NursesMustBeVaccinated_INSERT
+AFTER INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT * FROM vaccinatedNurses)) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
+	END IF;
+END $$
+
+CREATE TRIGGER NursesMustBeVaccinated_UPDATE
+AFTER UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF ( NEW.workerID IS NOT NULL AND (NEW.workerID, NEW.facilityName) NOT IN (SELECT * FROM vaccinatedNurses)) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Administrator must be a vaccinated nurse!";
+	END IF;
+END $$
+
+CREATE TRIGGER ValidateAgeGroup_Insert
+AFTER INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF NEW.province IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge) < (SELECT ageGroup FROM Province WHERE name = NEW.province) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- Otherwise reject changes.
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
+    END IF;
+END $$
+
+CREATE TRIGGER ValidateAgeGroup_Update
+AFTER UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF NEW.province IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge) < (SELECT ageGroup FROM Province WHERE name = NEW.province) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- If the person is a healthworker.
+	ELSEIF NEW.id IN (SELECT pID FROM HealthWorker) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.id;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.id, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.id), NEW.vaccinationDate) <= maxAge));
+	-- Otherwise reject changes.
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for vaccination!";
+    END IF;
+END $$
+
+CREATE TRIGGER VaccinationWaitPeriod_INSERT
+BEFORE INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.id IN (SELECT id FROM Vaccinations) 
+		AND
+		(14  > ANY(SELECT ABS(DATEDIFF(vaccinationDate, NEW.vaccinationDate)) FROM Vaccinations WHERE id = NEW.id))) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "A person must wait at least 14 days before getting another vaccine!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinationWaitPeriod_UPDATE
+BEFORE UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.id IN (SELECT id FROM Vaccinations) 
+		AND
+		(14  > ANY(SELECT ABS(DATEDIFF(vaccinationDate, NEW.vaccinationDate)) FROM Vaccinations WHERE id = NEW.id AND vaccinationDate <> OLD.vaccinationDate))) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "A person must wait at least 14 days before getting another vaccine!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinesMustBeSafe_INSERT
+BEFORE INSERT ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.vaccinationName NOT IN (SELECT vaccinationName FROM ApprovedVaccinations WHERE vaccinationType = "SAFE")) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Cannot administer an unsafe vaccination!";
+	END IF;
+END $$
+
+CREATE TRIGGER VaccinesMustBeSafe_UPDATE
+BEFORE UPDATE ON Vaccinations
+FOR EACH ROW
+BEGIN
+	IF (NEW.vaccinationName NOT IN (SELECT vaccinationName FROM ApprovedVaccinations WHERE vaccinationType = "SAFE")) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Cannot administer an unsafe vaccination!";
+	END IF;
+END $$
+DELIMITER ;
+
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
+VALUES
+(6, NULL, 'Pfizer', '2020-11-12', 14, "I", 'QC', 'Canada', 1),
+(9, NULL, 'Pfizer', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2),
+(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (12, 6, 'AstraZeneca', '2020-08-12', 10, 'F', NULL, 'United States', 1),
 (12, 6, 'AstraZeneca', '2020-12-12', 10, 'F', NULL, 'United States', 2),
 (22, 9, 'Pfizer', '2020-07-10', 7, 'I', NULL, 'Iran', 1),
@@ -429,11 +586,9 @@ VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'B', 'QC', 'Canada', 1),
 (19, 2, 'PB', '2020-11-12', 8, 'B', NULL, 'Syria', 1),
 (19, 2, 'PB', '2020-12-12', 8, 'B', NULL, 'Syria', 2),
 (7, 2, 'Moderna', '2020-12-12', 9, 'B', NULL, 'Morocco', 1),
-(4, 2, 'AZ', '2020-11-12', 11, 'B', NULL, 'Algeria', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'B', NULL, 'Algeria', 2),
 (1, 9, 'AstraZeneca', '2020-12-12', 13, 'I', NULL, 'Tunisia', 1),
-(2, 9, 'AstraZeneca', '2020-11-12', 14, 'I', 'QC', 'Canada', 1),
-(2, 9, 'AstraZeneca', '2020-12-12', 14, 'I', 'BC', 'Canada', 2);
+(4, 2, 'AZ', '2020-11-12', 11, 'B', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'B', NULL, 'Algeria', 2);
 
 /*
 ====================================================================
@@ -445,9 +600,9 @@ DROP TABLE IF EXISTS FacilitySchedule;
 
 CREATE TABLE FacilitySchedule(
 name VARCHAR(100), -- This is the facility name.
-days VARCHAR(1000),
-openingHour TIME,
-closingHour TIME,
+days VARCHAR(1000) NOT NULL,
+openingHour TIME NOT NULL,
+closingHour TIME NOT NULL,
 PRIMARY KEY (name),
 FOREIGN KEY (name) REFERENCES PublicHealthFacilities(name)
 );
@@ -481,9 +636,9 @@ CREATE TABLE WorkerSchedule(
 pID int,
 workerID INT,
 facilityName VARCHAR(100),
-days VARCHAR(1000),
-startingHour TIME,
-endingHour TIME,
+days VARCHAR(1000) NOT NULL,
+startingHour TIME NOT NULL,
+endingHour TIME NOT NULL,
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (pID) REFERENCES Assignments (pID),
@@ -520,7 +675,7 @@ CREATE TABLE Appointments(
 date date,
 time time,
 pID int,
-facilityName varchar(100),
+facilityName varchar(100) NOT NULL,
 PRIMARY KEY(date, time),
 FOREIGN KEY (pID) REFERENCES Person(id),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
