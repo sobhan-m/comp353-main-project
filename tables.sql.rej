@@ -1,9 +1,0 @@
-diff a/tables.sql b/tables.sql	(rejected hunks)
-@@ -483,6 +483,7 @@
- endingHour TIME,
- PRIMARY KEY (workerID, facilityName),
- FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
-+FOREIGN KEY (pID) REFERENCES Assignments (pID),
- FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
- );
- 
