@@ -642,8 +642,6 @@ endingHour TIME NOT NULL,
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
 FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
-FOREIGN KEY (pID) REFERENCES Assignments (pID),
-FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
 
 SELECT * FROM WorkerSchedule;
