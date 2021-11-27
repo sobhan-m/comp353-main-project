@@ -70,3 +70,11 @@ table th {
 	border-bottom: 0.125rem solid black;
 	border-collapse: collapse;
 }
+
+input {
+	width: 14rem;
+}
+
+select {
+	width: 14rem;
+}
