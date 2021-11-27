@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 11");
+	fileHeader("Query 13");
 ?>
 
 <div class="instructions">
 	<p>
-		Display the first available spot for vaccination in a given facility starting from a given date (2022-12-25).
+		Display the Nurses that work for the facility but are not assigned to the facility on the specified date(test with K and 2020-04-01).
 	</p>
 </div>
 
@@ -31,9 +31,10 @@
             INNER JOIN HealthWorker HW ON HW.pID = A.pID
             INNER JOIN WorkerSchedule WS ON WS.pID = HW.pID
         WHERE HW.employeeType = 'Nurse' 
-        AND YEAR(A.startDate) = '$givenDate'
         AND A.facilityName = '$facilityName'
+        AND POSITION(DAYNAME('$givenDate') IN WS.days)
         ORDER BY hourlyWage";
+        
 
 		$result = $conn->query($query);
 
