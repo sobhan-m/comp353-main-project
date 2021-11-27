@@ -16,11 +16,11 @@
 
 <form method = "post" class="form-input">
 	<label for = "firstName"> First Name * </label>
-	<input type = "text" id = "firstName" name="firstName" required/> <br/>
+	<input type = "text" id = "firstName" name="firstName" placeholder = "John" required/> <br/>
 	<label for = "middleInitial"> Middle Initial * </label> 
-	<input type = "text" id = "middleInitial" name="middleInitial" required/><br/>
+	<input type = "text" id = "middleInitial" name="middleInitial" placeholder = "A" required/><br/>
 	<label for = "lastName"> Last Name * </label>
-	<input type = "text" id = "lastName" name="lastName" required/><br/>
+	<input type = "text" id = "lastName" name="lastName" placeholder = "Smith" required/><br/>
 	<button type = "submit"> Submit </button>
 </form>
 

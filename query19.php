@@ -12,7 +12,7 @@
 
 <form method = "post" class="form-input">
 	<label for = "city"> City * </label>
-	<input type = "text" id = "city" name="city" required/> <br/>
+	<input type = "text" id = "city" name="city" placeholder="Montreal" required/> <br/>
 	<button type = "submit"> Submit </button>
 </form>
 
