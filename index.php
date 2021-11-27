@@ -1,4 +1,7 @@
-<?php require_once("header.php"); ?>
+<?php 
+	require_once("header.php"); 
+	fileHeader("Home");
+?>
 
 <!-- Code Goes Here -->
 

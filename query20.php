@@ -1,10 +1,20 @@
 <?php 
-require_once("credentials.php"); 
-require_once("functions.php");
-require_once("header.php"); 
+	require_once("header.php"); 
+	fileHeader("Query 20");
 ?>
 
-<form method = "post">
+<div class="instructions">
+	<p>
+		Please enter your first name, middle initial, and last name in the fields below.
+	</p>
+	<p>
+		This will provide you with all the information regarding your vaccination appointments, 
+		previous vaccinations, and your history of vaccination if they apply.
+	</p>
+</div>
+
+
+<form method = "post" class="form-input">
 	<label for = "firstName"> First Name * </label>
 	<input type = "text" id = "firstName" name="firstName" required/> <br/>
 	<label for = "middleInitial"> Middle Initial * </label> 

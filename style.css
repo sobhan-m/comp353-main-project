@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan&display=swap');
+
+:root{
+    font-size: 16px;
+    font-family: 'Spartan', sans-serif;
+}
+
+body {
+    background-color: var(--primary);
+    color: var(--secondary);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+	margin-left: 2rem;
+}
+
+footer {
+	margin-left: 2rem
+}
+
+label {
+	font-size: 1.25rem;
+}
+
+.form-input {
+	display: flex;
+    align-items: center;
+	flex-direction: column;
+}
+
+.form-input > * {
+	margin-top: 0.125rem;
+	margin-bottom: 0.125rem;
+}
+
+.instructions {
+	margin-left: 2rem;
+}
+
+form button {
+	padding: 0.5rem 1rem;
+	border: none;
+	color: var(--primary);
+	background-color: var(--tertiary);
+	border-radius: 0.25rem;
+
+	font-size: 1rem;
+}
+
+form button:hover {
+	background-color: var(--accent-1);
+}
