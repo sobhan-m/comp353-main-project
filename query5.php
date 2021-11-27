@@ -5,13 +5,13 @@
 
 <!-- Code Goes Here -->
 
-	<form action="query5.php" method="POST">
+	<form method="POST">
 		<input type="text" name="newInfection" placeholder="Infection to add">
 		<button type="submit" name="sub1"> Submit </button>
 		
 	</form>
 	<br>
-	<form action="query5.php" method="POST">
+	<form actionmethod="POST">
 		<input type="text" name="deleteInfection" placeholder="Infection to delete">
 		<button type="submit" name="sub2"> Submit </button>
 	</form>
