@@ -335,8 +335,8 @@ FROM Person P INNER JOIN Assignments A ON P.id = A.pID
 	INNER JOIN HealthWorker HW ON HW.pID = A.pID
     INNER JOIN WorkerSchedule WS ON WS.pID = HW.pID
 WHERE HW.employeeType = "Nurse" 
-AND YEAR(A.startDate) = 0001
 AND A.facilityName = "K"
+AND POSITION(DAYNAME('2020-04-01') IN WS.days)
 ORDER BY hourlyWage;
 
 /*
