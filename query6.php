@@ -2,7 +2,6 @@
 require_once("header.php");
 fileHeader("Home");
 ?>
-
 <form method="POST">
     <input type="text" name="newAgeGroupID" placeholder="Age group to add">
     <input type="text" name="newAgeGroupMinAge" placeholder="Min">
