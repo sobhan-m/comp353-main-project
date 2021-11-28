@@ -107,7 +107,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "4") {
 		}
 	} else {
         echo "Values not found in database!" . "<br>";
-    }
+	}
 }
 ?>
 
