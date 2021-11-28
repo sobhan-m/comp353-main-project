@@ -105,7 +105,9 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "4") {
 		while ($row = mysqli_fetch_assoc($result4)) {
 			echo $row["name"] . "<br>";
 		}
-	}
+	} else {
+        echo "Values not found in database!" . "<br>";
+    }
 }
 ?>
 
