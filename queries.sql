@@ -333,12 +333,12 @@ WHERE FW.facilityName = "B" AND V.vaccinationDate="2020-12-12";
  Query 16
 ====================================================================
 */
-SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber)
+SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber) AS 'Total dose number
 FROM Person
  INNER JOIN  Appointments a ON Person.id = a.pID
  INNER JOIN PublicHealthFacilities phf ON phf.name = a.facilityName 
  LEFT JOIN Vaccinations v ON Person.id = v.id
-WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith"
+WHERE firstName = "Mark" AND middleInitial = "B" AND lastName = "Julius"
 GROUP BY Person.id
 ORDER BY Person.id;
 
