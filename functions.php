@@ -11,6 +11,20 @@ function connectToDatabase($serverName, $userName, $password, $databaseName)
 	return $conn;
 }
 
+function quote($input)
+{
+	return "'".$input."'";
+}
+
+function quoteOrDefault($input, $default = "DEFAULT")
+{
+	if ($input != "")
+		return quote($input);
+	else
+		return $default;
+}
+
+
 // Make a query with: $result = $mysqli->query("SELECT Blah");
 
 ?>
