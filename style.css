@@ -12,12 +12,8 @@ body {
     padding: 0;
 }
 
-header {
+header h1 {
 	margin-left: 2rem;
-}
-
-footer {
-	margin-left: 2rem
 }
 
 label {
@@ -45,8 +41,6 @@ form button {
 	color: var(--primary);
 	background-color: var(--tertiary);
 	border-radius: 0.25rem;
-
-	font-size: 1rem;
 }
 
 form button:hover {
@@ -77,4 +71,55 @@ input {
 
 select {
 	width: 14rem;
+}
+
+hr {
+	padding-left: 0rem !important;
+	margin-left: 0rem !important;
+}
+
+nav {
+	background-color: var(--tertiary);
+}
+
+nav a {
+	text-decoration: none;
+}
+
+nav a:hover {
+	background-color: var(--accent-1);
+}
+
+nav * {
+	margin: auto;
+	padding: 0.5rem 0.5rem;
+	align-items: center;
+
+	color: var(--primary);
+}
+
+.row {
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+	
+}
+
+footer {
+	position: sticky;
+	bottom: 0;
+	padding-bottom: 1rem;
+	padding-top: 1rem;
+	margin-top: 2rem;
+	width: 100%;
+	background-color: var(--tertiary);
+}
+
+footer * {
+	margin-left: 2rem;
+	color: var(--primary);
+}
+
+header ~ p,h2 {
+	margin-left: 2rem;
 }
