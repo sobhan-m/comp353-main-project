@@ -41,6 +41,9 @@ form button {
 	color: var(--primary);
 	background-color: var(--tertiary);
 	border-radius: 0.25rem;
+
+	width: 8rem;
+	height: 2rem;
 }
 
 form button:hover {
