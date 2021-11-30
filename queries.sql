@@ -344,9 +344,9 @@ ORDER BY hourlyWage;
  Query 14
 ====================================================================
 */
-
-SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity
+SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity, FS.openingHour, FS.closingHour
 FROM PublicHealthFacilities PHF
+JOIN FacilitySchedule FS ON FS.name=PHF.name
 WHERE PHF.name NOT IN (
 SELECT PHF.name
 	FROM PublicHealthFacilities PHF
@@ -365,12 +365,12 @@ SELECT PHF.name, P.firstName, P.middleInitial, P.lastName, HW.employeeType, WS.d
 FROM Person P INNER JOIN HealthWorker HW ON P.id = HW.pID
 	INNER JOIN WorkerSchedule WS ON  HW.pID = WS.pID
     INNER JOIN PublicHealthFacilities PHF ON WS.facilityName = PHF.name
-WHERE PHF.name = 'A' AND POSITION(DAYNAME('2020-04-01') IN WS.days);
+WHERE PHF.name = 'C' AND POSITION(DAYNAME('2021-01-25') IN WS.days);
+
 
 SELECT A.facilityName, A.date, A.time, P.firstName, P.middleInitial, P.lastName
 FROM Appointments A INNER JOIN Person P ON A.pID = P.id
-	WHERE A.facilityName = 'A' AND A.date = '2021-12-25';
-
+	WHERE A.facilityName = 'C' AND A.date = '2021-01-25';
 /*
 ====================================================================
  Query 16

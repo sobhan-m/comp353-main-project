@@ -647,10 +647,9 @@ FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityN
 SELECT * FROM WorkerSchedule;
 
 DELETE FROM WorkerSchedule;
-
+SELECT workerID, facilityName FROM Assignments;
 INSERT INTO WorkerSchedule(pID, workerID, facilityName, days, startingHour, endingHour)
 VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
-(1, 1, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
 (2, 2, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
 (3, 3, 'C', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (4, 4, 'D', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
@@ -659,8 +658,8 @@ VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:
 (7, 7, 'G', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (8, 8, 'H', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (9, 9, 'I', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
-(30, 20, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
-(31, 21, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
+(30, 20, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(31, 21, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
 
 /*
 ====================================================================
