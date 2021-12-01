@@ -23,10 +23,10 @@
 
 - Assignments(<ins>pID</ins>, <ins>facilityName</ins>, <ins>startDate</ins>, endDate, workerID, hourlyWage)
 
-- Vaccinations(<ins>id</ins>, workerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, facilityName, province, country, doseNumber) <!-- Does facilityName determine province and country? What if the people are vaccinated out of country in a different health facility? -->
+- Vaccinations(<ins>id</ins>, workerID, vaccinationName, <ins>vaccinationDate</ins>, lotNumber, facilityName, province, country, doseNumber)
 
 - FacilitySchedule(<ins>name</ins>, days, openingHour, closingHour)
 
-- WorkerSchedule( pID, <ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour) <!-- pID and (workerID, facilityName) determine each other. There is redundancy.-->
+- WorkerSchedule( pID, <ins>workerID</ins>, <ins>facilityName</ins>, days, startingHour, endingHour)
 
-- Appointments(<ins>date</ins>, <ins>time</ins>, pID, facilityName)
+- Appointments(<ins>date</ins>, <ins>time</ins>, pID, <ins>facilityName</ins>)
