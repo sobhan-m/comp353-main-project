@@ -19,10 +19,27 @@ Start by downloading the files:
 git clone https://github.com/Sobhan-M/comp353-main-project.git
 ```
 
-Then enter the folder and run a local PHP server:
+Then enter the folder:
 ```
 cd comp353-main-project
+```
+
+You then have to create a local file called "credentials.php" which should be in the following form (replace wherever relevant):
+```
+<?php
+
+// Change these to local credentials.
+$serverName = "mysql server";
+$userName = "mysql user";
+$password = "user password";
+$databaseName = "pnc353_2";
+
+?>
+```
+
+Finally run the PHP server using:
+```
 php -S localhost:8000
 ```
 
-The open a browser and go to localhost:8000 or alternatively click [here](http://localhost:8000/).
+Then open a browser and go to localhost:8000 or alternatively click [here](http://localhost:8000/).
