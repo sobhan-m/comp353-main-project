@@ -30,19 +30,7 @@
 
 	<label for = "name" class = "update insert"> Province </label>
 	<select id = "province" name = "province" class = "update insert">
-		<option> NL </option>
-		<option> PE </option>
-		<option> NS </option>
-		<option> NB </option>
-		<option> QC </option>
-		<option> ON </option>
-		<option> MB </option>
-		<option> SK </option>
-		<option> AB </option>
-		<option> YT </option>
-		<option> NT </option>
-		<option> NU </option>
-		<option> BC </option>
+		<?php printProvinceOptions($conn); ?>
 	</select>
 
 	<label for = "name" class = "update insert"> Country </label>
