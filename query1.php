@@ -322,9 +322,9 @@
 			// $infectionDate = quote($_POST["infectionDate"]);
 			// $type = quote($_POST["type"]);
 
-			$queryFirstName = quote($_POST["firstName"]);
-			$queryMiddleInitial = quote($_POST["middleInitial"]);
-			$queryLastName = quote($_POST["lastName"]);
+			$queryFirstName = quote($_POST["queryFirstName"]);
+			$queryMiddleInitial = quote($_POST["queryMiddleInitial"]);
+			$queryLastName = quote($_POST["queryLastName"]);
 
 			$pID = getPersonId($queryFirstName, $queryMiddleInitial, $queryLastName, $conn) ;
 
@@ -351,6 +351,10 @@
 		
 	}
 ?>
+
+<p>
+	For Infection History go to <a href = "query1-infections.php"> Infection History </a>.
+</p>
 
 
 <?php require("footer.php"); ?>

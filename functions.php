@@ -38,6 +38,40 @@ function getPersonId($firstName, $middleInitial, $lastName, $conn)
 	return $row["id"];
 }
 
+function printInfectionTypeOptions($conn)
+{
+	$result = $conn->query("SELECT * FROM InfectionTypes");
+	if (mysqli_num_rows($result) > 0)
+	{
+		while($row = mysqli_fetch_assoc($result)) 
+		{
+			$type = $row["name"];
+			echo "<option value = '$type'> $type </option>";
+		}
+	}
+	else
+	{
+		echo "<p> Error! No infection types found! </p>";
+	}
+}
+
+function printProvinceOptions($conn)
+{
+	$result = $conn->query("SELECT name FROM Province");
+	if (mysqli_num_rows($result) > 0)
+	{
+		while($row = mysqli_fetch_assoc($result)) 
+		{
+			$province = $row["name"];
+			echo "<option value = '$province'> $province </option>";
+		}
+	}
+	else
+	{
+		echo "<p> Error! No provinces found! </p>";
+	}
+}
+
 // Make a query with: $result = $mysqli->query("SELECT Blah");
 
 ?>
