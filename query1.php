@@ -182,12 +182,8 @@
 			INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
             VALUES($firstName, $middleInitial, $lastName, $dateOfBirth, $telephoneNumber, $address, $city, $province, $postalCode, $citizenship, $emailAddress, $ageGroupID)";
 
-            $getID = "SELECT id FROM Person WHERE firstName = $firstName";
 
-            $resultSQL = $conn->query($getID); 
-            $idRow = mysqli_fetch_assoc($resultSQL);
-
-            $pID = $idRow["id"];
+            $pID = getPersonId($firstName, $conn);
 
             $insertInInfectionHistory = "
             INSERT INTO InfectionHistory(personID, infectionDate, type)
@@ -206,8 +202,10 @@
 			if ($_POST["queryName"] != "")
 			{
 				$name = quote($_POST["queryName"]);
+                $pID = getPersonId($name, $conn);
 				$query = "
-				SELECT * FROM Person 
+                SELECT * FROM Person P
+                INNER JOIN InfectionHistory IH ON IH.personID = P.id
                 WHERE firstName = $name";
 			}
 			else
