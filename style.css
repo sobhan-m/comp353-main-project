@@ -35,7 +35,7 @@ label {
 	margin-left: 2rem;
 }
 
-form button {
+button {
 	padding: 0.5rem 1rem;
 	border: none;
 	color: var(--primary);
@@ -46,7 +46,7 @@ form button {
 	height: 2rem;
 }
 
-form button:hover {
+button:hover {
 	background-color: var(--accent-1);
 }
 
@@ -125,4 +125,13 @@ footer * {
 
 header ~ p,h2 {
 	margin-left: 2rem;
+}
+
+div.button-prompts * {
+	margin: 0.5rem 1rem;
+}
+
+div.button-prompts{
+	margin: auto;
+	align-items: center;
 }
