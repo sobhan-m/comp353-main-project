@@ -32,7 +32,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
     $newAgeGroupMinAge = $_POST["newAgeGroupMinAge"];
     $newAgeGroupMaxAge = $_POST["newAgeGroupMaxAge"];
     if ($newAgeGroupMinAge > $newAgeGroupMaxAge || $newAgeGroupID < 0) {
-        echo "There is an error in the entered values" . "<br>";
+        echo "<p> There is an error in the entered values </p>";
     } else {
         $sql = "INSERT INTO AgeGroup(groupID, minAge, maxAge) VALUES('$newAgeGroupID', '$newAgeGroupMinAge', '$newAgeGroupMaxAge')";
         $result = $conn->query($sql);
@@ -44,7 +44,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
 
     if ($resultCheck1 > 0) {
         while ($row = mysqli_fetch_assoc($result1)) {
-            echo $row["groupID"] . " " . $row["minAge"] . " " . $row["maxAge"] . "<br>";
+            echo "<p> Group ID: " . $row["groupID"] . " " . "Minimum age of the group: " . $row["minAge"] . " " . "Maximum age of the group: " . $row["maxAge"] . "</p>";
         }
     }
 
@@ -65,7 +65,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2") {
 
     if ($resultCheck2 > 0) {
         while ($row = mysqli_fetch_assoc($result2)) {
-            echo $row["groupID"] . " " . $row["minAge"] . " " . $row["maxAge"] . "<br>";
+            echo "<p> Group ID: " . $row["groupID"] . " " . "Minimum age of the group: " . $row["minAge"] . " " . "Maximum age of the group: " . $row["maxAge"] . "</p>";
         }
     } 
 }
@@ -90,7 +90,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "3") {
 
     if ($resultCheck3 > 0) {
         while ($row = mysqli_fetch_assoc($result3)) {
-            echo $row["groupID"] . " " . $row["minAge"] . " " . $row["maxAge"] . "<br>";
+            echo "<p> Group ID: " . $row["groupID"] . " " . "Minimum age of the group: " . $row["minAge"] . " " . "Maximum age of the group: " . $row["maxAge"] . "</p>";
         }
     } 
 }
@@ -111,10 +111,10 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "4") {
 
     if ($resultCheck4 > 0) {
         while ($row = mysqli_fetch_assoc($result4)) {
-            echo $row["groupID"] . " " . $row["minAge"] . " " . $row["maxAge"] . "<br>";
+            echo "<p> Group ID: " . $row["groupID"] . " " . "Minimum age of the group: " . $row["minAge"] . " " . "Maximum age of the group: " . $row["maxAge"] . "</p>";
         }
     } else {
-        echo "Values not found in database!" . "<br>";
+        echo "<p> Values not found in database! </p>";
     }
 }
 

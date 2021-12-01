@@ -10,19 +10,13 @@ fileHeader("Home");
     <input type="text" name="id" placeholder="ID">
     <input type="text" name="nurseID" placeholder="Nurse ID">
     <input type="text" name="vaccineName" placeholder="Vaccine Name">
-    <input type="text" name="dateOfVaccination" placeholder="Date of Vaccination">
+<!-- <input type="text" name="dateOfVaccination" placeholder="Date of Vaccination">-->
     <input type="text" name="lotNumber" placeholder="Lot Number">
-    <input type="text" name="facilityName" placeholder="Name of facility">
     <input type="text" name="province" placeholder="Province">
     <input type="text" name="country" placeholder="Country">
-    <input type="text" name="doseNumber" placeHolder="Dose number">
     <button type="submit" name="sub1" value="1"> Submit </button>
 </form>
 <br>
-<form method="POST">
-    <input type="text" name="ageToDelete" placeholder="Min age of age group">
-    <button type="submit" name="sub1" value="2"> Submit </button>
-</form>
 <?php
 if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
 
@@ -32,41 +26,71 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
     $id = $_POST["id"];
     $nurseID = $_POST["nurseID"];
     $vaccineName = $_POST["vaccineName"];
-    $dateOfVaccination = $_POST["dateOfVaccination"];
     $lotNumber = $_POST["lotNumber"];
-    $facilityName = $_POST["facilityName"];
     $province = $_POST["province"];
     $country = $_POST["country"];
-    $doseNumber = $_POST["doseNumber"];
-    $sql = "SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber) AS 'Total dose number'
+
+    $sql = "SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber) AS 'Total dose number', a.facilityName AS 'Facility Name', a.date AS 'Date'
     FROM Person
      INNER JOIN  Appointments a ON Person.id = a.pID
      INNER JOIN PublicHealthFacilities phf ON phf.name = a.facilityName 
      LEFT JOIN Vaccinations v ON Person.id = v.id
-    WHERE firstName = '$fName' AND middleInitial = '$mInitial' AND lastName = '$lName'
+    WHERE firstName = '$fName' AND middleInitial ='$mInitial' AND lastName = '$lName'
     GROUP BY Person.id
-    ORDER BY Person.id";
+    ORDER BY Person.id, a.date";
+
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
-    if ($row["Total dose number"] >= 2) {
-        echo "This person is fully vaccinated already!" . "<br>";
-    } elseif ($doseNumber <= 2 && $doseNumber >= 1){
-        $sql1 = "INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber) VALUES('$id', '$nurseID', '$vaccineName', '$dateOfVaccination', '$lotNumber', '$facilityName', '$province', '$country', '$doseNumber')";
-        $result = $conn->query($sql1);
-        echo "This person received his vaccine!" . "<br>";
-    }
-    
 
-    $sql2 = "SELECT * FROM Vaccinations";
+    if (mysqli_num_rows($result) > 0) {
+
+        if ($row["Total dose number"] == 2) {
+            echo "<p> This person is fully vaccinated already! </p>";
+
+        } else if ($row["Total dose number"] == 1) {
+            $dateOfVaccination = $row["Date"];
+            
+            $facilityName = $row["Facility Name"];
+            $doseNumber = 2;
+            $secondVaccineTest = "SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
+            $result = $conn->query($secondVaccineTest);
+            $appointmentVerification = mysqli_fetch_assoc($result);
+            if(mysqli_num_rows($result) > 0){
+                $correctDateOfVaccinationSearch = "SELECT a.date FROM Appointments a WHERE a.date <> '$dateOfVaccination' AND pID = '$id'";
+                $result = $conn->query($correctDateOfVaccinationSearch);
+                $realDateOfVaccination = mysqli_fetch_assoc($result);
+                $dateOfVaccination = $realDateOfVaccination["date"];
+            }
+            echo $dateOfVaccination . "<br>";
+            $sql1 = "INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+                    VALUES('$id', '$nurseID', '$vaccineName', '$dateOfVaccination', '$lotNumber', '$facilityName', '$province', '$country', '$doseNumber')";
+            $result = $conn->query($sql1);
+            echo "<p> This person received his vaccine! </p>";
+
+        } else if ($row["Total dose number"] == 0) {
+            $dateOfVaccination = $row["Date"];
+            echo $dateOfVaccination . "<br>";
+            $facilityName = $row["Facility Name"];
+            $doseNumber = 1;
+            $sql1 = "INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
+                    VALUES('$id', '$nurseID', '$vaccineName', '$dateOfVaccination', '$lotNumber', '$facilityName', '$province', '$country', '$doseNumber')";
+            $result = $conn->query($sql1);
+
+        }
+    } else {
+        echo "<p> This person does not have an appointment </p>";
+
+    }
+
+    $sql2 = "SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
     $result1 = $conn->query($sql2);
     $resultCheck1 = mysqli_num_rows($result1);
 
-    if($resultCheck1 > 0){
-        while($rows1 = mysqli_fetch_assoc($result1)){
-            echo $rows1["id"] . " " . $rows1["doseNumber"] . "<br>";
+    if ($resultCheck1 > 0) {
+        while ($rows1 = mysqli_fetch_assoc($result1)) {
+            echo "<p>" . $rows1["id"] . " " . $rows1["doseNumber"] . "</p>";
         }
     }
-
 }
 ?>
 <?php require("footer.php"); ?>
