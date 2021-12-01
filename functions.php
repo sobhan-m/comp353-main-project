@@ -24,15 +24,18 @@ function quoteOrDefault($input, $default = "DEFAULT")
 		return $default;
 }
 
-function getPersonId($firstName, $conn)
+function getPersonId($firstName, $middleInitial, $lastName, $conn)
 {
 
-	$getID = "SELECT id FROM Person WHERE firstName = $firstName";
-	$resultSQL = $conn->query($getID); 
-	$idRow = mysqli_fetch_assoc($resultSQL);
-	$pID = $idRow["id"];
-	echo $pID."Person ID FUNCTION";
-	return $pID;
+	$getID = "SELECT id FROM Person WHERE firstName = $firstName AND middleInitial = $middleInitial AND lastName = $lastName";
+	$result = $conn->query($getID); 
+	if (mysqli_num_rows($result) == 0)
+	{
+		echo "<p> This person does not exist in our database. </p>";
+		return null;
+	}
+	$row = mysqli_fetch_assoc($result);
+	return $row["id"];
 }
 
 // Make a query with: $result = $mysqli->query("SELECT Blah");
