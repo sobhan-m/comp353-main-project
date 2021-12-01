@@ -41,7 +41,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
 
 	if ($resultCheck > 0) {
 		while ($row = mysqli_fetch_assoc($result1)) {
-			echo $row["name"] . "<br>";
+			echo "<p>" . $row["name"] . "</p>";
 		}
 	}
 }
@@ -51,10 +51,6 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
 if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2") {
 	$infectionToDelete;
 	$infectionToDelete = $_POST["deleteInfection"];
-
-	//$sql0 = "SELECT * FROM InfectionTypes";
-	//$result0 = $conn->query($sql0);
-	//$resultCheck0 = mysqli_num_rows($result0);
 
 	$sql = "DELETE FROM InfectionTypes WHERE name = '$infectionToDelete'";
 	$result = $conn->query($sql);
@@ -67,7 +63,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2") {
 	//	echo "Key Constraint: Failed to delete";
 	if ($resultCheck > 0) {
 		while ($row = mysqli_fetch_assoc($result2)) {
-			echo $row["name"] . "<br>";
+			echo "<p>" . $row["name"] . "</p>";
 		}
 	}
 }
@@ -87,7 +83,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "3") {
 
 	if ($resultCheck > 0) {
 		while ($row = mysqli_fetch_assoc($result3)) {
-			echo $row["name"] . "<br>";
+			echo "<p>" . $row["name"] . "</p>";
 		}
 	}
 }
@@ -103,10 +99,10 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "4") {
 
 	if ($resultCheck > 0) {
 		while ($row = mysqli_fetch_assoc($result4)) {
-			echo $row["name"] . "<br>";
+			echo "<p>" . $row["name"] . "</p>";
 		}
 	} else {
-        echo "Values not found in database!" . "<br>";
+        echo "<p> Values not found in database! </p>";
 	}
 }
 ?>

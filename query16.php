@@ -26,7 +26,6 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
     $id = $_POST["id"];
     $nurseID = $_POST["nurseID"];
     $vaccineName = $_POST["vaccineName"];
-    //$dateOfVaccination = $_POST["dateOfVaccination"];
     $lotNumber = $_POST["lotNumber"];
     $province = $_POST["province"];
     $country = $_POST["country"];
