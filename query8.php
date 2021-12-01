@@ -19,7 +19,7 @@
 		// Updating stuff.
 		if ($_POST["update"] != NULL)
 		{
-			if ($_POST["queryName"] != null)
+			if ($_POST["name"] != null)
 			{
 				$name = "'".$_POST["name"]."'";
 				$AgeGroupID = "'".$_POST["AgeGroupID"]."'";

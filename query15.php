@@ -24,7 +24,8 @@
 	if ($_POST != null)
 	{
         $givenDate = $_POST["given_date"];
-
+		$facilityName = $_POST["facility_name"];
+		
 		$query = "
 		SELECT PHF.name, P.firstName, P.middleInitial, P.lastName, HW.employeeType, WS.days, WS.startingHour, WS.endingHour
 		FROM Person P INNER JOIN HealthWorker HW ON P.id = HW.pID
