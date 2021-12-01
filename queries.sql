@@ -36,8 +36,7 @@ WHERE personID = 34;
 -- Displaying.
 SELECT * FROM Person P
 INNER JOIN InfectionHistory IH ON IH.personID = P.id
-WHERE firstName = 'Johnny'
-AND id = 32;
+WHERE firstName = 'Johnny';
 
 /*
 ====================================================================
