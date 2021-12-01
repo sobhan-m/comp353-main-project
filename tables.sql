@@ -272,6 +272,7 @@ pID INT,
 ssn INT,
 employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL DEFAULT "Regular Employee",
 PRIMARY KEY (pID),
+UNIQUE (ssn),
 FOREIGN KEY (pID) REFERENCES Registered(id)
 	ON DELETE CASCADE
 	ON UPDATE CASCADE
