@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 18");
+	fileHeader("Query 3");
 ?>
 
 <div class="instructions">
@@ -9,16 +9,27 @@
 	</p>
 </div>
 
+<div class = "row button-prompts">
+	<button type="button" onclick="DisplayInserts();"> Insert </button>
+	<button type="button" onclick="DisplayQueries();"> Queries </button>
+	<button type="button" onclick="DisplayDeletes();"> Delete </button>
+	<button type="button" onclick="DisplayUpdates();"> Update </button>
+</div>
+
 
 <form method = "post" class="form-input">
-	<label for = "name"> Name * </label>
-	<input type = "text" id = "name" name="name" placeholder="General Hospital"/>
-	<label for = "name"> Street Address </label>
-	<input type = "text" id = "address" name="address" placeholder="Guy Street" />
-	<label for = "name"> City </label>
-	<input type = "text" id = "city" name="city" placeholder="Montreal"/>
-	<label for = "name"> Province </label>
-	<select id = "province" name = "province">
+
+	<label for = "name" class = "update insert"> Name * </label>
+	<input type = "text" id = "name" name="name" placeholder="General Hospital" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> Street Address </label>
+	<input type = "text" id = "address" name="address" placeholder="Guy Street" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> City </label>
+	<input type = "text" id = "city" name="city" placeholder="Montreal" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> Province </label>
+	<select id = "province" name = "province" class = "update insert">
 		<option> NL </option>
 		<option> PE </option>
 		<option> NS </option>
@@ -33,36 +44,128 @@
 		<option> NU </option>
 		<option> BC </option>
 	</select>
-	<label for = "name"> Country </label>
-	<input type = "text" id = "country" name="country" placeholder="Canada"/>
-	<label for = "name"> Phone Number </label>
-	<input type = "text" id = "phoneNumber" name="phoneNumber" placeholder="111111111" pattern="[0-9]+"/>
-	<label for = "name"> Web Address </label>
-	<input type = "text" id = "webAddress" name="webAddress" placeholder="www.abc.com"/>
-	<label for = "name"> Facility Type </label>
-	<select id = "facilityType" name = "facilityType">
+
+	<label for = "name" class = "update insert"> Country </label>
+	<input type = "text" id = "country" name="country" placeholder="Canada" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> Phone Number </label>
+	<input type = "text" id = "phoneNumber" name="phoneNumber" placeholder="111111111" pattern="[0-9]+" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> Web Address </label>
+	<input type = "text" id = "webAddress" name="webAddress" placeholder="www.abc.com" class = "update insert"/>
+
+	<label for = "name" class = "update insert"> Facility Type </label>
+	<select id = "facilityType" name = "facilityType" class = "update insert">
 		<option value = "HOSPITAL"> Hospital </option>
 		<option value = "CLINIC"> Clinic </option>
 		<option value = "SPECIAL INSTALLMENT"> Special Installment </option>
 	</select>
-	<label for = "name"> Category </label>
-	<select id = "category" name = "category">
+
+	<label for = "name" class = "update insert"> Category </label>
+	<select id = "category" name = "category" class = "update insert">
 		<option value = "RESERVATION-ONLY"> Reservation Only </option>
 		<option value = "WALKIN-ALLOWED"> Walk-In Allowed </option>
 	</select>
-	<label for = "name"> Capacity * </label>
-	<input type = "text" id = "capacity" name="capacity" placeholder="10" pattern="[0-9]+"/>
-	<label for = "name"> Manager ID </label>
-	<input type = "text" id = "managerID" name="managerID" placeholder="9"/>
-	<button type = "submit" name = "insert" value = "insert"> Insert Value </button>
 
+	<label for = "name" class = "update insert"> Capacity * </label>
+	<input type = "text" id = "capacity" name="capacity" placeholder="10" pattern="[0-9]+" class = "update insert"/>
 
-	<label for = "queryName"> Query Name </label>
-	<input type = "text" id = "queryName" name="queryName" placeholder="General Hospital"/>
-	<button type = "submit" name = "query" value = "query"> Query Table </button>
-	<button type = "submit" name = "delete" value = "delete"> Delete Value </button>
-	<button type = "submit" name = "update" value = "update"> Update Value </button>
+	<label for = "name" class = "update insert"> Manager ID </label>
+	<input type = "text" id = "managerID" name="managerID" placeholder="9" class = "update insert"/>
+
+	<button type = "submit" name = "insert" value = "insert" class = "insert"> Insert Value </button>
+
+	<label for = "queryName" class = "query delete update"> Query Name </label>
+	<input type = "text" id = "queryName" name="queryName" placeholder="General Hospital" class = "query delete update"/>
+
+	<button type = "submit" name = "query" value = "query" class = "query"> Query Table </button>
+
+	<button type = "submit" name = "delete" value = "delete" class = "delete"> Delete Value </button>
+
+	<button type = "submit" name = "update" value = "update" class = "update"> Update Value </button>
 </form>
+
+<script type="text/javascript">
+	var queries = document.getElementsByClassName("query");
+	var updates = document.getElementsByClassName("update");
+	var deletes = document.getElementsByClassName("delete");
+	var inserts = document.getElementsByClassName("insert");
+
+	function HideAll(input)
+	{
+		for (let i = 0; i < input.length; ++i)
+		{
+			if (input[i].required == true)
+				input[i].required = false;
+			input[i].style.display = "none";
+		}
+	}
+
+	function DisplayAll(input)
+	{
+		for (let i = 0; i < input.length; ++i)
+		{
+			input[i].style.display = "block";
+		}
+
+		buttons = document.getElementsByTagName("button");
+		for (let i = 0; i < buttons.length; ++i)
+		{
+			if (buttons[i].style.display == "none")
+			{
+				buttons[i].disabled = true;
+			}
+			else
+			{
+				buttons[i].disabled = false;
+			}
+		}
+	}
+
+	function DisplayQueries()
+	{
+		HideAll(updates);
+		HideAll(deletes);
+		HideAll(inserts);
+		DisplayAll(queries);
+	}
+
+	function DisplayUpdates()
+	{
+		HideAll(queries);
+		HideAll(deletes);
+		HideAll(inserts);
+		DisplayAll(updates);
+		document.getElementById("name").required = true;
+		document.getElementById("capacity").required = true;
+		document.getElementById("queryName").required = true;
+	}
+
+	function DisplayDeletes()
+	{
+		HideAll(queries);
+		HideAll(updates);
+		HideAll(inserts);
+		DisplayAll(deletes);
+		document.getElementById("queryName").required = true;
+	}
+
+	function DisplayInserts()
+	{
+		HideAll(queries);
+		HideAll(updates);
+		HideAll(deletes);
+		DisplayAll(inserts);
+		document.getElementById("name").required = true;
+		document.getElementById("capacity").required = true;
+	}
+
+	HideAll(updates);
+	HideAll(queries);
+	HideAll(deletes);
+	HideAll(inserts);
+
+</script>
 
 <?php
 
