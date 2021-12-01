@@ -714,7 +714,7 @@ date date,
 time time,
 pID int,
 facilityName varchar(100) NOT NULL,
-PRIMARY KEY(date, time),
+PRIMARY KEY(date, time, facilityName),
 FOREIGN KEY (pID) REFERENCES Person(id)
 	ON DELETE SET NULL
 	ON UPDATE CASCADE,
