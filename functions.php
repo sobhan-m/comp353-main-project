@@ -31,7 +31,7 @@ function getPersonId($firstName, $conn)
 	$resultSQL = $conn->query($getID); 
 	$idRow = mysqli_fetch_assoc($resultSQL);
 	$pID = $idRow["id"];
-	
+	echo $pID."Person ID FUNCTION";
 	return $pID;
 }
 

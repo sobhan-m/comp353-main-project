@@ -214,7 +214,7 @@
 				if ($conn->query($query) === TRUE) {
 					echo "<p> Successfully deleted the entry!</p>";
 				} else {
-					echo "<p> Error: " . $insert . ": <br>" . $conn->error . "</p>";
+					echo "<p> Error: " . $query . ": <br>" . $conn->error . "</p>";
 				}
 			}
 			else

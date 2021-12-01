@@ -20,7 +20,7 @@
 <form method = "post" class="form-input">
 
 	<label for = "firstName" class = "update insert"> First Name  </label>
-	<input type = "text" id = "firstName" name="firstName" placeholder="First Name" class = "update insert" required/>
+	<input type = "text" id = "firstName" name="firstName" placeholder="First Name" class = "update query delete insert" required/>
 
 	<label for = "middleInitial" class = "update insert"> First Name  </label>
 	<input type = "text" id = "middleInitial" name="middleInitial" placeholder="Middle Initial" class = "update insert" required/>
@@ -52,9 +52,6 @@
     <label for = "emailAddress" class = "update insert"> Email address </label>
 	<input type = "text" id = "emailAddress" name="emailAddress" placeholder="name@domain.com" class = "update insert" />
 
-    <label for = "ageGroupID" class = "update insert"> Age Group ID </label>
-	<input type = "text" id = "ageGroupID" name="ageGroupID" placeholder="0-10" class = "update insert" />
-
     <label for = "infectionDate" class = "update insert"> Infection Date </label>
 	<input type = "date" id = "infectionDate" name="infectionDate" class = "update insert"/>
 
@@ -62,9 +59,6 @@
 	<input type = "text" id = "type" name="type" placeholder="Alpha" class = "update insert" />
 
 	<button type = "submit" name = "insert" value = "insert" class = "insert"> Insert Value </button>
-
-	<label for = "queryName" class = "update query delete"> Search Vaccination Name </label>
-	<input type = "text" id = "queryName" name="queryName" placeholder="Pfizer" class = "update query delete"/>
 
 	<button type = "submit" name = "query" value = "query" class = "query"> Query Table </button>
 
@@ -125,8 +119,9 @@
 		HideAll(deletes);
 		HideAll(inserts);
 		DisplayAll(updates);
-		document.getElementById("vaccinationName").required = true;
-		document.getElementById("queryName").required = true;
+		document.getElementById("firstName").required = true;
+        document.getElementById("middleInitial").required = true;
+        document.getElementById("lastName").required = true;
 	}
 
 	function DisplayDeletes()
@@ -135,7 +130,7 @@
 		HideAll(updates);
 		HideAll(inserts);
 		DisplayAll(deletes);
-		document.getElementById("queryName").required = true;
+        document.getElementById("firstName").required = true;
 	}
 
 	function DisplayInserts()
@@ -144,7 +139,10 @@
 		HideAll(updates);
 		HideAll(deletes);
 		DisplayAll(inserts);
-		document.getElementById("vaccinationName").required = true;
+		document.getElementById("firstName").required = true;
+        document.getElementById("middleInitial").required = true;
+        document.getElementById("lastName").required = true;
+        
 	}
 
 	HideAll(updates);
@@ -174,16 +172,17 @@
             $postalCode = quote($_POST["postalCode"]);
             $citizenship = quote($_POST["citizenship"]);
 			$emailAddress = quote($_POST["emailAddress"]);
-            $ageGroupID = quote($_POST["ageGroupID"]);
             $infectionDate = quote($_POST["infectionDate"]);
             $type = quote($_POST["type"]);
 
 			$insertInPerson = "
-			INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
-            VALUES($firstName, $middleInitial, $lastName, $dateOfBirth, $telephoneNumber, $address, $city, $province, $postalCode, $citizenship, $emailAddress, $ageGroupID)";
+			INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
+            VALUES($firstName, $middleInitial, $lastName, $dateOfBirth, $telephoneNumber, $address, $city, $province, $postalCode, $citizenship, $emailAddress)";
 
 
             $pID = getPersonId($firstName, $conn);
+
+            echo $pID;
 
             $insertInInfectionHistory = "
             INSERT INTO InfectionHistory(personID, infectionDate, type)
@@ -196,13 +195,12 @@
 			}
 		}
 
-		// Querying stuff.
+		// Querying stuff. / Display
 		if ($_POST["query"] != NULL)
 		{
-			if ($_POST["queryName"] != "")
+			if ($_POST["firstName"] != "")
 			{
-				$name = quote($_POST["queryName"]);
-                $pID = getPersonId($name, $conn);
+				$name = quote($_POST["firstName"]);
 				$query = "
                 SELECT * FROM Person P
                 INNER JOIN InfectionHistory IH ON IH.personID = P.id
@@ -212,59 +210,88 @@
 			{
 				$query = "
 				SELECT *
-				FROM ApprovedVaccinations";
+				FROM Person P 
+                INNER JOIN InfectionHistory IH ON IH.personID = P.id";
 			}
 
 			$result = $conn->query($query);
 
 			if (mysqli_num_rows($result) > 0) 
 			{
-				echo "<h2> Vaccines </h2>";
+				echo "<h2> Person INNER JOIN Infection History</h2>";
 				echo "
 					<table>
 						<tr>
-							<th> Vaccination Name </th>
-							<th> Date Of Approval </th>
-							<th> Vaccination Type </th>
-							<th> Date Of Suspension </th>
+                            <th> First Name </th>
+                            <th> Middle Initial </th>
+                            <th> Last Name </th>
+                            <th> Date of Birth </th>
+                            <th> Telephone number </th>
+                            <th> Address </th>
+                            <th> City </th>
+                            <th> Province </th>
+                            <th> Postal Code </th>
+                            <th> Citizenship </th>
+                            <th> Email </th>
+							<th> Infection Date </th>
+							<th> Infection Type </th>
 						</tr>";
 
 				while($row = mysqli_fetch_assoc($result)) 
 				{
 					echo "<tr>
-							<td> ".$row["vaccinationName"]." </td>
-							<td> ".$row["dateOfApproval"]." </td>
-							<td> ".$row["vaccinationType"]." </td>
-							<td> ".$row["dateOfSuspension"]." </td>					
+							<td> ".$row["firstName"]." </td>
+							<td> ".$row["middleInitial"]." </td>
+							<td> ".$row["lastName"]." </td>
+							<td> ".$row["dateOfBirth"]." </td>	
+                            <td> ".$row["telephoneNumber"]." </td>
+							<td> ".$row["address"]." </td>
+							<td> ".$row["city"]." </td>
+							<td> ".$row["province"]." </td>	
+                            <td> ".$row["postalCode"]." </td>
+							<td> ".$row["citizenship"]." </td>
+							<td> ".$row["emailAddress"]." </td>
+                            <td> ".$row["infectionDate"]." </td>			
+                            <td> ".$row["type"]." </td>		
 						</tr>";
 				}
 				echo "</table>";
 			}
 			else
 			{
-				echo "<p> There are no vaccines that match your request! </p>";
+				echo "<p> There are no results that match your request! </p>";
 			}
 				
 		}
 
+        // Deleting stuff.
 		if ($_POST["delete"] != NULL)
 		{
-			if ($_POST["queryName"] != null)
+			if ($_POST["firstName"] != null)
 			{
-				$name = quote($_POST["queryName"]);
-				$query = "
-				DELETE FROM ApprovedVaccinations
-				WHERE vaccinationName = $name";
+				$name = quote($_POST["firstName"]);
+
+                echo $name;
+				$deleteFromPerson = "
+				DELETE FROM Person
+                WHERE firstName = $name";
+
+                $pID = getPersonId($name, $conn);
+                echo $pID;
+
+                $deleteFromInfectionHistory = "
+                DELETE FROM InfectionHistory
+                WHERE $pID";
 
 				if ($conn->query($query) === TRUE) {
 					echo "<p> Successfully deleted the entry!</p>";
 				} else {
-					echo "<p> Error: " . $insert . ": <br>" . $conn->error . "</p>";
+					echo "<p> Error: " . $deleteFromPerson . ": <br>" . $conn->error . "</p>";
 				}
 			}
 			else
 			{
-				echo "<p> Please fill the 'Query Name' input with the facility you want to delete. </p>";
+				echo "<p> Please fill the 'firstName' input with the person you're looking up. </p>";
 			}
 			
 		}
@@ -272,29 +299,44 @@
 		// Updating stuff.
 		if ($_POST["update"] != NULL)
 		{
-			if ($_POST["queryName"] != null)
+			if ($_POST["firstName"] != null)
 			{
-				$vaccinationName = quote($_POST["vaccinationName"]);
-				$dateOfApproval = quoteOrDefault($_POST["dateOfApproval"]);
-				$vaccinationType = quoteOrDefault($_POST["vaccinationType"]);
-				$dateOfSuspension = quoteOrDefault($_POST["dateOfSuspension"]);
+                $firstName = quote($_POST["firstName"]);
+                $middleInitial = quote($_POST["middleInitial"]);
+                $lastName = quote($_POST["lastName"]);
+                $dateOfBirth = quote($_POST["dateOfBirth"]);
+                $telephoneNumber = quote($_POST["telephoneNumber"]);
+                $address = quote($_POST["address"]);
+                $city = quote($_POST["city"]);
+                $province = quote($_POST["province"]);
+                $postalCode = quote($_POST["postalCode"]);
+                $citizenship = quote($_POST["citizenship"]);
+                $emailAddress = quote($_POST["emailAddress"]);
+                $infectionDate = quote($_POST["infectionDate"]);
+                $type = quote($_POST["type"]);
 
-				$name = quote($_POST["queryName"]);
-				$insert = "
-				UPDATE ApprovedVaccinations
-				SET vaccinationName = $vaccinationName, dateOfApproval = $dateOfApproval, 
-					vaccinationType = $vaccinationType, dateOfSuspension = $dateOfSuspension
-				WHERE vaccinationName = $name";
+				$name = quote($_POST["firstName"]);
+				$updatePerson = "
+                UPDATE Person
+				SET firstName = $firstName, middleInitial = $middleInitial, lastName = $lastName, dateOfBirth = $dateOfBirth, telephoneNumber = $telephoneNumber, address= $address, city = $city, province = $province, postalCode = $postalCode, citizenship = $citizenship, emailAddress = $emailAddress
+                WHERE firstName = $firstName";
 
-				if ($conn->query($insert) === TRUE) {
+                $pID = getPersonId($firstName, $conn) ;
+
+                $updateInfectionHistory = "
+                UPDATE InfectionHistory
+                SET infectionDate = $infectionDate, type = $type
+                WHERE personID = $pID";
+
+				if ($conn->query($updatePerson) === TRUE) {
 					echo "<p> Successfully updated the entry!</p>";
 				} else {
-					echo "<p> Error: " . $insert . ": <br>" . $conn->error . "</p>";
+					echo "<p> Error: " . $updatePerson . ": <br>" . $conn->error . "</p>";
 				}
 			}
 			else
 			{
-				echo "<p> Please fill the 'Query Name' input with the facility you want to update. </p>";
+				echo "<p> Please fill the stuff in input if you want to update. </p>";
 			}
 			
 		}

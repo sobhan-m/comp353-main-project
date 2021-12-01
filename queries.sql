@@ -30,7 +30,7 @@ SET firstName = 'Johnathan', middleInitial = 'X', lastName = 'Smithhh', dateOfBi
 WHERE firstName = 'Johnny';
 
 UPDATE InfectionHistory
-SET personID = 33, infectionDate = '2020-10-10', type = "Alpha"
+SET infectionDate = '2020-10-10', type = "Alpha"
 WHERE personID = 34;
 
 -- Displaying.
