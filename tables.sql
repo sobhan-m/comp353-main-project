@@ -531,6 +531,7 @@ DELETE FROM Appointments;
 
 INSERT INTO Appointments(date, time, pID, facilityName)
 VALUES("2021-12-25" , "12:00:00" , 9, "A"),
+("2021-12-30", "12:00:00", 9, "A"),
 ("2021-11-25" , "13:00:00" , 1, "B"),
 ("2021-01-25" , "12:00:00" , 2, "C"),
 ("2021-09-25" , "12:00:00" , 3, "D"),
