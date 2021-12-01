@@ -75,7 +75,9 @@ CREATE TABLE Province(
 name VARCHAR(100), 
 ageGroup int DEFAULT 0, 
 PRIMARY KEY(name),
-FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
 
 SELECT * FROM Province;
 
@@ -120,6 +122,8 @@ emailAddress VARCHAR(100),
 PRIMARY KEY(id),
 UNIQUE (firstName, middleInitial, lastName),
 FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Person;
@@ -171,8 +175,12 @@ CREATE TABLE PersonAgeGroup(
 	id INT,
 	ageGroupID INT,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id) REFERENCES Person(id),
+	FOREIGN KEY (id) REFERENCES Person(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
 	FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 SELECT * FROM PersonAgeGroup;
@@ -196,6 +204,8 @@ medicareIssueDate DATE NOT NULL,
 medicareExpiryDate DATE NOT NULL,
 PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Registered;
@@ -238,6 +248,8 @@ id INT NOT NULL,
 passportNum INT AUTO_INCREMENT,
 PRIMARY KEY (passportNum),
 FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Unregistered;
@@ -261,6 +273,8 @@ ssn INT,
 employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL,
 PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Registered(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM HealthWorker;
@@ -312,8 +326,12 @@ personID INT,
 infectionDate DATE,
 type varchar(100) DEFAULT "Unknown",
 PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (personID) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 FOREIGN KEY (type) REFERENCES InfectionTypes(name)
+	ON DELETE SET DEFAULT
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM InfectionHistory;
@@ -344,8 +362,12 @@ facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
 capacity INT NOT NULL,
 managerID INT,
-FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
-FOREIGN KEY (province) REFERENCES Province(name),
+FOREIGN KEY (managerID) REFERENCES HealthWorker(pID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 PRIMARY KEY (name)
 );
 
@@ -384,8 +406,12 @@ workerID INT AUTO_INCREMENT NOT NULL,
 hourlyWage FLOAT,
 UNIQUE (workerID, facilityName),
 PRIMARY KEY (pID, facilityName, startDate),
-FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Assignments;
@@ -426,7 +452,7 @@ DROP TABLE IF EXISTS Vaccinations;
 CREATE TABLE Vaccinations(
 id INT,
 workerID INT,
-vaccinationName VARCHAR(100) NOT NULL,
+vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
@@ -434,10 +460,18 @@ province VARCHAR(100),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
-FOREIGN KEY (id) REFERENCES Person(id),
-FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName),
-FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
+FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Vaccinations;
@@ -605,6 +639,8 @@ openingHour TIME NOT NULL,
 closingHour TIME NOT NULL,
 PRIMARY KEY (name),
 FOREIGN KEY (name) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM FacilitySchedule;
@@ -640,8 +676,12 @@ days VARCHAR(1000) NOT NULL,
 startingHour TIME NOT NULL,
 endingHour TIME NOT NULL,
 PRIMARY KEY (workerID, facilityName),
-FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM WorkerSchedule;
@@ -675,8 +715,12 @@ time time,
 pID int,
 facilityName varchar(100) NOT NULL,
 PRIMARY KEY(date, time),
-FOREIGN KEY (pID) REFERENCES Person(id),
+FOREIGN KEY (pID) REFERENCES Person(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Appointments;
