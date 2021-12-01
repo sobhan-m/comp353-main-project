@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS Project;
-CREATE DATABASE Project;
-USE Project;
+DROP DATABASE IF EXISTS pnc353_2;
+CREATE DATABASE pnc353_2;
+USE pnc353_2;
 
 /*
 ====================================================================
