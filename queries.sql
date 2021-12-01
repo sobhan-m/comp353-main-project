@@ -7,11 +7,11 @@
 
 -- Creating.
 
-INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
-VALUES ("Johnny", "AB", "Smithson", '1990-01-01', 000100, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6);
+INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
+VALUES ("Johnny", "AB", "Smithson", '1990-01-01', 000100, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com');
 
 INSERT INTO InfectionHistory(personID, infectionDate, type)
-VALUES (34, '2021-02-01', "Beta");
+VALUES (32, '2021-02-01', "Beta");
 
 -- php should take care of getting the ID from Person for infection history
 
@@ -34,11 +34,10 @@ SET personID = 33, infectionDate = '2020-10-10', type = "Alpha"
 WHERE personID = 34;
 
 -- Displaying.
-SELECT * FROM Person 
-WHERE firstName = 'Johnny';
-
-SELECT * FROM InfectionHistory
-WHERE personID = 33;
+SELECT * FROM Person P
+INNER JOIN InfectionHistory IH ON IH.personID = P.id
+WHERE firstName = 'Johnny'
+AND id = 32;
 
 /*
 ====================================================================
