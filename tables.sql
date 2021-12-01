@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS ApprovedVaccinations;
 CREATE TABLE ApprovedVaccinations(
 vaccinationName VARCHAR(100),
 dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL,
+vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL DEFAULT "SAFE",
 dateOfSuspension DATE,
 PRIMARY KEY (vaccinationName)
 );
@@ -173,7 +173,7 @@ DROP TABLE IF EXISTS PersonAgeGroup;
 
 CREATE TABLE PersonAgeGroup(
 	id INT,
-	ageGroupID INT,
+	ageGroupID INT DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY (id) REFERENCES Person(id)
 		ON DELETE CASCADE
@@ -270,7 +270,7 @@ DROP TABLE IF EXISTS HealthWorker;
 CREATE TABLE HealthWorker(
 pID INT,
 ssn INT,
-employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL,
+employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL DEFAULT "Regular Employee",
 PRIMARY KEY (pID),
 FOREIGN KEY (pID) REFERENCES Registered(id)
 	ON DELETE CASCADE
@@ -360,7 +360,7 @@ phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
-capacity INT NOT NULL,
+capacity INT NOT NULL DEFAULT 0,
 managerID INT,
 FOREIGN KEY (managerID) REFERENCES HealthWorker(pID)
 	ON DELETE SET NULL
@@ -672,9 +672,9 @@ CREATE TABLE WorkerSchedule(
 pID int,
 workerID INT,
 facilityName VARCHAR(100),
-days VARCHAR(1000) NOT NULL,
-startingHour TIME NOT NULL,
-endingHour TIME NOT NULL,
+days VARCHAR(1000) NOT NULL DEFAULT "Monday-Tuesday-Wednesday-Thursday-Friday",
+startingHour TIME NOT NULL DEFAULT "07:00:00",
+endingHour TIME NOT NULL DEFAULT "21:00:00",
 PRIMARY KEY (workerID, facilityName),
 FOREIGN KEY (pID) REFERENCES HealthWorker(pID)
 	ON DELETE SET NULL
