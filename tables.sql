@@ -724,6 +724,66 @@ FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 	ON UPDATE CASCADE
 );
 
+DELIMITER $$
+CREATE TRIGGER ValidateAgeGroupOfAppointment_Insert
+AFTER INSERT ON Appointments
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF (NEW.pID IS NOT NULL) AND (((SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName) IS NULL) OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge) < (SELECT ageGroup FROM Province 
+		WHERE name = (SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName))) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF (NEW.pID IS NOT NULL) AND (NEW.pID IN (SELECT pID FROM HealthWorker)) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- Otherwise reject changes.
+	ELSEIF NEW.pID IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for an appointment!";
+    END IF;
+END $$
+
+CREATE TRIGGER ValidateAgeGroupOfAppointment_Update
+BEFORE UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF (NEW.pID IS NOT NULL) AND ((SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName) IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge) < (SELECT ageGroup FROM Province 
+		WHERE name = (SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName))) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF (NEW.pID IS NOT NULL) AND (NEW.pID IN (SELECT pID FROM HealthWorker)) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- Otherwise reject changes.
+	ELSEIF NEW.pID IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for an appointment!";
+    END IF;
+END $$
+DELIMITER ;
+
 SELECT * FROM Appointments;
 
 DELETE FROM Appointments;
