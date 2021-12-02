@@ -17,14 +17,13 @@ fileHeader("Query 16 - Perform Appointment Vaccine");
     <input type="text" name="vaccineName" placeholder="Vaccine Name" class="registered unregistered">
     <input type="text" name="lotNumber" placeholder="Lot Number" class="registered unregistered">
     <input type="text" name="province" placeholder="Province" class="registered unregistered">
-    <input type="date" name="dateOfVaccination" class="registered unregistered">
+    <input type="date" name="dateOfBirth" class="unregistered">
     <input type="text" name="telephoneNumber" placeholder="Telephone Number" class="unregistered">
-    <input type="text" name="adress" placeholder="Adress" class="unregistered">
+    <input type="text" name="address" placeholder="Adress" class="unregistered">
     <input type="text" name="city" placeholder="City" class="unregistered">
     <input type="text" name="postalCode" placeholder="Postal Code" class="unregistered">
     <input type="text" name="citizenship" placeholder="Citizenship" class="unregistered">
     <input type="text" name="country" placeholder="Country" class="registered unregistered">
-
     <input type="email" name="email" placeholder="E-mail" class="unregistered">
     <button type="submit" name="sub1" value="1" class="registered"> Submit Re </button>
     <button type="submit" name="sub1" value="2" class="unregistered"> Submit Unre </button>
@@ -86,12 +85,7 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1")
     $lotNumber = $_POST["lotNumber"];
     $province = $_POST["province"];
     $country = $_POST["country"];
-    //$city = $_POST["city"];
-    //$email = $_POST["email"];
-    //$address = $_POST["adress"];
-    //$postalCode = $_POST["postalCode"];
-    //$citizenship = $_POST["citizenship"];
-    //$tNumber = $_POST["telephoneNumber"];
+    
 
     $query = "
     SELECT * FROM Registered 
@@ -125,15 +119,25 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1")
                 $dateOfVaccination = $row["Date"];
                 $facilityName = $row["Facility Name"];
                 $doseNumber = 2;
-                $secondVaccineTest = "
-                SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
-                $result = $conn->query($secondVaccineTest);
-                $appointmentVerification = mysqli_fetch_assoc($result);
+                $appointmentCount = "
+                SELECT * 
+                FROM Appointments A
+                WHERE A.pID = '$id'";
+                $result = $conn->query($appointmentCount);
+                $counter = mysqli_num_rows($result);
 
-               
-                    
-
-                echo $dateOfVaccination . "<br>";
+                if($counter == 2)
+                {
+                    $secondDate = "
+                    SELECT A.date
+                    FROM Appointments A
+                    WHERE pID = '$id'
+                    AND a.date <> '$dateOfVaccination'";
+                    $result = $conn->query($secondDate);
+                    $appointmentArray = mysqli_fetch_assoc($result);
+                    $dateOfVaccination = $appointmentArray["date"];
+                }
+            
                 $sql1 = "
                 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
                 VALUES('$id', '$nurseID', '$vaccineName', '$dateOfVaccination', '$lotNumber', '$facilityName', '$province', '$country', '$doseNumber')";
@@ -159,7 +163,9 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1")
     }
 
     $sql2 = "
-    SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
+    SELECT * 
+    FROM Vaccinations 
+    ORDER BY Vaccinations.id";
     $result1 = $conn->query($sql2);
     $resultCheck1 = mysqli_num_rows($result1);
 
@@ -172,39 +178,40 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1")
 
 if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2") 
 {
-    $identification = quote($_POST["identification"]);
-    $fName = quote($_POST["fName"]);
-    $mInitial = quote($_POST["mInitial"]);
-    $lName = quote($_POST["lName"]);
-    $id = quote($_POST["id"]);
-    $nurseID = quote($_POST["nurseID"]);
-    $vaccineName = quote($_POST["vaccineName"]);
-    $lotNumber = quote($_POST["lotNumber"]);
-    $province = quote($_POST["province"]);
-    $country = quote($_POST["country"]);
-    $city = quote($_POST["city"]);
-    $email = quote($_POST["email"]);
-    $address = quote($_POST["address"]);
-    $postalCode = quote($_POST["postalCode"]);
-    $citizenship = quote($_POST["citizenship"]);
-    $tNumber = quote($_POST["telephoneNumber"]);
+    $identification = ($_POST["identification"]);
+    $fName = ($_POST["fName"]);
+    $mInitial = ($_POST["mInitial"]);
+    $lName = ($_POST["lName"]);
+    $id = ($_POST["id"]);
+    $nurseID = ($_POST["nurseID"]);
+    $vaccineName = ($_POST["vaccineName"]);
+    $lotNumber = ($_POST["lotNumber"]);
+    $province = ($_POST["province"]);
+    $country = ($_POST["country"]);
+    $city = ($_POST["city"]);
+    $email = ($_POST["email"]);
+    $address = ($_POST["address"]);
+    $postalCode = ($_POST["postalCode"]);
+    $citizenship = ($_POST["citizenship"]);
+    $tNumber = ($_POST["telephoneNumber"]);
+    $dateOfBirth = ($_POST["dateOfBirth"]);
 
     $query = "
     SELECT * 
     FROM Unregistered U
     INNER JOIN Person P ON P.id = U.id
-    WHERE firstName = $fName 
-    AND lastName = $lName 
-    AND middleInitial = $mInitial
-    AND dateOfBirth = $dateOfBirth
-    AND telephoneNumber = $tNumber
-    AND city = $city
-    AND province = $province
-    AND postalCode = $postalCode
-    AND citizenship = $citizenship
-    AND emailAddress = $email
-    AND address = $address
-    AND U.passportNum = $identification";
+    WHERE firstName = '$fName '
+    AND lastName = '$lName '
+    AND middleInitial = '$mInitial'
+    AND dateOfBirth = '$dateOfBirth'
+    AND telephoneNumber = '$tNumber'
+    AND city = '$city'
+    AND province = '$province'
+    AND postalCode = '$postalCode'
+    AND citizenship = '$citizenship'
+    AND emailAddress ='$email'
+    AND address = '$address'
+    AND U.passportNum = '$identification'";
     $result = $conn->query($query);
 
     if (mysqli_num_rows($result) > 0)
@@ -221,10 +228,11 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2")
         ORDER BY Person.id, a.date";
         
         $result = $conn->query($sql);
-        $row = mysqli_fetch_assoc($result);
+        
         
         if (mysqli_num_rows($result) > 0) 
         {
+            $row = mysqli_fetch_assoc($result);
 
             if ($row["Total dose number"] == 2) 
             {
@@ -234,20 +242,24 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2")
                 $dateOfVaccination = $row["Date"];
                 $facilityName = $row["Facility Name"];
                 $doseNumber = 2;
-                $secondVaccineTest = "
-                SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
-                $result = $conn->query($secondVaccineTest);
-                $appointmentVerification = mysqli_fetch_assoc($result);
+                $appointmentCount = "
+                SELECT * 
+                FROM Appointments A
+                WHERE A.pID = '$id'";
+                $result = $conn->query($appointmentCount);
+                $counter = mysqli_num_rows($result);
 
-                if (mysqli_num_rows($result) > 0) 
+                if($counter == 2)
                 {
-                    $correctDateOfVaccinationSearch = "
-                    SELECT a.date FROM Appointments a WHERE a.date <> '$dateOfVaccination' AND pID = '$id'";
-                    $result = $conn->query($correctDateOfVaccinationSearch);
-                    $realDateOfVaccination = mysqli_fetch_assoc($result);
-                    $dateOfVaccination = $realDateOfVaccination["date"];
+                    $secondDate = "
+                    SELECT A.date
+                    FROM Appointments A
+                    WHERE pID = '$id'
+                    AND a.date <> '$dateOfVaccination'";
+                    $result = $conn->query($secondDate);
+                    $appointmentArray = mysqli_fetch_assoc($result);
+                    $dateOfVaccination = $appointmentArray["date"];
                 }
-
                 echo $dateOfVaccination . "<br>";
                 $sql1 = "
                 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
@@ -274,7 +286,9 @@ if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "2")
     }
 
     $sql2 = "
-    SELECT * FROM Vaccinations ORDER BY Vaccinations.id";
+    SELECT * 
+    FROM Vaccinations 
+    ORDER BY Vaccinations.id";
     $result1 = $conn->query($sql2);
     $resultCheck1 = mysqli_num_rows($result1);
 
