@@ -19,11 +19,11 @@
 
 <form method = "post" class="form-input">
 
-    <label for = "id" class = "update insert"> Person ID * </label>
-	<input type = "text" id = "id" name="id" placeholder="Person ID" class = "update insert" required/>
+    <label for = "id" class = "insert"> Person ID * </label>
+	<input type = "text" id = "id" name="id" placeholder="Person ID" class = "insert" required/>
 
-    <label for = "pID" class = "query"> Person ID * </label>
-	<input type = "text" id = "pID" name="pID" placeholder="Person ID" class = "query" required/>
+    <label for = "pID" class = "query delete update"> Person ID * </label>
+	<input type = "text" id = "pID" name="pID" placeholder="Person ID" class = "query delete update" required/>
 
     <label for = "medicareIssueDate" class = "insert"> Medicare issue date </label>
 	<input type = "date" id = "medicareIssueDate" name="medicareIssueDate" class = "insert"/>
@@ -199,19 +199,19 @@
 			}
 			else
 			{
-				echo "<p>".$id." has no health workers </p>";
+				echo "<p>".$pID." does not have this health worker </p>";
 			}
 				
 		}
 
 		if ($_POST["delete"] != NULL)
 		{
-			if ($_POST["id"] != null)
+			if ($_POST["pID"] != null)
 			{
-				$id = "'".$_POST["id"]."'";
+				$pID = "'".$_POST["pID"]."'";
 				$query = "
 				DELETE FROM HealthWorker
-				WHERE name = $id";
+				WHERE pID = $pID";
 
 				if ($conn->query($query) === TRUE) {
 					echo "<p> Successfully deleted the entry!</p>";
@@ -229,16 +229,16 @@
 		// Updating stuff.
 		if ($_POST["update"] != NULL)
 		{
-			if ($_POST["queryName"] != null)
+			if ($_POST["pID"] != null)
 			{
-				$id = "'".$_POST["id"]."'";
+				$pID = "'".$_POST["pID"]."'";
 				$ssn = "'".$_POST["ssn"]."'";
 				$employeeType = "'".$_POST["employeeType"]."'";
 
 				$update = "
 				UPDATE HealthWorker
                 SET ssn = $ssn, employeeType = $employeeType
-                WHERE pID = $id";
+                WHERE pID = $pID";
 
 				if ($conn->query($update) === TRUE) {
 					echo "<p> Successfully updated the entry!</p>";
