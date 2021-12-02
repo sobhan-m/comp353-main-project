@@ -106,7 +106,7 @@
 		// Updating stuff.
 		if ($_POST["update"] != NULL)
 		{
-			if ($_POST["queryName"] != null)
+			if ($_POST["queryName"] != NULL && $_POST["name"] != NULL)
 			{
 				$name = "'".$_POST["name"]."'";
 				$AgeGroupID = $_POST["AgeGroupID"] == "" ? "DEFAULT" : "'".$_POST["AgeGroupID"]."'";
@@ -125,7 +125,7 @@
 			}
 			else
 			{
-				echo "<p> Please fill the 'Query Name' input with the Province you want to update. </p>";
+				echo "<p> Please fill the 'Query Name' input with the Province you want to update and 'name' for the province's new name. </p>";
 			}
 			
 		}
