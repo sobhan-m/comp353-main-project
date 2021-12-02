@@ -28,7 +28,6 @@ fileHeader("Home");
 <br>
 <?php
 if ($_POST != null && $_POST["sub1"] != null && $_POST["sub1"] == "1") {
-    echo "line 50";
     $newAgeGroupID = $_POST["newAgeGroupID"];
     $newAgeGroupMinAge = $_POST["newAgeGroupMinAge"];
     $newAgeGroupMaxAge = $_POST["newAgeGroupMaxAge"];
