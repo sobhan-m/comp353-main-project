@@ -12,7 +12,7 @@
 
 <form method = "post" class="form-input">
     <label for = "given_date"> Given Date * </label>
-	<input type = "text" id = "given_date" name="given_date" placeholder="0"  min = "0" max = "20" required/> <br/>
+	<input type = "date" id = "given_date" name="given_date" placeholder="0"  min = "0" max = "20" required/> <br/>
 	<button type = "submit"> Submit </button>
 </form>
 
