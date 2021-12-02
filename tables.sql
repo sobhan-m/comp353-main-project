@@ -161,7 +161,11 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 ("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com'),
 ("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com'),
 ("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com'),
-("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com');
+("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com'),
+("Justine","K", "Moore", '1996-12-03', 109999, '7831 John Street', 'Montreal', 'QC', 'G2G2G3', 'Canadian', 'Justing.Moore@gmail.com'),
+("Shanice","C", "Leroy", '1996-12-04', 209999, '7832 John Street', 'Montreal', 'QC', 'G2G2G4', 'Canadian', 'Shanice.Leroy@gmail.com'),
+("Leron","C", "James", '1996-12-05', 309999, '7833 John Street', 'Montreal', 'QC', 'G2G2G5', 'Canadian', 'Leron.James@gmail.com'),
+("Xing","C", "Han", '1996-12-06', 409999, '7834 John Street', 'Montreal', 'QC', 'G2G2G6', 'Canadian', 'Xing.Han@gmail.com');
 
 /*
 ====================================================================
@@ -233,7 +237,11 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (28, '1997-01-01', '2047-01-01'),
 (29, '1954-10-28', '2025-10-28'),
 (30, '1991-12-02', '2041-12-02'),
-(31, '1991-12-03', '2041-12-03');
+(31, '1991-12-03', '2041-12-03'),
+(32, '1991-12-05', '2041-12-03'),
+(33, '1991-12-04', '2041-12-03'),
+(34, '1991-12-06', '2041-12-03'),
+(35, '1991-12-07', '2041-12-03');
 
 /*
 ====================================================================
@@ -286,7 +294,7 @@ INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
 (6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
 (22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
-(29, 120, 'Manager'),(30, 121, 'Nurse'),(31, 122, 'Nurse');
+(29, 120, 'Manager'),(30, 121, 'Nurse'),(31, 122, 'Nurse'), (32, 123, 'Nurse'),(33, 124, 'Nurse'),(34, 125, 'Nurse'),(35, 126, 'Nurse');
 
 /*
 ====================================================================
@@ -440,7 +448,11 @@ VALUES(1, 'A', '2019-12-12', NULL, 1, 11),
 (28, 'I', '2020-07-12', NULL, 18, 28),
 (29, 'J', '2020-06-11', NULL, 19, 29),
 (30, 'K', '0001-12-12', NULL, 20, 30),
-(31, 'K', '0001-12-12', NULL, 21, 33);
+(31, 'K', '0001-12-12', NULL, 21, 33),
+(32, 'K', '0001-12-12', NULL, 22, 33),
+(33, 'K', '0001-12-12', NULL, 23, 33),
+(34, 'K', '0001-12-12', NULL, 24, 33),
+(35, 'K', '0001-12-12', NULL, 25, 33);
 
 /*
 ====================================================================
@@ -700,7 +712,11 @@ VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:
 (8, 8, 'H', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (9, 9, 'I', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (30, 20, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
-(31, 21, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
+(31, 21, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(32, 22, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(33, 23, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(34, 24, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(35, 25, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
 
 /*
 ====================================================================

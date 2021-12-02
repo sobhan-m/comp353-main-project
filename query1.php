@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 1");
+	fileHeader("Query 1 - Person");
 ?>
 
 <div class="instructions">
 	<p>
-		All the details regarding a Person and their Infection history.
+		All the details regarding a Person.
 	</p>
 </div>
 

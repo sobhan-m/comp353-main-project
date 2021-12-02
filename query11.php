@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 11");
+	fileHeader("Query 11 - Display Bookings And Availabilities");
 ?>
 
 <div class="instructions">

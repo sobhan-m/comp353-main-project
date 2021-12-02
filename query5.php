@@ -1,6 +1,6 @@
 <?php
 require_once("header.php");
-fileHeader("Home");
+fileHeader("Query 5 - Infection Types");
 ?>
 
 <!-- Code Goes Here -->

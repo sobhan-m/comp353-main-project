@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 15");
+	fileHeader("Query 15 - Facility Schedule");
 ?>
 
 <div class="instructions">
 	<p>
-		Display the schedule for a given facility and on the specified date(test with facilityName='C' and date='2021-01-25'). 
+		Display the schedule for a given facility and on the specified date(test with facilityName='K' and date='2021-01-25'). 
 	</p>
 </div>
 
@@ -14,7 +14,7 @@
     <label for = "facility_name"> Facility Name * </label>
 	<input type = "text" id = "facility_name" name="facility_name" placeholder="0"  min = "0" max = "20" required/> <br/>
     <label for = "given_date"> Given Date * </label>
-	<input type = "text" id = "given_date" name="given_date" placeholder="0"  min = "0" max = "20" required/> <br/>
+	<input type = "date" id = "given_date" name="given_date" placeholder="0"  min = "0" max = "20" required/> <br/>
 	<button type = "submit"> Submit </button>
 </form>
 

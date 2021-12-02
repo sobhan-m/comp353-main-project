@@ -1,6 +1,6 @@
 <?php
 require_once("header.php");
-fileHeader("Home");
+fileHeader("Query 17 - Perform Appointment-Less Vaccine");
 ?>
 <form method="POST">
     <input type="text" name="firstName" placeholder="First Name">
@@ -9,7 +9,7 @@ fileHeader("Home");
     <input type="text" name="id" placeholder="ID">
     <input type="text" name="nurseID" placeholder="Nurse ID">
     <input type="text" name="vaccineName" placeholder="Vaccine Name">
-    <input type="text" name="dateOfVaccination" placeholder="Date of Vaccination">
+    <input type="date" name="dateOfVaccination" placeholder="Date of Vaccination">
     <input type="text" name="lotNumber" placeholder="Lot Number">
     <input type="text" name="facilityName" placeholder="Facility Name">
     <input type="text" name="province" placeholder="Province">

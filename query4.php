@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 4");
+	fileHeader("Query 4 - Approved Vaccines");
 ?>
 
 <div class="instructions">
 	<p>
-		To get the details of the nurses, please enter the minimum number of doses you want the nurse to have done.
+		Please enter the details of the particular vaccine.
 	</p>
 </div>
 

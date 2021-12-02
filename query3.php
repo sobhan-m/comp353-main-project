@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 3");
+	fileHeader("Query 3 - Public Health Facilities");
 ?>
 
 <div class="instructions">
 	<p>
-		To get the details of the nurses, please enter the minimum number of doses you want the nurse to have done.
+		Please enter the information regarding the public health facilities.
 	</p>
 </div>
 
