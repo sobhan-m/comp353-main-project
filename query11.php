@@ -110,5 +110,8 @@
 
 ?>
 
+<p>
+	To create empty appointment slots for a given day, go <a href="create-slots.php">here</a>.
+</p>
 
 <?php require("footer.php"); ?>
