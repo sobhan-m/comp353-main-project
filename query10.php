@@ -9,9 +9,9 @@
     <label for = "facility_name"> Facility Name * </label> 
 	<input type = "text" id = "facility_name" name="facility_name" placeholder="B"  min = "0" max = "20" /> <br/>
     <label for = "start_date"> Start Date * </label>
-	<input type = "text" id = "start_date" name="start_date" placeholder="2020-1-1"  min = "0" max = "20" /> <br/>
+	<input type = "date" id = "start_date" name="start_date" value="2020-1-1"  min = "0" max = "20" /> <br/>
     <label for = "end_date"> End Date </label>
-	<input type = "text" id = "end_date" name="end_date" placeholder="2020-6-1"  min = "0" max = "20" /> <br/>
+	<input type = "date" id = "end_date" name="end_date" value="2020-6-1"  min = "0" max = "20" /> <br/>
     <label for = "hourly_wage"> Hourly Wage </label>
 	<input type = "text" id = "hourly_wage" name="hourly_wage" placeholder="12"  min = "0" max = "20" /> <br/>
 
