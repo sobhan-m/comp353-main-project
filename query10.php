@@ -8,10 +8,10 @@
 	<input type = "text" id = "pID" name="pID" placeholder="2"  min = "0" max = "20" /> <br/>
     <label for = "facility_name"> Facility Name * </label> 
 	<input type = "text" id = "facility_name" name="facility_name" placeholder="B"  min = "0" max = "20" /> <br/>
-    <label for = "start_date"> Start Date * </label>
-	<input type = "date" id = "start_date" name="start_date" value="2020-1-1"  min = "0" max = "20" /> <br/>
-    <label for = "end_date"> End Date </label>
-	<input type = "date" id = "end_date" name="end_date" value="2020-6-1"  min = "0" max = "20" /> <br/>
+    <label for = "start_date"> Start Date * (2020-1-1) </label>
+	<input type = "date" id = "start_date" name="start_date" min = "0" max = "20" /> <br/>
+    <label for = "end_date"> End Date (2020-6-1) </label>
+	<input type = "date" id = "end_date" name="end_date" min = "0" max = "20" /> <br/>
     <label for = "hourly_wage"> Hourly Wage </label>
 	<input type = "text" id = "hourly_wage" name="hourly_wage" placeholder="12"  min = "0" max = "20" /> <br/>
 
@@ -21,8 +21,8 @@
 	<input type = "text" id = "queryID" name="queryID" placeholder="2"/>
     <label for = "queryFacilityName"> Query Facility Name </label>
 	<input type = "text" id = "queryFacilityName" name="queryFacilityName" placeholder="B"/>
-    <label for = "queryStartDate"> Query Start Date </label>
-	<input type = "text" id = "queryStartDate" name="queryStartDate" placeholder="2020-1-1"/>
+    <label for = "queryStartDate"> Query Start Date 2020-1-1</label>
+	<input type = "date" id = "queryStartDate" name="queryStartDate"/>
 
 	<button type = "submit" name = "query" value = "query"> Query Table </button>
 	<button type = "submit" name = "delete" value = "delete"> Delete Value </button>
