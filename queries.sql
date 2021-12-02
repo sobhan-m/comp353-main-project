@@ -57,7 +57,7 @@ WHERE pID = 33;
 
 -- Editing.
 UPDATE HealthWorker
-SET pID = 33, ssn = 123, employeeType ='Nurse'
+SET ssn = 123, employeeType ='Nurse'
 WHERE pID = 33;
 
 -- Displaying.
