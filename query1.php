@@ -355,6 +355,12 @@
 <p>
 	For Infection History go to <a href = "query1-infections.php"> Infection History </a>.
 </p>
+<p>
+	For registering a person go <a href = "registered.php"> here </a>.
+</p>
+<p>
+	For adding an unregistered person go <a href = "unregistered.php"> here </a>.
+</p>
 
 
 <?php require("footer.php"); ?>
