@@ -297,16 +297,12 @@ WHERE pID=2 AND facilityName='C' AND startDate='2016-11-20';
 -- $facilityName, $startTime, $endTime
 SELECT *
 FROM Appointments A
-INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
-INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01" AND A.facilityName = "C"
 AND pID IS NOT NULL;
 
 SELECT *
 FROM Appointments A
-INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
-INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+WHERE A.date BETWEEN "2021-01-01" AND "2023-06-01" AND A.facilityName = "C"
 AND pID IS NULL;
 
 /*
