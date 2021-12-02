@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 20");
+	fileHeader("Query 20 - All Person Details");
 ?>
 
 <div class="instructions">

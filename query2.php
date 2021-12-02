@@ -1,11 +1,11 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 2");
+	fileHeader("Query 2 - Public Health Worker");
 ?>
 
 <div class="instructions">
 	<p>
-		Query 2: Public Health Worker
+		Please enter the information regarding the public health worker.
 	</p>
 </div>
 

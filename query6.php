@@ -1,6 +1,6 @@
 <?php
 require_once("header.php");
-fileHeader("Home");
+fileHeader("Query 6 - Age Groups");
 ?>
 <form method="POST">
     <input type="text" name="newAgeGroupID" placeholder="Age group ID to add">

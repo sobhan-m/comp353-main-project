@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 7");
+	fileHeader("Query 7 - Province");
 ?>
 
 <form method = "post" class="form-input">
