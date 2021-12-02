@@ -3,16 +3,26 @@ require_once("header.php");
 fileHeader("Home");
 ?>
 <form method="POST">
-    <!-- VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2); -->
+   <p> <input type="checkbox" name="registrationState"> Are you registered with the public health care system? </p>
+    <br>
+    <input type="text" name="medicare" placeholder="Enter the Medicare Number(if registered)">
+    <input type="text" name="passport" placeholder="Enter the Passport Number(if not registered)">
     <input type="text" name="fName" placeholder="First Name">
     <input type="text" name="mInitial" placeholder="Middle Initial">
     <input type="text" name="lName" placeholder="Last Name">
     <input type="text" name="id" placeholder="ID">
     <input type="text" name="nurseID" placeholder="Nurse ID">
     <input type="text" name="vaccineName" placeholder="Vaccine Name">
-<!-- <input type="text" name="dateOfVaccination" placeholder="Date of Vaccination">-->
     <input type="text" name="lotNumber" placeholder="Lot Number">
     <input type="text" name="province" placeholder="Province">
+    <input type="text" name="country" placeholder="Date of Birth">
+    <input type="text" name="country" placeholder="Telephone Number">
+    <input type="text" name="country" placeholder="Adress">
+    <input type="text" name="country" placeholder="City">
+    <input type="text" name="country" placeholder="">
+    <input type="text" name="country" placeholder="Country">
+    <input type="text" name="country" placeholder="Country">
+    <input type="text" name="country" placeholder="Country">
     <input type="text" name="country" placeholder="Country">
     <button type="submit" name="sub1" value="1"> Submit </button>
 </form>
