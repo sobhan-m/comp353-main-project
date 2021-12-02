@@ -376,7 +376,7 @@ FROM Appointments A INNER JOIN Person P ON A.pID = P.id
 -- Finding the last dose someone did to increment it.
 SELECT id, MAX(doseNumber) lastDose
 FROM Vaccinations
-WHERE id = $id;
+WHERE id = 1;
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
