@@ -72,6 +72,20 @@ function printProvinceOptions($conn)
 	}
 }
 
+function timeToNumbers($time)
+{
+	return explode(":", $time);
+}
+
+function numbersToHours($hour, $minutes)
+{
+	if ($hour < 10)
+		$hour = "0$hour";
+	if ($minutes < 10)
+		$minutes = "0$minutes";
+	return "$hour:$minutes:00";
+}
+
 // Make a query with: $result = $mysqli->query("SELECT Blah");
 
 ?>

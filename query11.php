@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 11");
+	fileHeader("Query 11 - Display Bookings And Availabilities");
 ?>
 
 <div class="instructions">
@@ -110,5 +110,8 @@
 
 ?>
 
+<p>
+	To create empty appointment slots for a given day, go <a href="create-slots.php">here</a>.
+</p>
 
 <?php require("footer.php"); ?>

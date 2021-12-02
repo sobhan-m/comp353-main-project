@@ -649,17 +649,17 @@ SELECT * FROM FacilitySchedule;
 DELETE FROM FacilitySchedule;
 
 INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
-VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("B","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("C","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("D","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("E","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("F","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("G","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("H","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("K","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
+VALUES("A","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("B","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("C","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("D","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("E","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("F","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("G","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("H","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("I","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("J","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("K","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"); 
 
 /*
 ====================================================================

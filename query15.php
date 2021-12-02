@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Query 15");
+	fileHeader("Query 15 - Facility Schedule");
 ?>
 
 <div class="instructions">

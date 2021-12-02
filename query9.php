@@ -1,6 +1,6 @@
 <?php 
 	require_once("header.php"); 
-	fileHeader("Infection History");
+	fileHeader("Query 9 - Appointments");
 ?>
 
 <div class="instructions">
