@@ -7,11 +7,11 @@
 
 -- Creating.
 
-INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress, ageGroupID) 
-VALUES ("Johnny", "AB", "Smithson", '1990-01-01', 000100, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com', 6);
+INSERT INTO Person (firstName, middleInitial, lastName, dateOfBirth, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
+VALUES ("Johnny", "AB", "Smithson", '1990-01-01', 000100, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com');
 
 INSERT INTO InfectionHistory(personID, infectionDate, type)
-VALUES (34, '2021-02-01', "Beta");
+VALUES (32, '2021-02-01', "Beta");
 
 -- php should take care of getting the ID from Person for infection history
 
@@ -30,15 +30,13 @@ SET firstName = 'Johnathan', middleInitial = 'X', lastName = 'Smithhh', dateOfBi
 WHERE firstName = 'Johnny';
 
 UPDATE InfectionHistory
-SET personID = 33, infectionDate = '2020-10-10', type = "Alpha"
+SET infectionDate = '2020-10-10', type = "Alpha"
 WHERE personID = 34;
 
 -- Displaying.
-SELECT * FROM Person 
+SELECT * FROM Person P
+INNER JOIN InfectionHistory IH ON IH.personID = P.id
 WHERE firstName = 'Johnny';
-
-SELECT * FROM InfectionHistory
-WHERE personID = 33;
 
 /*
 ====================================================================
@@ -59,7 +57,7 @@ WHERE pID = 33;
 
 -- Editing.
 UPDATE HealthWorker
-SET pID = 33, ssn = 123, employeeType ='Nurse'
+SET ssn = 123, employeeType ='Nurse'
 WHERE pID = 33;
 
 -- Displaying.
@@ -299,16 +297,12 @@ WHERE pID=2 AND facilityName='C' AND startDate='2016-11-20';
 -- $facilityName, $startTime, $endTime
 SELECT *
 FROM Appointments A
-INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
-INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01" AND A.facilityName = "C"
 AND pID IS NOT NULL;
 
 SELECT *
 FROM Appointments A
-INNER JOIN PublicHealthFacilities PHF ON A.facilityName=PHF.name
-INNER JOIN FacilitySchedule FS ON A.facilityName=FS.name
-WHERE A.date BETWEEN "2021-01-01" AND "2021-06-01"
+WHERE A.date BETWEEN "2021-01-01" AND "2023-06-01" AND A.facilityName = "C"
 AND pID IS NULL;
 
 /*
@@ -335,8 +329,8 @@ FROM Person P INNER JOIN Assignments A ON P.id = A.pID
 	INNER JOIN HealthWorker HW ON HW.pID = A.pID
     INNER JOIN WorkerSchedule WS ON WS.pID = HW.pID
 WHERE HW.employeeType = "Nurse" 
-AND YEAR(A.startDate) = 0001
 AND A.facilityName = "K"
+AND POSITION(DAYNAME('2020-04-01') IN WS.days)
 ORDER BY hourlyWage;
 
 /*
@@ -344,9 +338,9 @@ ORDER BY hourlyWage;
  Query 14
 ====================================================================
 */
-
-SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity
+SELECT PHF.name, PHF.address, PHF.phoneNumber, PHF.capacity, FS.openingHour, FS.closingHour
 FROM PublicHealthFacilities PHF
+JOIN FacilitySchedule FS ON FS.name=PHF.name
 WHERE PHF.name NOT IN (
 SELECT PHF.name
 	FROM PublicHealthFacilities PHF
@@ -365,25 +359,24 @@ SELECT PHF.name, P.firstName, P.middleInitial, P.lastName, HW.employeeType, WS.d
 FROM Person P INNER JOIN HealthWorker HW ON P.id = HW.pID
 	INNER JOIN WorkerSchedule WS ON  HW.pID = WS.pID
     INNER JOIN PublicHealthFacilities PHF ON WS.facilityName = PHF.name
-WHERE PHF.name = 'A' AND POSITION(DAYNAME('2020-04-01') IN WS.days);
+WHERE PHF.name = 'C' AND POSITION(DAYNAME('2021-01-25') IN WS.days);
+
 
 SELECT A.facilityName, A.date, A.time, P.firstName, P.middleInitial, P.lastName
 FROM Appointments A INNER JOIN Person P ON A.pID = P.id
-	WHERE A.facilityName = 'A' AND A.date = '2021-12-25';
-
+	WHERE A.facilityName = 'C' AND A.date = '2021-01-25';
 /*
 ====================================================================
  Query 16
 ====================================================================
 */
-SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', phf.address AS 'Address', phf.province AS 'Province', phf.country AS 'Country', MAX(doseNumber)
-FROM Person
- INNER JOIN  Appointments a ON Person.id = a.pID
- INNER JOIN PublicHealthFacilities phf ON phf.name = a.facilityName 
- LEFT JOIN Vaccinations v ON Person.id = v.id
-WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith"
-GROUP BY Person.id
-ORDER BY Person.id;
+
+-- The registered vs unregisterd is verified in PHP.
+-- The appointment is verified in PHP.
+-- Finding the last dose someone did to increment it.
+SELECT id, MAX(doseNumber) lastDose
+FROM Vaccinations
+WHERE id = 1;
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
@@ -394,10 +387,12 @@ VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);
  Query 17
 ====================================================================
 */
-SELECT firstName AS 'First name', middleInitial AS 'Middle initial', lastName AS 'Last name', doseNumber AS 'Dose Number'
-FROM Person p
-INNER JOIN Vaccinations v ON p.id = v.id
-WHERE firstName = "John" AND middleInitial = "A" AND lastName = "Smith";
+
+-- The registered vs unregisterd is verified in PHP.
+-- Finding the last dose someone did to increment it.
+SELECT id, MAX(doseNumber) lastDose
+FROM Vaccinations
+WHERE id = $id;
 
 INSERT INTO Vaccinations(id, workerID, vaccinationName, vaccinationDate, lotNumber, facilityName, province, country, doseNumber)
 VALUES(1, 9, 'AstraZeneca', '2021-02-24', 13, 'I', NULL, 'Tunisia', 2);

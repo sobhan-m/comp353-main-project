@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan&display=swap');
+
+:root{
+    font-size: 16px;
+    font-family: 'Spartan', sans-serif;
+}
+
+body {
+    background-color: var(--primary);
+    color: var(--secondary);
+    margin: 0;
+    padding: 0;
+}
+
+header h1 {
+	margin-left: 2rem;
+}
+
+label {
+	font-size: 1.25rem;
+}
+
+.form-input {
+	display: flex;
+    align-items: center;
+	flex-direction: column;
+}
+
+.form-input > * {
+	margin-top: 0.125rem;
+	margin-bottom: 0.125rem;
+}
+
+.instructions {
+	margin-left: 2rem;
+}
+
+button {
+	padding: 0.5rem 1rem;
+	border: none;
+	color: var(--primary);
+	background-color: var(--tertiary);
+	border-radius: 0.25rem;
+
+	width: 8rem;
+	height: 2rem;
+}
+
+button:hover {
+	background-color: var(--accent-1);
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table td {
+	padding: 0.5rem 1rem;
+	text-align: center;
+}
+
+table th {
+	padding: 0.5rem 1rem;
+	text-align: center;
+
+	border-bottom: 0.125rem solid black;
+	border-collapse: collapse;
+}
+
+input {
+	width: 14rem;
+}
+
+select {
+	width: 14rem;
+}
+
+hr {
+	padding-left: 0rem !important;
+	margin-left: 0rem !important;
+}
+
+nav {
+	background-color: var(--tertiary);
+}
+
+nav a {
+	text-decoration: none;
+}
+
+nav a:hover {
+	background-color: var(--accent-1);
+}
+
+nav * {
+	margin: auto;
+	padding: 0.5rem 0.5rem;
+	align-items: center;
+
+	color: var(--primary);
+}
+
+.row {
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+	
+}
+
+footer {
+	position: sticky;
+	bottom: 0;
+	padding-bottom: 1rem;
+	padding-top: 1rem;
+	margin-top: 2rem;
+	width: 100%;
+	background-color: var(--tertiary);
+}
+
+footer * {
+	margin-left: 2rem;
+	color: var(--primary);
+}
+
+header ~ p,h2 {
+	margin-left: 2rem;
+}
+
+div.button-prompts * {
+	margin: 0.5rem 1rem;
+}
+
+div.button-prompts{
+	margin: auto;
+	align-items: center;
+	justify-content: center;
+}

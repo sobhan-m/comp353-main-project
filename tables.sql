@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS Project;
-CREATE DATABASE Project;
-USE Project;
+DROP DATABASE IF EXISTS pnc353_2;
+CREATE DATABASE pnc353_2;
+USE pnc353_2;
 
 /*
 ====================================================================
@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS ApprovedVaccinations;
 CREATE TABLE ApprovedVaccinations(
 vaccinationName VARCHAR(100),
 dateOfApproval DATE,
-vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL,
+vaccinationType ENUM("SAFE","SUSPENDED") NOT NULL DEFAULT "SAFE",
 dateOfSuspension DATE,
 PRIMARY KEY (vaccinationName)
 );
@@ -75,7 +75,9 @@ CREATE TABLE Province(
 name VARCHAR(100), 
 ageGroup int DEFAULT 0, 
 PRIMARY KEY(name),
-FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID));
+FOREIGN KEY (ageGroup) REFERENCES AgeGroup(groupID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
 
 SELECT * FROM Province;
 
@@ -120,6 +122,8 @@ emailAddress VARCHAR(100),
 PRIMARY KEY(id),
 UNIQUE (firstName, middleInitial, lastName),
 FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Person;
@@ -157,7 +161,11 @@ VALUES ("John", "A", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal'
 ("Emilio","B", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com'),
 ("Gustave","C", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com'),
 ("Hermes","D", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com'),
-("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com');
+("Christine","C", "Kam", '1996-12-02', 009999, '7830 John Street', 'Montreal', 'QC', 'G2G2G2', 'Canadian', 'Christine.Kam@gmail.com'),
+("Justine","K", "Moore", '1996-12-03', 109999, '7831 John Street', 'Montreal', 'QC', 'G2G2G3', 'Canadian', 'Justing.Moore@gmail.com'),
+("Shanice","C", "Leroy", '1996-12-04', 209999, '7832 John Street', 'Montreal', 'QC', 'G2G2G4', 'Canadian', 'Shanice.Leroy@gmail.com'),
+("Leron","C", "James", '1996-12-05', 309999, '7833 John Street', 'Montreal', 'QC', 'G2G2G5', 'Canadian', 'Leron.James@gmail.com'),
+("Xing","C", "Han", '1996-12-06', 409999, '7834 John Street', 'Montreal', 'QC', 'G2G2G6', 'Canadian', 'Xing.Han@gmail.com');
 
 /*
 ====================================================================
@@ -169,10 +177,14 @@ DROP TABLE IF EXISTS PersonAgeGroup;
 
 CREATE TABLE PersonAgeGroup(
 	id INT,
-	ageGroupID INT,
+	ageGroupID INT DEFAULT 0,
 	PRIMARY KEY (id),
-	FOREIGN KEY (id) REFERENCES Person(id),
+	FOREIGN KEY (id) REFERENCES Person(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
 	FOREIGN KEY (ageGroupID) REFERENCES AgeGroup(groupID)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 SELECT * FROM PersonAgeGroup;
@@ -196,6 +208,8 @@ medicareIssueDate DATE NOT NULL,
 medicareExpiryDate DATE NOT NULL,
 PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Registered;
@@ -223,7 +237,11 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (28, '1997-01-01', '2047-01-01'),
 (29, '1954-10-28', '2025-10-28'),
 (30, '1991-12-02', '2041-12-02'),
-(31, '1991-12-03', '2041-12-03');
+(31, '1991-12-03', '2041-12-03'),
+(32, '1991-12-05', '2041-12-03'),
+(33, '1991-12-04', '2041-12-03'),
+(34, '1991-12-06', '2041-12-03'),
+(35, '1991-12-07', '2041-12-03');
 
 /*
 ====================================================================
@@ -238,6 +256,8 @@ id INT NOT NULL,
 passportNum INT AUTO_INCREMENT,
 PRIMARY KEY (passportNum),
 FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Unregistered;
@@ -258,9 +278,12 @@ DROP TABLE IF EXISTS HealthWorker;
 CREATE TABLE HealthWorker(
 pID INT,
 ssn INT,
-employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL,
+employeeType ENUM("Nurse", "Manager", "Security", "Secretary", "Regular Employee") NOT NULL DEFAULT "Regular Employee",
 PRIMARY KEY (pID),
+UNIQUE (ssn),
 FOREIGN KEY (pID) REFERENCES Registered(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM HealthWorker;
@@ -271,7 +294,7 @@ INSERT INTO HealthWorker(pID, ssn, employeeType)
 VALUES(1, 101, 'Manager'),(2, 102,'Nurse'), (3, 103, 'Security'), (4, 104, 'Secretary'),(5, 105, 'Regular Employee'),
 (6, 106, 'Nurse'), (7, 107, 'Security'),(8, 108, 'Regular Employee'),(9, 109, 'Nurse'),(10, 110, 'Security'),(21, 111, 'Regular Employee'), 
 (22, 112, 'Manager'),(23, 113, 'Manager'),(24, 114, 'Manager'),(25, 115, 'Manager'),(26, 117, 'Manager'),(27, 118, 'Manager'),(28, 119, 'Manager'),
-(29, 120, 'Manager'),(30, 121, 'Nurse'),(31, 122, 'Nurse');
+(29, 120, 'Manager'),(30, 121, 'Nurse'),(31, 122, 'Nurse'), (32, 123, 'Nurse'),(33, 124, 'Nurse'),(34, 125, 'Nurse'),(35, 126, 'Nurse');
 
 /*
 ====================================================================
@@ -312,8 +335,12 @@ personID INT,
 infectionDate DATE,
 type varchar(100) DEFAULT "Unknown",
 PRIMARY KEY (personID, infectionDate),
-FOREIGN KEY (personID) REFERENCES Person(id),
+FOREIGN KEY (personID) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 FOREIGN KEY (type) REFERENCES InfectionTypes(name)
+	ON DELETE SET DEFAULT
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM InfectionHistory;
@@ -342,10 +369,14 @@ phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 category ENUM('RESERVATION-ONLY', 'WALKIN-ALLOWED'),
-capacity INT NOT NULL,
+capacity INT NOT NULL DEFAULT 0,
 managerID INT,
-FOREIGN KEY (managerID) REFERENCES HealthWorker(pID),
-FOREIGN KEY (province) REFERENCES Province(name),
+FOREIGN KEY (managerID) REFERENCES HealthWorker(pID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 PRIMARY KEY (name)
 );
 
@@ -384,8 +415,12 @@ workerID INT AUTO_INCREMENT NOT NULL,
 hourlyWage FLOAT,
 UNIQUE (workerID, facilityName),
 PRIMARY KEY (pID, facilityName, startDate),
-FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Assignments;
@@ -413,7 +448,11 @@ VALUES(1, 'A', '2019-12-12', NULL, 1, 11),
 (28, 'I', '2020-07-12', NULL, 18, 28),
 (29, 'J', '2020-06-11', NULL, 19, 29),
 (30, 'K', '0001-12-12', NULL, 20, 30),
-(31, 'K', '0001-12-12', NULL, 21, 33);
+(31, 'K', '0001-12-12', NULL, 21, 33),
+(32, 'K', '0001-12-12', NULL, 22, 33),
+(33, 'K', '0001-12-12', NULL, 23, 33),
+(34, 'K', '0001-12-12', NULL, 24, 33),
+(35, 'K', '0001-12-12', NULL, 25, 33);
 
 /*
 ====================================================================
@@ -426,7 +465,7 @@ DROP TABLE IF EXISTS Vaccinations;
 CREATE TABLE Vaccinations(
 id INT,
 workerID INT,
-vaccinationName VARCHAR(100) NOT NULL,
+vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
 facilityName VARCHAR(100),
@@ -434,10 +473,18 @@ province VARCHAR(100),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
-FOREIGN KEY (id) REFERENCES Person(id),
-FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName),
-FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName),
+FOREIGN KEY (id) REFERENCES Person(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments(workerID, facilityName)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 FOREIGN KEY (province) REFERENCES Province(name)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM Vaccinations;
@@ -605,6 +652,8 @@ openingHour TIME NOT NULL,
 closingHour TIME NOT NULL,
 PRIMARY KEY (name),
 FOREIGN KEY (name) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM FacilitySchedule;
@@ -612,17 +661,17 @@ SELECT * FROM FacilitySchedule;
 DELETE FROM FacilitySchedule;
 
 INSERT INTO FacilitySchedule(name, days, openingHour, closingHour)
-VALUES("A","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("B","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("C","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("D","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("E","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("F","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("G","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("H","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("I","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("J","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"),
-("K","MON-TUE-WED-THU-FRI","08:00:00","20:00:00"); 
+VALUES("A","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("B","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("C","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("D","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("E","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("F","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("G","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("H","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("I","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("J","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"),
+("K","Monday-Tuesday-Wednesday-Thursday-Friday","08:00:00","20:00:00"); 
 
 /*
 ====================================================================
@@ -636,22 +685,24 @@ CREATE TABLE WorkerSchedule(
 pID int,
 workerID INT,
 facilityName VARCHAR(100),
-days VARCHAR(1000) NOT NULL,
-startingHour TIME NOT NULL,
-endingHour TIME NOT NULL,
+days VARCHAR(1000) NOT NULL DEFAULT "Monday-Tuesday-Wednesday-Thursday-Friday",
+startingHour TIME NOT NULL DEFAULT "07:00:00",
+endingHour TIME NOT NULL DEFAULT "21:00:00",
 PRIMARY KEY (workerID, facilityName),
-FOREIGN KEY (pID) REFERENCES HealthWorker(pID),
-FOREIGN KEY (pID) REFERENCES Assignments (pID),
-FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+FOREIGN KEY (pID) REFERENCES HealthWorker(pID)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (workerID, facilityName) REFERENCES Assignments (workerID, facilityName)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
 
 SELECT * FROM WorkerSchedule;
 
 DELETE FROM WorkerSchedule;
-
+SELECT workerID, facilityName FROM Assignments;
 INSERT INTO WorkerSchedule(pID, workerID, facilityName, days, startingHour, endingHour)
 VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
-(1, 1, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
 (2, 2, 'B', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00" ),
 (3, 3, 'C', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (4, 4, 'D', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
@@ -660,8 +711,12 @@ VALUES (1, 1, 'A', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:
 (7, 7, 'G', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (8, 8, 'H', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
 (9, 9, 'I', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
-(30, 20, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
-(31, 21, 'J', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
+(30, 20, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(31, 21, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(32, 22, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(33, 23, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(34, 24, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00"),
+(35, 25, 'K', "Monday-Tuesday-Wednesday-Thursday-Friday","07:00:00","21:00:00");
 
 /*
 ====================================================================
@@ -676,10 +731,74 @@ date date,
 time time,
 pID int,
 facilityName varchar(100) NOT NULL,
-PRIMARY KEY(date, time),
-FOREIGN KEY (pID) REFERENCES Person(id),
+PRIMARY KEY(date, time, facilityName),
+FOREIGN KEY (pID) REFERENCES Person(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 );
+
+DELIMITER $$
+CREATE TRIGGER ValidateAgeGroupOfAppointment_Insert
+AFTER INSERT ON Appointments
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF (NEW.pID IS NOT NULL) AND (((SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName) IS NULL) OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge) < (SELECT ageGroup FROM Province 
+		WHERE name = (SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName))) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF (NEW.pID IS NOT NULL) AND (NEW.pID IN (SELECT pID FROM HealthWorker)) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- Otherwise reject changes.
+	ELSEIF NEW.pID IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for an appointment!";
+    END IF;
+END $$
+
+CREATE TRIGGER ValidateAgeGroupOfAppointment_Update
+BEFORE UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+	-- If the person has a valid ageGroup for the province.
+	IF (NEW.pID IS NOT NULL) AND ((SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName) IS NULL OR (SELECT groupID
+		FROM AgeGroup
+		WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+		AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge) < (SELECT ageGroup FROM Province 
+		WHERE name = (SELECT province FROM PublicHealthFacilities WHERE name = NEW.facilityName))) THEN
+			-- Assign an agegroup to the person.
+			DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+			INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- If the person is a healthworker then they can still get vaccinated.
+	ELSEIF (NEW.pID IS NOT NULL) AND (NEW.pID IN (SELECT pID FROM HealthWorker)) THEN
+		DELETE FROM PersonAgeGroup WHERE id = NEW.pID;
+		INSERT INTO PersonAgeGroup(id, ageGroupID) VALUES (NEW.pID, (SELECT groupID
+																FROM AgeGroup
+																WHERE TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) >= minAge 
+																AND TIMESTAMPDIFF(YEAR, (SELECT dateOfBirth FROM Person WHERE id = NEW.pID), NEW.date) <= maxAge));
+	-- Otherwise reject changes.
+	ELSEIF NEW.pID IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "The person is not in a valid age group for an appointment!";
+    END IF;
+END $$
+DELIMITER ;
 
 SELECT * FROM Appointments;
 
